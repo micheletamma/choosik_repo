@@ -1,8 +1,10 @@
 package sms1516.gruppo28.uniba.it.choosik;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -35,7 +38,7 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -79,21 +82,40 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        /**
-        if (id == R.id.n) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
 
-        } else if (id == R.id.nav_slideshow) {
+        if (id == R.id.nav_home) {
+            Toast.makeText(this,"Home",Toast.LENGTH_SHORT).show();
+            Intent i=new Intent(MainActivity.this,MainActivity.class);
+            startActivity(i);
 
-        } else if (id == R.id.nav_manage) {
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_search) {
+            Toast.makeText(this,"Ricerca Artisti",Toast.LENGTH_SHORT).show();
+            SearchFragment searchFragment= new SearchFragment();
+            FragmentManager manager= getSupportFragmentManager();
+            manager.beginTransaction().replace(R.id.relativelayoutforfragment,searchFragment,searchFragment.getTag()).commit();
+
+        } else if (id == R.id.nav_concert) {
+            Toast.makeText(this,"I miei concerti",Toast.LENGTH_SHORT).show();
+            ConcertFragment concertFragment= new ConcertFragment();
+            FragmentManager manager= getSupportFragmentManager();
+            manager.beginTransaction().replace(R.id.relativelayoutforfragment,concertFragment,concertFragment.getTag()).commit();
+
+        } else if (id == R.id.nav_about) {
+            Toast.makeText(this,"About us",Toast.LENGTH_SHORT).show();
+            AboutFragment aboutFragment= new AboutFragment();
+            FragmentManager manager= getSupportFragmentManager();
+            manager.beginTransaction().replace(R.id.relativelayoutforfragment,aboutFragment,aboutFragment.getTag()).commit();
+
 
         } else if (id == R.id.nav_send) {
+            Toast.makeText(this,"Contattaci",Toast.LENGTH_SHORT).show();
+            SendFragment sendFragment= new SendFragment();
+            FragmentManager manager= getSupportFragmentManager();
+            manager.beginTransaction().replace(R.id.relativelayoutforfragment,sendFragment,sendFragment.getTag()).commit();
+
 
         }
-        **/
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
