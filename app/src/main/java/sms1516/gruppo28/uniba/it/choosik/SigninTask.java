@@ -1,6 +1,7 @@
 package sms1516.gruppo28.uniba.it.choosik;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -19,7 +20,7 @@ import java.net.URL;
  */
 public class SigninTask extends AsyncTask<String,Void,String> {
     private Context context;
-
+    String risultato="";
     public SigninTask (Context ctx){
         this.context = ctx;
     }
@@ -49,6 +50,7 @@ public class SigninTask extends AsyncTask<String,Void,String> {
                 break;
             }
             in.close();
+            risultato=sb.toString();
             return sb.toString();
         }
 
@@ -59,12 +61,15 @@ public class SigninTask extends AsyncTask<String,Void,String> {
 
     @Override
     protected void onPostExecute(String result){
-        if (result == "Utente ok"){
+        super.onPostExecute(result);
+        if (result.equals("Utente ok")){
             //utente correttamente autenticato
-
-
+            context.startActivity(new Intent(context, MainActivity.class));
         } else {
             //utente autenticato in modo errato
         }
     }
+
+
+
 }
