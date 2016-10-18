@@ -8,37 +8,73 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="sms1516.gruppo28.uniba.it.choosik.LoginActivity">
+    tools:context="sms1516.gruppo28.uniba.it.choosik.LoginActivity"
+    android:background="#C0C1C0">
 
 
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/txtUser"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="85dp"
+        android:text=""
+        android:hint="@string/usr"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:textAlignment="center"
+        android:layout_below="@+id/imageView2"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:text="" />
+        android:layout_alignParentStart="true" />
 
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:ems="10"
         android:id="@+id/txtPassword"
+        android:text=""
+        android:hint="@string/psw"
+        android:textAlignment="center"
         android:layout_below="@+id/txtUser"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:text="" />
+        android:layout_alignParentStart="true" />
 
     <Button
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_width="match_parent"
         android:text="Login"
         android:id="@+id/loginbtn"
-        android:layout_centerVertical="true"
+        android:onClick="login"
+        android:textColor="#000000"
+        android:theme="@style/AppTheme.Button"
+        android:layout_below="@+id/txtPassword"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView2"
+        android:src="@drawable/solo_scritta"
+        android:layout_below="@+id/imageView3"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView3"
+        android:src="@drawable/originale"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView4"
+        android:layout_below="@+id/loginbtn"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:onClick="login"/>
+        android:layout_marginTop="75dp"
+        android:src="@drawable/music_orizzont"/>
+
+
 </RelativeLayout>
