@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/home_48px"
+            android:title="Home" />
+        <item
+            android:id="@+id/nav_search"
+            android:icon="@drawable/search_48px"
+            android:title="Ricerca artisti" />
+        <item
+            android:id="@+id/nav_concert"
+            android:icon="@drawable/dj_48px"
+            android:title="I miei concerti" />
+        <item
+            android:id="@+id/nav_about"
+            android:icon="@drawable/metal_music_48px"
+            android:title="About us" />
+    </group>
+
+    <item android:title="Hai bisogno di aiuto?">
+        <menu>
+            <item
+                android:id="@+id/nav_send"
+                android:icon="@drawable/info_48px"
+                android:title="Contattaci" />
+        </menu>
+    </item>
+
+</menu>
