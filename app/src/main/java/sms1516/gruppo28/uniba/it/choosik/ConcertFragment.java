@@ -24,6 +24,21 @@ public class ConcertFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_concert, container, false);
+        /**
+         *
+         View rootView = inflater.inflate(R.layout.fragment_concert, container, false);
+
+         ArrayList<ListviewContactItem> listContact = GetlistContact();
+         ListView lv = (ListView)getActivity().findViewById(R.id.lv_contact);
+         lv.setAdapter(new ListviewContactAdapter(getActivity(), listContact));
+
+         return rootView;
+         */
+
+
     }
+
+
+
 
 }

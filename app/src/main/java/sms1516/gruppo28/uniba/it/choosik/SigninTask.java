@@ -1,6 +1,7 @@
 package sms1516.gruppo28.uniba.it.choosik;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
@@ -22,6 +23,8 @@ public class SigninTask extends AsyncTask<String,Void,String> {
     private Context context;
     String user="";
     String psw="";
+    String mail="";
+    int cont=0;
     public SigninTask (Context ctx){
         this.context = ctx;
     }
@@ -46,10 +49,11 @@ public class SigninTask extends AsyncTask<String,Void,String> {
 
             StringBuffer sb = new StringBuffer("");
             String line="";
-
+            cont=0; //azzero il contatore per prelevare mail al secondo giro
             while ((line = in.readLine()) != null) {
                 sb.append(line);
-                break;
+                if (cont==1){mail=line;}
+                cont+=1;
             }
             in.close();
             return sb.toString();
@@ -63,9 +67,9 @@ public class SigninTask extends AsyncTask<String,Void,String> {
     @Override
     protected void onPostExecute(String result){
         super.onPostExecute(result);
-        if (result.equals("Utente ok")){
+        if (result.contains("Utente ok")){
             //utente correttamente autenticato
-            //context.startActivity(new Intent(context, MainActivity.class).putExtra("Username",user).putExtra("Email",email));
+            context.startActivity(new Intent(context, MainActivity.class).putExtra("Username",user).putExtra("Email",mail));
 
         } else {
             //utente autenticato in modo errato

@@ -32,19 +32,11 @@ public class LoginActivity extends AppCompatActivity {
 
 
     }
-    public void login(View view){
+    public void login(View view) {
         SigninTask st = new SigninTask(this);
         String username = usernameField.getText().toString();
         String password = passwordField.getText().toString();
-        st.execute(username,password);
-        String r=st.risultato;
-//        if (r.equals("Utente ok")){
+        st.execute(username, password);
 
     }
-//        else {
-//            //messaggio d'errore
-//        }
-//        Log.d("il risultato:",r);
-//    }
-
 }
