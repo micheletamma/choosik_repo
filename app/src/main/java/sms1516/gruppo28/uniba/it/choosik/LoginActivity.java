@@ -37,14 +37,10 @@ public class LoginActivity extends AppCompatActivity {
         String username = usernameField.getText().toString();
         String password = passwordField.getText().toString();
         st.execute(username,password);
-        String r=st.risultato;
-//        if (r.equals("Utente ok")){
+
+
 
     }
-//        else {
-//            //messaggio d'errore
-//        }
-//        Log.d("il risultato:",r);
-//    }
+
 
 }
