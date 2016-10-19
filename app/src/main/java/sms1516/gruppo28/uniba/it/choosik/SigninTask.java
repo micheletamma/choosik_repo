@@ -1,9 +1,9 @@
 package sms1516.gruppo28.uniba.it.choosik;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -20,7 +20,8 @@ import java.net.URL;
  */
 public class SigninTask extends AsyncTask<String,Void,String> {
     private Context context;
-    String risultato="";
+    String user="";
+    String psw="";
     public SigninTask (Context ctx){
         this.context = ctx;
     }
@@ -30,7 +31,8 @@ public class SigninTask extends AsyncTask<String,Void,String> {
         try{
             String username = (String)arg0[0];
             String password = (String)arg0[1];
-
+            user=username;
+            psw=password;
             Log.d("usr",username);
             Log.d("psw",password);
             String link = "http://gruppotamma.esy.es/login.php?username='"+username+"'&password='"+password + "'";
@@ -50,7 +52,6 @@ public class SigninTask extends AsyncTask<String,Void,String> {
                 break;
             }
             in.close();
-            risultato=sb.toString();
             return sb.toString();
         }
 
@@ -64,9 +65,12 @@ public class SigninTask extends AsyncTask<String,Void,String> {
         super.onPostExecute(result);
         if (result.equals("Utente ok")){
             //utente correttamente autenticato
-            context.startActivity(new Intent(context, MainActivity.class));
+            //context.startActivity(new Intent(context, MainActivity.class).putExtra("Username",user).putExtra("Email",email));
+
         } else {
             //utente autenticato in modo errato
+            Toast.makeText(context,"Autenticazione fallita",Toast.LENGTH_SHORT).show();
+
         }
     }
 
