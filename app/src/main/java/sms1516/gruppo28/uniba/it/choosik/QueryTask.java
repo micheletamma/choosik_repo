@@ -2,7 +2,6 @@ package sms1516.gruppo28.uniba.it.choosik;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -19,15 +18,20 @@ import java.util.ArrayList;
  * Created by Michele on 19/10/2016.
  */
 public class QueryTask extends AsyncTask<String,Void,String> {
-    private Context context;
-    String query ="";
-    ArrayList<String> risultato = new ArrayList<String>();
+    public Context context;
+    public static ArrayList<String> risultato = new ArrayList<String>();
+     String ciao = "";
+
 
     public QueryTask(Context ctx){
 
         this.context=ctx;
 
     }
+
+    public QueryTask() {
+    }
+
     public ArrayList<String> getRisultato() {
         return risultato;
     }
@@ -48,13 +52,12 @@ public class QueryTask extends AsyncTask<String,Void,String> {
 
             StringBuffer sb = new StringBuffer("");
             String line="";
-
             while ((line = in.readLine()) != null) {
-                Log.d("linea:",line);
                 sb.append(line);
-                risultato.add(line);
-
+              risultato.add(line);
             }
+
+
             in.close();
 //            if (risultato.size()!=1){
 //            risultato.remove(risultato.size()-1);}
@@ -65,7 +68,11 @@ public class QueryTask extends AsyncTask<String,Void,String> {
             return new String("Exception: " + e.getMessage());
         }
     }
+    @Override
+    protected void onPostExecute(String result){
+        super.onPostExecute(result);
 
+    }
 
 
 }

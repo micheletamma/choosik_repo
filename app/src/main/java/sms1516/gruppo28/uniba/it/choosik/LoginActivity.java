@@ -1,5 +1,6 @@
 package sms1516.gruppo28.uniba.it.choosik;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -32,11 +33,23 @@ public class LoginActivity extends AppCompatActivity {
 
 
     }
+
+    /**
+     *
+     * @param view
+     * Il metodo è invocato dal button di "acitivity_login"
+     * Effettua un task del tipo SigninTask con i parametri username e password
+     */
     public void login(View view) {
         SigninTask st = new SigninTask(this);
         String username = usernameField.getText().toString();
         String password = passwordField.getText().toString();
         st.execute(username, password);
 
+    }
+
+    public void register (View view){
+        Intent i = new Intent(LoginActivity.this,RegisterActivity.class);
+        startActivity(i);
     }
 }
