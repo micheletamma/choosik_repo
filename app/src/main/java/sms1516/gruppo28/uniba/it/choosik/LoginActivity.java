@@ -13,6 +13,22 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        /**
+         * Questo controllo serve a stabilire se un utente e' gia' loggato nella app.
+         * Controlla nelle preferenze della app se l'username e' salvato tra le preferenze, se si
+         * avvia direttamente la main activity, evitando di avviare la login activity.
+         */
+        if (SaveSharedPreference.getUserName(LoginActivity.this).length() == 0) {
+            // prosegui nella crazione della login activity
+        } else {
+            // avvia direttamente la main activity, prelevando i dati username e email da inserire
+            // nella navbar dalle preferenze salvate.
+            Intent i = new Intent(LoginActivity.this, MainActivity.class)
+                    .putExtra("Username", SaveSharedPreference.getUserName(this)).
+                            putExtra("Email", SaveSharedPreference.getEmail(this));
+            startActivity(i);
+        }
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         usernameField = (EditText)findViewById(R.id.txtUser);

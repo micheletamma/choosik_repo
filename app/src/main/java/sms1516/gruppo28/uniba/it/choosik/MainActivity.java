@@ -3,6 +3,7 @@ package sms1516.gruppo28.uniba.it.choosik;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -14,6 +15,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -84,11 +88,24 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-
         if (id == R.id.nav_home) {
             Toast.makeText(this,"Home",Toast.LENGTH_SHORT).show();
-            Intent i=new Intent(MainActivity.this,MainActivity.class);
-            startActivity(i);
+            FragmentManager manager= getSupportFragmentManager();
+
+            /**
+             * Quando si seleziona home nella navbar, essendo l'unica activity di fatto, controlla
+             * la pila dei fragment aperti; questa pila avrà sempre 1 solo fragment aperto, poiche'
+             * ogni fragment che si attiva rimpiazza il precedente. Se non vi sono fragment aperti,
+             * non fa nulla, perche' vorra' dire che si e' gia' nella home.
+              */
+            List frags = manager.getFragments();
+            if (frags != null) {
+                Fragment ultimofrag = (Fragment) frags.get(frags.size()-1);
+                manager.beginTransaction().remove(ultimofrag).commit();
+            }
+
+//            Intent i=new Intent(MainActivity.this,MainActivity.class);
+//            startActivity(i);
 
 
         } else if (id == R.id.nav_search) {
@@ -117,6 +134,13 @@ public class MainActivity extends AppCompatActivity
             manager.beginTransaction().replace(R.id.relativelayoutforfragment,sendFragment,sendFragment.getTag()).commit();
 
 
+        } else if (id == R.id.nav_logout) {
+            Toast.makeText(this,"Sei uscito!",Toast.LENGTH_SHORT).show();
+            SaveSharedPreference.clearUserName(this);
+            Intent i2login = new Intent(MainActivity.this, LoginActivity.class);
+            // dopo aver fatto il logout, vengono rimosse tutte le activity nello stack
+            i2login.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(i2login);
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

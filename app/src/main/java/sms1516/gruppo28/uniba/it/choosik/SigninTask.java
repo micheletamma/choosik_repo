@@ -69,6 +69,12 @@ public class SigninTask extends AsyncTask<String,Void,String> {
         super.onPostExecute(result);
         if (result.contains("Utente ok")){
             //utente correttamente autenticato
+            /**
+             * questo metodo setUserName, dopo aver convalidato il login, salva nelle preferenze
+             * il nome utente, in modo che in un successivo avvio della app, rimane loggato.
+             */
+            SaveSharedPreference.setUserName(this.context, user);
+            SaveSharedPreference.setEmail(this.context, mail);
             context.startActivity(new Intent(context, MainActivity.class).putExtra("Username",user).putExtra("Email",mail));
 
         } else {
