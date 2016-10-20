@@ -20,7 +20,6 @@ import java.util.ArrayList;
  */
 public class QueryTask extends AsyncTask<String,Void,String> {
     private Context context;
-    String query ="";
     ArrayList<String> risultato = new ArrayList<String>();
 
     public QueryTask(Context ctx){

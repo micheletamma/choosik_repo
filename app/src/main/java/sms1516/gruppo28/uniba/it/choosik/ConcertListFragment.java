@@ -29,10 +29,7 @@ public class ConcertListFragment extends Fragment {
         concerti.execute("SELECT");
         ArrayList<String> array=concerti.risultato;
         return inflater.inflate(R.layout.fragment_concert, container, false);
-
-
-
-    }
+        }
 
 
 
