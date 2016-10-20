@@ -48,12 +48,7 @@ public class QueryTask extends AsyncTask<String,Void,String> {
             StringBuffer sb = new StringBuffer("");
             String line="";
 
-            while ((line = in.readLine()) != null) {
-                Log.d("linea:",line);
-                sb.append(line);
-                risultato.add(line);
 
-            }
             in.close();
 //            if (risultato.size()!=1){
 //            risultato.remove(risultato.size()-1);}
