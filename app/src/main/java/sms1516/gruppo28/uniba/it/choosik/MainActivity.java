@@ -99,9 +99,9 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_concert) {
             Toast.makeText(this,"I miei concerti",Toast.LENGTH_SHORT).show();
-            ConcertFragment concertFragment= new ConcertFragment();
+            ConcertListFragment concertListFragment= new ConcertListFragment();
             FragmentManager manager= getSupportFragmentManager();
-            manager.beginTransaction().replace(R.id.relativelayoutforfragment,concertFragment,concertFragment.getTag()).commit();
+            manager.beginTransaction().replace(R.id.relativelayoutforfragment,concertListFragment,concertListFragment.getTag()).commit();
 
         } else if (id == R.id.nav_about) {
             Toast.makeText(this,"About us",Toast.LENGTH_SHORT).show();

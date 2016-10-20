@@ -2,19 +2,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="sms1516.gruppo28.uniba.it.choosik.ConcertFragment">
+    tools:context="sms1516.gruppo28.uniba.it.choosik.ConcertListFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="I miei concerti" />
 
-    <ListView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/listaConcerti"
-        android:layout_gravity="left|top"
-        android:choiceMode="singleChoice" />
+
 
 </FrameLayout>
