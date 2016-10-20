@@ -9,6 +9,23 @@
         android:layout_height="match_parent"
         android:text="I miei concerti" />
 
+    <!--<fragment-->
+        <!--android:id="@+id/listaconcertifragment"-->
+        <!--android:name="sms1516.gruppo28.uniba.it.choosik.ConcertListFragment"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
+    <!--</fragment>-->
+    <ListView
+        android:id="@+id/lista_concerti_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </ListView>
+
+
+
+
+
 
 
 </FrameLayout>
