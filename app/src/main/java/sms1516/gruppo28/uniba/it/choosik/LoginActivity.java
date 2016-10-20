@@ -33,6 +33,13 @@ public class LoginActivity extends AppCompatActivity {
 
 
     }
+
+    /**
+     *
+     * @param view
+     * Il metodo è invocato dal button di "acitivity_login"
+     * Effettua un task del tipo SigninTask con i parametri username e password
+     */
     public void login(View view) {
         SigninTask st = new SigninTask(this);
         String username = usernameField.getText().toString();
