@@ -3,6 +3,7 @@ package sms1516.gruppo28.uniba.it.choosik;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
@@ -70,24 +71,14 @@ public class ConcertListFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-//                Bundle bundle = new Bundle();
-//                bundle.putStringArray("arrayCanzoni",arrayNomiCanzoniConcerto);
-//                DetailCanzoniConcertoActivity.setArguments(bundle);
-
-
-
-
                 final ArrayAdapter<String> adapterCanzoni =
                         new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, arrayNomiCanzoniConcerto);
-
-
                 View dettaglioView = inflater.inflate(R.layout.fragment_detail,container,false);
                 ListView listViewCanzoni = (ListView) dettaglioView.findViewById(R.id.lista_canzoni_view);
                 listViewCanzoni.setAdapter(adapterCanzoni);
-
-//                Intent intent = new Intent(getActivity(),DetailCanzoniConcertoActivity.class);
-//                intent.putExtra("arrayNomeCanzoniConcerto", arrayNomiCanzoniConcerto);
-//                startActivity(intent);
+                Intent intent = new Intent(getActivity(),DetailCanzoniConcertoActivity.class);
+                intent.putExtra("arrayNomeCanzoniConcerto", arrayNomiCanzoniConcerto);
+                startActivity(intent);
 
 
 
@@ -95,7 +86,6 @@ public class ConcertListFragment extends Fragment {
 
             }
         });
-
 
         return rootView;
 

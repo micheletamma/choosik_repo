@@ -20,7 +20,7 @@ import java.util.ArrayList;
 public class QueryTask extends AsyncTask<String,Void,String> {
     public Context context;
     public static ArrayList<String> risultato = new ArrayList<String>();
-     String ciao = "";
+
 
 
     public QueryTask(Context ctx){
@@ -40,6 +40,8 @@ public class QueryTask extends AsyncTask<String,Void,String> {
     protected String doInBackground(String... arg0) {
         try{
             String query = (String)arg0[0];
+            query = query.replace(" ", "%20");
+            query=query.replace("'","%27");
             String link = "http://gruppotamma.esy.es/query.php?sql=" + query;
 
             URL url = new URL(link);

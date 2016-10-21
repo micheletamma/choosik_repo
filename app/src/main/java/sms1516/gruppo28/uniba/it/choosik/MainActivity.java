@@ -16,11 +16,11 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    String u = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setItemIconTintList(null);
         Intent receive = getIntent();
         String utente = receive.getStringExtra("Username");
+        u=utente; //estrapolo il nome utente al di fuori del metodo interno
         String postaelettronica = receive.getStringExtra("Email");
         View header=navigationView.getHeaderView(0);
         TextView nome = (TextView) header.findViewById(R.id.nome_utente);
@@ -89,7 +90,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            Toast.makeText(this,"Home",Toast.LENGTH_SHORT).show();
+            setTitle("Home");
             FragmentManager manager= getSupportFragmentManager();
 
             /**
@@ -101,7 +102,9 @@ public class MainActivity extends AppCompatActivity
             List frags = manager.getFragments();
             if (frags != null) {
                 Fragment ultimofrag = (Fragment) frags.get(frags.size()-1);
-                manager.beginTransaction().remove(ultimofrag).commit();
+                if (ultimofrag != null){
+                    manager.beginTransaction().remove(ultimofrag).commit();
+                }
             }
 
 //            Intent i=new Intent(MainActivity.this,MainActivity.class);
@@ -109,26 +112,28 @@ public class MainActivity extends AppCompatActivity
 
 
         } else if (id == R.id.nav_search) {
-            Toast.makeText(this,"Ricerca Artisti",Toast.LENGTH_SHORT).show();
+            setTitle("Ricerca artisti");
             SearchFragment searchFragment= new SearchFragment();
             FragmentManager manager= getSupportFragmentManager();
             manager.beginTransaction().replace(R.id.relativelayoutforfragment,searchFragment,searchFragment.getTag()).commit();
 
         } else if (id == R.id.nav_concert) {
-            Toast.makeText(this,"I miei concerti",Toast.LENGTH_SHORT).show();
+            setTitle("I miei concerti");
             ConcertListFragment concertListFragment= new ConcertListFragment();
             FragmentManager manager= getSupportFragmentManager();
             manager.beginTransaction().replace(R.id.relativelayoutforfragment,concertListFragment,concertListFragment.getTag()).commit();
-
+            Bundle bundle = new Bundle();
+            bundle.putString("1", u);
+            concertListFragment.setArguments(bundle);
         } else if (id == R.id.nav_about) {
-            Toast.makeText(this,"About us",Toast.LENGTH_SHORT).show();
+            setTitle("About us");
             AboutFragment aboutFragment= new AboutFragment();
             FragmentManager manager= getSupportFragmentManager();
             manager.beginTransaction().replace(R.id.relativelayoutforfragment,aboutFragment,aboutFragment.getTag()).commit();
 
 
         } else if (id == R.id.nav_send) {
-            Toast.makeText(this,"Contattaci",Toast.LENGTH_SHORT).show();
+            setTitle("Contattaci");
             SendFragment sendFragment= new SendFragment();
             FragmentManager manager= getSupportFragmentManager();
             manager.beginTransaction().replace(R.id.relativelayoutforfragment,sendFragment,sendFragment.getTag()).commit();
