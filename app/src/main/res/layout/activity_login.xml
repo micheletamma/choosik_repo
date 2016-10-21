@@ -77,5 +77,21 @@
         android:layout_marginTop="75dp"
         android:src="@drawable/music_orizzont"/>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sei un nuovo utente? Registrati"
+        android:id="@+id/registerbtn"
+        android:layout_below="@+id/loginbtn"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textColor="@android:color/tab_indicator_text"
+        android:theme="@style/AppTheme.Button"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:textStyle="bold"
+        android:onClick="register"
+        />
+
 
 </RelativeLayout>

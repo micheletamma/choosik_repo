@@ -1,7 +1,9 @@
 package sms1516.gruppo28.uniba.it.choosik;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -17,19 +19,19 @@ import java.util.ArrayList;
 /**
  * Created by Michele on 19/10/2016.
  */
-public class QueryTask extends AsyncTask<String,Void,String> {
+public class InsertTask extends AsyncTask<String,Void,String> {
     public Context context;
     public static ArrayList<String> risultato = new ArrayList<String>();
-     String ciao = "";
 
 
-    public QueryTask(Context ctx){
+
+    public InsertTask(Context ctx){
 
         this.context=ctx;
 
     }
 
-    public QueryTask() {
+    public InsertTask() {
     }
 
     public ArrayList<String> getRisultato() {
@@ -40,7 +42,7 @@ public class QueryTask extends AsyncTask<String,Void,String> {
     protected String doInBackground(String... arg0) {
         try{
             String query = (String)arg0[0];
-            String link = "http://gruppotamma.esy.es/query.php?sql=" + query;
+            String link = "http://gruppotamma.esy.es/insert.php?sql=" + query;
 
             URL url = new URL(link);
             HttpClient client = new DefaultHttpClient();
@@ -54,7 +56,7 @@ public class QueryTask extends AsyncTask<String,Void,String> {
             String line="";
             while ((line = in.readLine()) != null) {
                 sb.append(line);
-              risultato.add(line);
+                risultato.add(line);
             }
 
 
@@ -70,7 +72,12 @@ public class QueryTask extends AsyncTask<String,Void,String> {
     }
     @Override
     protected void onPostExecute(String result){
+        //Registro i dati utente nel database
         super.onPostExecute(result);
+        if (risultato.get(0).equals("Query ok")){
+            context.startActivity(new Intent(context, LoginActivity.class));
+            Toast.makeText(context,"Nuovo utente registrato. Effettua il login!",Toast.LENGTH_SHORT).show();
+        }
 
     }
 
