@@ -16,12 +16,52 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     String u = "";
+    String [] concertiDaQuery;
 
+    public class MyQueryTask extends QueryTask{
+        Boolean concertFlag = false;
+        public MyQueryTask(){}
+        /**
+         * Qui posso effettuare la richiesta dei concerti al database
+         */
+        @Override
+        protected void onPostExecute(String result){
+            super.onPostExecute(result);
+
+            if (concertFlag) {
+                Bundle bundle = new Bundle();
+
+                ArrayList<String> temp = getRisultato();
+                String array[] = new String[temp.size() - 1];
+                bundle.putStringArrayList("res",temp);
+                for (int i = 0; i < temp.size() - 1; i++) {
+                    array[i] = temp.get(i);
+                    bundle.putString(array[i],Integer.toString(i));
+
+                }
+                concertiDaQuery = array.clone();
+
+//            ListView listView = (ListView) littleRootView.findViewById(R.id.lista_concerti_view);
+//            ArrayAdapter<String> adapterConcerti = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,concertiDaQuery);
+//            listView.setAdapter(adapterConcerti);
+                ConcertListFragment concertListFragment= new ConcertListFragment();
+                FragmentManager manager= getSupportFragmentManager();
+                manager.beginTransaction().replace(R.id.relativelayoutforfragment,concertListFragment,concertListFragment.getTag()).commit();
+
+                concertListFragment.setArguments(bundle);
+            }
+
+        }
+
+
+
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -117,12 +157,17 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_concert) {
             Toast.makeText(this,"I miei concerti",Toast.LENGTH_SHORT).show();
-            ConcertListFragment concertListFragment= new ConcertListFragment();
-            FragmentManager manager= getSupportFragmentManager();
-            manager.beginTransaction().replace(R.id.relativelayoutforfragment,concertListFragment,concertListFragment.getTag()).commit();
-            Bundle bundle = new Bundle();
-            bundle.putString("1", u);
-            concertListFragment.setArguments(bundle);
+            MyQueryTask concertTask = new MyQueryTask();
+            String q="SELECT NomeEvento FROM Tappa WHERE Tappa.Id=(SELECT IdTappa FROM Utente" +" INNER JOIN Tappa_Canzone ON Utente.Id=Tappa_Canzone.IdUtente WHERE Utente.Id =" +"(SELECT Utente.Id FROM Utente WHERE Username = '"+u+"'));";
+            concertTask.concertFlag = true;
+            concertTask.execute(q);
+//            ArrayList<String>temp =concertTask.getRisultato();
+//            ConcertListFragment concertListFragment= new ConcertListFragment();
+//            FragmentManager manager= getSupportFragmentManager();
+//            manager.beginTransaction().replace(R.id.relativelayoutforfragment,concertListFragment,concertListFragment.getTag()).commit();
+//            Bundle bundle = new Bundle();
+//            bundle.putString("1", u);
+//            concertListFragment.setArguments(bundle);
         } else if (id == R.id.nav_about) {
             Toast.makeText(this,"About us",Toast.LENGTH_SHORT).show();
             AboutFragment aboutFragment= new AboutFragment();

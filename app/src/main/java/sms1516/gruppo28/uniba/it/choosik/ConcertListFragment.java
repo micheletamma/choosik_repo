@@ -21,36 +21,37 @@ public class ConcertListFragment extends Fragment {
     String [] upperConcertiDaQuery;
 
     String[] arrayNomiConcerti = {"aiuto", "aaaaaaaaahhh"};
-    public class ConcertQueryTask extends QueryTask{
-        public ConcertQueryTask(){
-
-        }
-        /**
-         * Qui posso effettuare la richiesta dei concerti al database
-         */
-        @Override
-        protected void onPostExecute(String result){
-
-            ArrayList<String> temp=getRisultato();
-            String concertiDaQuery [] = new String[temp.size()-1];
-            for (int i=0; i < temp.size()-1; i++){
-                concertiDaQuery[i]=temp.get(i);
-            }
-            upperConcertiDaQuery = concertiDaQuery;
-            View littleRootView = upperInflater.inflate(R.layout.fragment_concert,upperContainer,false);
-            ListView listView = (ListView) littleRootView.findViewById(R.id.lista_concerti_view);
-            ArrayAdapter <String> adapterConcerti = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,concertiDaQuery);
-            listView.setAdapter(adapterConcerti);
-
-            super.onPostExecute(result);
-
-        }
-
-
-
-
-
-    }
+//    public class ConcertQueryTask extends QueryTask{
+//        public ConcertQueryTask(){
+//
+//        }
+//        /**
+//         * Qui posso effettuare la richiesta dei concerti al database
+//         */
+//        @Override
+//        protected void onPostExecute(String result){
+//
+//            ArrayList<String> temp=getRisultato();
+//            String concertiDaQuery [] = new String[temp.size()-1];
+//            for (int i=0; i < temp.size()-1; i++){
+//                concertiDaQuery[i]=temp.get(i);
+//            }
+//            upperConcertiDaQuery = concertiDaQuery;
+//            View littleRootView = upperInflater.inflate(R.layout.fragment_concert,upperContainer,false);
+//            ListView listView = (ListView) littleRootView.findViewById(R.id.lista_concerti_view);
+//            ArrayAdapter <String> adapterConcerti = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,concertiDaQuery);
+//            listView.setAdapter(adapterConcerti);
+//
+//            super.onPostExecute(result);
+//
+//        }
+//
+//
+//
+//
+//
+//
+//    }
 
 
 
@@ -80,33 +81,28 @@ public class ConcertListFragment extends Fragment {
         ListView listview = (ListView) rootView.findViewById(R.id.lista_concerti_view);
         upperInflater = inflater;
         upperContainer=container;
-//        ArrayAdapter<String> adapter =
-//                new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, arrayNomiConcerti);
+
         /**
          * effettuo richiesta al database per ottenere dati
          */
-//        QueryTask concertQueryTask = new QueryTask(this.getContext());
-        ConcertQueryTask concertTask = new ConcertQueryTask();
+
+
         Bundle bundle = this.getArguments();
-        String user="";
+
+        ArrayList <String> concerti = bundle.getStringArrayList("res");
+        String [] myConcerti = new String [concerti.size()];
         if (bundle != null) {
-           user = bundle.getString("1", null);
+          for (int i=0; i < concerti.size(); i++){
+              myConcerti[i] = concerti.get(i);
+          }
         }
-        String q="SELECT NomeEvento FROM Tappa WHERE Tappa.Id=(SELECT IdTappa FROM Utente" +" INNER JOIN Tappa_Canzone ON Utente.Id=Tappa_Canzone.IdUtente WHERE Utente.Id =" +"(SELECT Utente.Id FROM Utente WHERE Username = '"+user+"'));";
-        concertTask.execute(q);
-
-//        listview.setAdapter(adapter);
 
 
+        ArrayAdapter<String> adapter =new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, myConcerti);
 
-
+        listview.setAdapter(adapter);
         return rootView;
-        //return super.onCreateView(inflater, container, savedInstanceState);
-
 
 
     }
-
-
-
 }
