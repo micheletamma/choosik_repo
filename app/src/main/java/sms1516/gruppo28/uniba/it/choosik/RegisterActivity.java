@@ -11,7 +11,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 public class RegisterActivity extends AppCompatActivity {
-    String user;
+    String user,email,password;
     public class RegisterQueryTask extends QueryTask{
         public RegisterQueryTask(){
 
@@ -31,7 +31,16 @@ public class RegisterActivity extends AppCompatActivity {
                 Toast.makeText(RegisterActivity.this,"Utente gia' esistente",Toast.LENGTH_SHORT).show();
             } else{
                 //posso inserire i dati nel database
-                Toast.makeText(RegisterActivity.this,"Utente ammesso",Toast.LENGTH_SHORT).show();
+                InsertTask insert = new InsertTask((RegisterActivity.this));
+                //creo la query di inserimento
+                user = user.replace(" ","");
+                password = password.replace(" ","");
+                email = email.replace(" ","");
+                String q="INSERT INTO Utente(Username, Password, Email) VALUES ('" + user + "', '" + password + "', '" + email + "');";
+                q = q.replace(" ", "%20");
+                q=q.replace("'","%27");
+                insert.execute(q);
+
             }
             super.onPostExecute(result);
 
@@ -57,6 +66,10 @@ public class RegisterActivity extends AppCompatActivity {
                 emailField = (EditText)findViewById(R.id.txtEmail);
                 String usr = usernameField.getText().toString();
                 user = usr;
+                String psw= passwordField.getText().toString();
+                password=psw;
+                String mail = emailField.getText().toString();
+                email=mail;
                 RegisterQueryTask checkUsr = new RegisterQueryTask();
                 checkUsr.execute("Select%20Username%20FROM%20Utente%20WHERE%20Username%20=%20%27"+usr+"%27;");
 

@@ -1,5 +1,6 @@
 package sms1516.gruppo28.uniba.it.choosik;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -53,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
     /**
      *
      * @param view
-     * Il metodo è invocato dal button di "acitivity_login"
+     * Il metodo è invocato dal button di "activity_login"
      * Effettua un task del tipo SigninTask con i parametri username e password
      */
     public void login(View view) {
@@ -65,7 +66,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void register (View view){
-        Intent i = new Intent(LoginActivity.this,RegisterActivity.class);
-        startActivity(i);
+//        Intent i = new Intent(LoginActivity.this,RegisterActivity.class);
+//        startActivity(i);
+        Context context = this;
+        context.startActivity(new Intent(context, RegisterActivity.class));
     }
 }
