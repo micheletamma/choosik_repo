@@ -77,6 +77,7 @@ public class InsertTask extends AsyncTask<String,Void,String> {
         if (risultato.get(0).equals("Query ok")){
             context.startActivity(new Intent(context, LoginActivity.class));
             Toast.makeText(context,"Nuovo utente registrato. Effettua il login!",Toast.LENGTH_SHORT).show();
+
         }
 
     }

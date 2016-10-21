@@ -3,27 +3,54 @@ package sms1516.gruppo28.uniba.it.choosik;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.ListFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class ConcertListFragment extends Fragment {
+    LayoutInflater upperInflater;
+    ViewGroup upperContainer;
+    String [] upperConcertiDaQuery;
 
     String[] arrayNomiConcerti = {"aiuto", "aaaaaaaaahhh"};
+    public class ConcertQueryTask extends QueryTask{
+        public ConcertQueryTask(){
 
+        }
+        /**
+         * Qui posso effettuare la richiesta dei concerti al database
+         */
+        @Override
+        protected void onPostExecute(String result){
+
+            ArrayList<String> temp=getRisultato();
+            String concertiDaQuery [] = new String[temp.size()-1];
+            for (int i=0; i < temp.size()-1; i++){
+                concertiDaQuery[i]=temp.get(i);
+            }
+            upperConcertiDaQuery = concertiDaQuery;
+            View littleRootView = upperInflater.inflate(R.layout.fragment_concert,upperContainer,false);
+            ListView listView = (ListView) littleRootView.findViewById(R.id.lista_concerti_view);
+            ArrayAdapter <String> adapterConcerti = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,concertiDaQuery);
+            listView.setAdapter(adapterConcerti);
+
+            super.onPostExecute(result);
+
+        }
+
+
+
+
+
+    }
 
 
 
@@ -51,10 +78,24 @@ public class ConcertListFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_concert, container, false);
         ListView listview = (ListView) rootView.findViewById(R.id.lista_concerti_view);
+        upperInflater = inflater;
+        upperContainer=container;
+//        ArrayAdapter<String> adapter =
+//                new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, arrayNomiConcerti);
+        /**
+         * effettuo richiesta al database per ottenere dati
+         */
+//        QueryTask concertQueryTask = new QueryTask(this.getContext());
+        ConcertQueryTask concertTask = new ConcertQueryTask();
+        Bundle bundle = this.getArguments();
+        String user="";
+        if (bundle != null) {
+           user = bundle.getString("1", null);
+        }
+        String q="SELECT NomeEvento FROM Tappa WHERE Tappa.Id=(SELECT IdTappa FROM Utente" +" INNER JOIN Tappa_Canzone ON Utente.Id=Tappa_Canzone.IdUtente WHERE Utente.Id =" +"(SELECT Utente.Id FROM Utente WHERE Username = '"+user+"'));";
+        concertTask.execute(q);
 
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, arrayNomiConcerti);
-        listview.setAdapter(adapter);
+//        listview.setAdapter(adapter);
 
 
 

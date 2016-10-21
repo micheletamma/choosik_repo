@@ -2,7 +2,6 @@ package sms1516.gruppo28.uniba.it.choosik;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,10 +18,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String result){
-
-            Log.d("risultato:",result);
             ArrayList<String> temp=getRisultato();
-            Log.d("array",temp.get(0));
             //Nella prima posizione dell'array si trova l'username dell'utente
             //Controllo che l'username non sia gia' nel database
 

@@ -16,11 +16,11 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    String u = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setItemIconTintList(null);
         Intent receive = getIntent();
         String utente = receive.getStringExtra("Username");
+        u=utente; //estrapolo il nome utente al di fuori del metodo interno
         String postaelettronica = receive.getStringExtra("Email");
         View header=navigationView.getHeaderView(0);
         TextView nome = (TextView) header.findViewById(R.id.nome_utente);
@@ -119,7 +120,9 @@ public class MainActivity extends AppCompatActivity
             ConcertListFragment concertListFragment= new ConcertListFragment();
             FragmentManager manager= getSupportFragmentManager();
             manager.beginTransaction().replace(R.id.relativelayoutforfragment,concertListFragment,concertListFragment.getTag()).commit();
-
+            Bundle bundle = new Bundle();
+            bundle.putString("1", u);
+            concertListFragment.setArguments(bundle);
         } else if (id == R.id.nav_about) {
             Toast.makeText(this,"About us",Toast.LENGTH_SHORT).show();
             AboutFragment aboutFragment= new AboutFragment();
