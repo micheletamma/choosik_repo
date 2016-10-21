@@ -1,7 +1,9 @@
 package sms1516.gruppo28.uniba.it.choosik;
 
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
@@ -22,7 +24,8 @@ import java.util.List;
  */
 public class ConcertListFragment extends Fragment {
 
-    String[] arrayNomiConcerti = {"aiuto", "aaaaaaaaahhh"};
+    String[] arrayNomiConcerti = {"Ciolplay", "Vasco Rotti", "Le luci della centrale siderurgica","Sfera epotrebbebastare"};
+    String[] arrayNomiCanzoniConcerto = {"La bella lavanderina", "che lava i fazzoletti"};
 
 
 
@@ -33,8 +36,8 @@ public class ConcertListFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
+                             final Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 //        QueryTask concerti = new QueryTask(this.getContext());
 //        concerti.execute("SELECT%20NomeEvento%20FROM%20Tappa;");
@@ -49,22 +52,50 @@ public class ConcertListFragment extends Fragment {
 //        ArrayAdapter<String> adapter= new ArrayAdapter<String>(inflater.getContext(), android.R.layout.simple_list_item_1, arrayNomiConcerti);
 //        setListAdapter(adapter);
 
-        View rootView = inflater.inflate(R.layout.fragment_concert, container, false);
-        ListView listview = (ListView) rootView.findViewById(R.id.lista_concerti_view);
 
-        ArrayAdapter<String> adapter =
+        //Creazione della view da resituire che avrà una listview
+        View rootView = inflater.inflate(R.layout.fragment_concert, container, false);
+        //definizione della listview collegata alla listview del fragment_concert
+        ListView listview = (ListView) rootView.findViewById(R.id.lista_concerti_view);
+        //creazione adapter per array che andrà a mettere gli elementi di quest'ultimo nella listview
+        final ArrayAdapter<String> adapter =
                 new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, arrayNomiConcerti);
+
+        //setta l'adapter per la nostra listview
         listview.setAdapter(adapter);
 
+        //queste righe di codice servono per fare in modo che gli elementi della listview siano cliccabili
+        //in questa maniera creamo successivamente il fragment del dettaglio. (prima non potevo perchè
+        //essendo questa classe un fragment e non un listfragment non esiste il metodo onclickitem
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                final ArrayAdapter<String> adapterCanzoni =
+                        new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, arrayNomiCanzoniConcerto);
+                View dettaglioView = inflater.inflate(R.layout.fragment_detail,container,false);
+                ListView listViewCanzoni = (ListView) dettaglioView.findViewById(R.id.lista_canzoni_view);
+                listViewCanzoni.setAdapter(adapterCanzoni);
+                Intent intent = new Intent(getActivity(),DetailCanzoniConcertoActivity.class);
+                intent.putExtra("arrayNomeCanzoniConcerto", arrayNomiCanzoniConcerto);
+                startActivity(intent);
 
 
+
+
+
+            }
+        });
 
         return rootView;
-        //return super.onCreateView(inflater, container, savedInstanceState);
-
 
 
     }
+
+
+
+
+
 
 
 
