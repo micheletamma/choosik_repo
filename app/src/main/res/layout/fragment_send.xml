@@ -28,7 +28,8 @@
         android:id="@+id/textView4"
         android:layout_above="@+id/textView5"
         android:layout_centerHorizontal="true"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:textAlignment="center" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -38,7 +39,8 @@
         android:id="@+id/textView5"
         android:layout_marginBottom="133dp"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:textAlignment="center" />
 
     <ImageView
         android:layout_width="wrap_content"

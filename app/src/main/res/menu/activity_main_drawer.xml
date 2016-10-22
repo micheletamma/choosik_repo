@@ -21,6 +21,11 @@
             android:icon="@drawable/metal_music_48px"
             android:title="About us" />
 
+
+        <item
+            android:id="@+id/nav_send"
+            android:icon="@drawable/info_48px"
+            android:title="Contattaci" />
         <item
             android:id="@+id/nav_logout"
             android:title="Logout"
@@ -29,13 +34,5 @@
 
     </group>
 
-    <item android:title="Hai bisogno di aiuto?">
-        <menu>
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/info_48px"
-                android:title="Contattaci" />
-        </menu>
-    </item>
 
 </menu>
