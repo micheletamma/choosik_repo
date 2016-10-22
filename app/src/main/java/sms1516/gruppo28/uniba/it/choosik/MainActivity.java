@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity
             super.onPostExecute(result);
 
             if (concertFlag) {
+                concertFlag = false;
                 Bundle bundle = new Bundle();
 
                 ArrayList<String> temp = getRisultato();
@@ -161,13 +162,7 @@ public class MainActivity extends AppCompatActivity
             String q="SELECT NomeEvento FROM Tappa WHERE Tappa.Id=(SELECT IdTappa FROM Utente" +" INNER JOIN Tappa_Canzone ON Utente.Id=Tappa_Canzone.IdUtente WHERE Utente.Id =" +"(SELECT Utente.Id FROM Utente WHERE Username = '"+u+"'));";
             concertTask.concertFlag = true;
             concertTask.execute(q);
-//            ArrayList<String>temp =concertTask.getRisultato();
-//            ConcertListFragment concertListFragment= new ConcertListFragment();
-//            FragmentManager manager= getSupportFragmentManager();
-//            manager.beginTransaction().replace(R.id.relativelayoutforfragment,concertListFragment,concertListFragment.getTag()).commit();
-//            Bundle bundle = new Bundle();
-//            bundle.putString("1", u);
-//            concertListFragment.setArguments(bundle);
+
         } else if (id == R.id.nav_about) {
             Toast.makeText(this,"About us",Toast.LENGTH_SHORT).show();
             AboutFragment aboutFragment= new AboutFragment();
