@@ -15,6 +15,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
 
 /**
  * Created by Michele on 17/10/2016.
@@ -24,6 +25,7 @@ public class SigninTask extends AsyncTask<String,Void,String> {
     String user="";
     String psw="";
     String mail="";
+    boolean artista=false;
     int cont=0;
     public SigninTask (Context ctx){
         this.context = ctx;
@@ -50,10 +52,14 @@ public class SigninTask extends AsyncTask<String,Void,String> {
             StringBuffer sb = new StringBuffer("");
             String line="";
             cont=0; //azzero il contatore per prelevare mail al secondo giro
+            ArrayList<String> risultati = new ArrayList<String>();
             while ((line = in.readLine()) != null) {
                 sb.append(line);
-                if (cont==1){mail=line;}
-                cont+=1;
+                risultati.add(line);
+            }
+            mail = risultati.get(1);
+            if (risultati.get(2).contains("1")){
+                artista = true;
             }
             in.close();
             return sb.toString();
@@ -75,7 +81,8 @@ public class SigninTask extends AsyncTask<String,Void,String> {
              */
             SaveSharedPreference.setUserName(this.context, user);
             SaveSharedPreference.setEmail(this.context, mail);
-            context.startActivity(new Intent(context, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK).putExtra("Username",user).putExtra("Email",mail));
+            SaveSharedPreference.setIsArtist(this.context,artista);
+            context.startActivity(new Intent(context, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK).putExtra("Username",user).putExtra("Email",mail).putExtra("artista",artista));
 
         } else {
             //utente autenticato in modo errato

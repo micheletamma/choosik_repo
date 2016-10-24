@@ -23,6 +23,11 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     String u = "";
     String [] concertiDaQuery;
+    static boolean artista=false;
+    SaveSharedPreference preferenza= new SaveSharedPreference();
+
+
+
 
     public class MyQueryTask extends QueryTask{
         Boolean concertFlag = false;
@@ -89,14 +94,21 @@ public class MainActivity extends AppCompatActivity
         navigationView.setItemIconTintList(null);
         Intent receive = getIntent();
         String utente = receive.getStringExtra("Username");
-        u=utente; //estrapolo il nome utente al di fuori del metodo interno
+        artista = SaveSharedPreference.getIsArtist(this);
+        u = utente; //estrapolo il nome utente al di fuori del metodo interno
         String postaelettronica = receive.getStringExtra("Email");
-        View header=navigationView.getHeaderView(0);
+        View header = navigationView.getHeaderView(0);
         TextView nome = (TextView) header.findViewById(R.id.nome_utente);
         nome.setText(utente);
         TextView email = (TextView) header.findViewById(R.id.email);
         email.setText(postaelettronica);
+        if (!artista) {
+            Menu nav_Menu = navigationView.getMenu();
+            nav_Menu.findItem(R.id.nav_insert).setVisible(false);
+        }
     }
+
+
 
     @Override
     public void onBackPressed() {
@@ -193,6 +205,12 @@ public class MainActivity extends AppCompatActivity
             // dopo aver fatto il logout, vengono rimosse tutte le activity nello stack
             i2login.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(i2login);
+        } else if (id==R.id.nav_insert){
+            //inserimento delle tappe
+            setTitle("Inserisci nuova tappa");
+            InsertFragment insertFragment= new InsertFragment();
+            FragmentManager manager= getSupportFragmentManager();
+            manager.beginTransaction().replace(R.id.relativelayoutforfragment,insertFragment,insertFragment.getTag()).commit();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

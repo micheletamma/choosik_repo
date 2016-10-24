@@ -33,6 +33,13 @@
             />
 
     </group>
+    <group>
+        <item
+            android:id="@+id/nav_insert"
+            android:title="Inserisci Tappa"
+            android:icon="@drawable/dj_48px"
+            />
+    </group>
 
 
 </menu>
