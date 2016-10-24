@@ -3,9 +3,12 @@ package sms1516.gruppo28.uniba.it.choosik;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -77,6 +80,7 @@ public class ConcertListFragment extends Fragment {
         Bundle bundle = this.getArguments();
 
         String [] myConcerti = null;
+        final String[] myConcertiToPass;
         if (bundle != null) {
             ArrayList <String> concerti = bundle.getStringArrayList("res");
             myConcerti = new String [concerti.size()];
@@ -85,7 +89,30 @@ public class ConcertListFragment extends Fragment {
           }
             ArrayAdapter<String> adapter =new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, myConcerti);
             listview.setAdapter(adapter);
+            myConcertiToPass = myConcerti;
+        } else {
+            myConcertiToPass = null;
         }
+
+
+
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Bundle bundle = new Bundle();
+                bundle.putString("concerto", myConcertiToPass[position]);
+                DetailCanzoniConcertoActivity nextFragment = new DetailCanzoniConcertoActivity();
+                nextFragment.setArguments(bundle);
+
+                FragmentManager fm = getFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                ft.replace(R.id.relativelayoutforfragment, nextFragment);
+                ft.commit();
+
+
+            }
+        });
 
 
 
