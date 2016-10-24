@@ -56,6 +56,37 @@ public class ConcertListFragment extends Fragment {
 //
 //    }
 
+    public class DetailClass extends QueryTask {
+        public DetailClass() {
+
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            ArrayList<String> listaCanzoniTappa = getRisultato();
+            final String[] arrayCanzoniTappa = new String[listaCanzoniTappa.size()];
+            for (int i=0; i < listaCanzoniTappa.size(); i++){
+                arrayCanzoniTappa[i] = listaCanzoniTappa.get(i);
+            }
+
+            Bundle bundle = new Bundle();
+
+            DetailCanzoniConcertoActivity nextFragment = new DetailCanzoniConcertoActivity();
+            bundle.putStringArray("canzoniTappa",arrayCanzoniTappa);
+            nextFragment.setArguments(bundle);
+
+            FragmentManager fm = getFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.replace(R.id.relativelayoutforfragment, nextFragment);
+            ft.commit();
+
+
+
+
+            super.onPostExecute(result);
+        }
+    }
+
 
 
     public ConcertListFragment() {
@@ -100,15 +131,19 @@ public class ConcertListFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Bundle bundle = new Bundle();
-                bundle.putString("concerto", myConcertiToPass[position]);
-                DetailCanzoniConcertoActivity nextFragment = new DetailCanzoniConcertoActivity();
-                nextFragment.setArguments(bundle);
+                String tappaSelezionata = myConcertiToPass[position];
+                StringBuilder sb = new StringBuilder(tappaSelezionata);
+                sb.deleteCharAt(0);
+                sb.deleteCharAt(sb.length()-1);
+                tappaSelezionata = sb.toString();
 
-                FragmentManager fm = getFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
-                ft.replace(R.id.relativelayoutforfragment, nextFragment);
-                ft.commit();
+                DetailClass detailClass = new DetailClass();
+                String q = "SELECT Titolo FROM Canzone WHERE Id IN (SELECT IdCanzone FROM Tappa_Canzone WHERE IdTappa = (SELECT Id FROM Tappa WHERE NomeEvento = '"+ tappaSelezionata+"'));";
+                detailClass.execute(q);
+
+
+
+
 
 
             }

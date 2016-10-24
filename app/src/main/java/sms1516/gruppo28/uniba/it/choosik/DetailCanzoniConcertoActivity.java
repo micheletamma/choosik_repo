@@ -32,37 +32,21 @@ import java.util.ArrayList;
 public class DetailCanzoniConcertoActivity extends Fragment {
     Bundle bundle;
 
-    public class DetailClass extends QueryTask {
-        public DetailClass() {
 
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            ArrayList<String> listaCanzoniTappa = risultato;
-            final String[] arrayCanzoniTappa = new String[listaCanzoniTappa.size()];
-            for (int i=0; i < listaCanzoniTappa.size(); i++){
-                arrayCanzoniTappa[i] = listaCanzoniTappa.get(i);
-            }
-
-
-            super.onPostExecute(result);
-        }
-    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 //        return super.onCreateView(inflater, container, savedInstanceState);
         bundle = this.getArguments();
-        String tappaSelezionata = bundle.getString("concerto");
-        tappaSelezionata = tappaSelezionata.replace(" ","");
-        DetailClass detailClass = new DetailClass();
-        String q = "SELECT Titolo FROM Canzone WHERE Id IN (SELECT IdCanzone FROM Tappa_Canzone WHERE IdTappa = (SELECT Id FROM Tappa WHERE NomeEvento = '"+ tappaSelezionata+"'));";
-        detailClass.execute(q);
+        String[] arrayCanzoniPassate = bundle.getStringArray("canzoniTappa");
+
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
         ListView listview = (ListView) rootView.findViewById(R.id.lista_canzoni_view);
+        ArrayAdapter<String> adapter =new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, arrayCanzoniPassate);
+        listview.setAdapter(adapter);
         return rootView;
+
 
     }
 }
