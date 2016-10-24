@@ -3,15 +3,11 @@ package sms1516.gruppo28.uniba.it.choosik;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -24,6 +20,7 @@ public class ConcertListFragment extends Fragment {
     ViewGroup upperContainer;
     String [] upperConcertiDaQuery;
 
+    String[] arrayNomiConcerti = {"aiuto", "aaaaaaaaahhh"};
 //    public class ConcertQueryTask extends QueryTask{
 //        public ConcertQueryTask(){
 //
@@ -66,19 +63,6 @@ public class ConcertListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-//        QueryTask concerti = new QueryTask(this.getContext());
-//        concerti.execute("SELECT%20NomeEvento%20FROM%20Tappa;");
-//        ArrayList<String> arrayListNomiConcerti=concerti.risultato;
-//        String[] arrayNomiConcerti = new String[arrayListNomiConcerti.size()];
-//
-//        for (int i = 0; i<=arrayListNomiConcerti.size()-1;i++) {
-//            arrayNomiConcerti[i] = arrayListNomiConcerti.get(i);
-//            Log.d("Concerto in posizione"+i, arrayNomiConcerti[i]);
-//        }
-//
-//        ArrayAdapter<String> adapter= new ArrayAdapter<String>(inflater.getContext(), android.R.layout.simple_list_item_1, arrayNomiConcerti);
-//        setListAdapter(adapter);
 
         View rootView = inflater.inflate(R.layout.fragment_concert, container, false);
         ListView listview = (ListView) rootView.findViewById(R.id.lista_concerti_view);
@@ -92,39 +76,23 @@ public class ConcertListFragment extends Fragment {
 
         Bundle bundle = this.getArguments();
 
-        ArrayList <String> concerti = bundle.getStringArrayList("res");
-        final String [] myConcerti = new String [concerti.size()];
+        String [] myConcerti = null;
         if (bundle != null) {
+            ArrayList <String> concerti = bundle.getStringArrayList("res");
+            myConcerti = new String [concerti.size()];
           for (int i=0; i < concerti.size(); i++){
               myConcerti[i] = concerti.get(i);
           }
+            ArrayAdapter<String> adapter =new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, myConcerti);
+            listview.setAdapter(adapter);
         }
 
 
-        ArrayAdapter<String> adapter =new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, myConcerti);
-
-        listview.setAdapter(adapter);
-
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                Bundle bundle = new Bundle();
-                bundle.putString("concerto", myConcerti[position]);
-                DetailCanzoniConcertoActivity nextFragment = new DetailCanzoniConcertoActivity();
-                nextFragment.setArguments(bundle);
-
-                FragmentManager fm = getFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
-                ft.replace(R.id.relativelayoutforfragment, nextFragment);
-                ft.commit();
-
-
-            }
-        });
 
         return rootView;
 
 
     }
+
+
 }

@@ -75,7 +75,7 @@ public class SigninTask extends AsyncTask<String,Void,String> {
              */
             SaveSharedPreference.setUserName(this.context, user);
             SaveSharedPreference.setEmail(this.context, mail);
-            context.startActivity(new Intent(context, MainActivity.class).putExtra("Username",user).putExtra("Email",mail));
+            context.startActivity(new Intent(context, MainActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK).putExtra("Username",user).putExtra("Email",mail));
 
         } else {
             //utente autenticato in modo errato

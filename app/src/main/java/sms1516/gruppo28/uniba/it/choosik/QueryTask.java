@@ -19,7 +19,7 @@ import java.util.ArrayList;
  */
 public class QueryTask extends AsyncTask<String,Void,String> {
     public Context context;
-    public static ArrayList<String> risultato = new ArrayList<String>();
+    public  ArrayList<String> risultato = new ArrayList<String>();
 
 
 
@@ -56,13 +56,16 @@ public class QueryTask extends AsyncTask<String,Void,String> {
             String line="";
             while ((line = in.readLine()) != null) {
                 sb.append(line);
-              risultato.add(line);
+                if (!line.contains("\t")){
+                    risultato.add(line);}
             }
 
 
             in.close();
-//            if (risultato.size()!=1){
-//            risultato.remove(risultato.size()-1);}
+            if (risultato.size() == 0) {
+                risultato = null;
+            }
+//            risultato.remove(risultato.size()-1);
             return sb.toString();
         }
 

@@ -13,5 +13,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="usr">Username</string>
     <string name="psw">Password</string>
+    <string name="mail">about@gruppotamma.esy.es</string>
 
 </resources>
