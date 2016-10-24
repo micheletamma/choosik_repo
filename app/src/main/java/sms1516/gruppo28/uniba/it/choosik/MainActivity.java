@@ -35,30 +35,36 @@ public class MainActivity extends AppCompatActivity
             super.onPostExecute(result);
 
             if (concertFlag) {
+                ConcertListFragment concertListFragment = new ConcertListFragment();
+                FragmentManager manager = getSupportFragmentManager();
                 concertFlag = false;
-                Bundle bundle = new Bundle();
+                if (getRisultato() != null) {
+                    Bundle bundle = new Bundle();
 
-                ArrayList<String> temp = getRisultato();
-                String array[] = new String[temp.size() - 1];
-                bundle.putStringArrayList("res",temp);
-                for (int i = 0; i < temp.size() - 1; i++) {
-                    array[i] = temp.get(i);
-                    bundle.putString(array[i],Integer.toString(i));
+                    ArrayList<String> temp = getRisultato();
+                    String array[] = new String[temp.size() - 1];
+                    bundle.putStringArrayList("res", temp);
+                    for (int i = 0; i < temp.size() - 1; i++) {
+                        array[i] = temp.get(i);
+                        bundle.putString(array[i], Integer.toString(i));
 
-                }
-                concertiDaQuery = array.clone();
+                    }
+                    concertiDaQuery = array.clone();
 
 //            ListView listView = (ListView) littleRootView.findViewById(R.id.lista_concerti_view);
 //            ArrayAdapter<String> adapterConcerti = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,concertiDaQuery);
 //            listView.setAdapter(adapterConcerti);
-                ConcertListFragment concertListFragment= new ConcertListFragment();
-                FragmentManager manager= getSupportFragmentManager();
 
-                manager.beginTransaction().replace(R.id.relativelayoutforfragment,concertListFragment,concertListFragment.getTag()).commit();
 
-                concertListFragment.setArguments(bundle);
+
+
+                    concertListFragment.setArguments(bundle);
+                }
+                else {
+
+                }
+                manager.beginTransaction().replace(R.id.relativelayoutforfragment, concertListFragment, concertListFragment.getTag()).commit();
             }
-
         }
 
 
