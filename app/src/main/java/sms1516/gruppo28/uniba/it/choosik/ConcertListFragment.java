@@ -10,7 +10,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 
 /**
@@ -61,7 +60,6 @@ public class ConcertListFragment extends Fragment {
     }
 
 
-    static ArrayAdapter adapter;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -90,30 +88,22 @@ public class ConcertListFragment extends Fragment {
 
 
         Bundle bundle = this.getArguments();
-        // ArrayAdapter<String> adapter;
+
         ArrayList <String> concerti = bundle.getStringArrayList("res");
         String [] myConcerti = new String [concerti.size()];
         if (bundle != null) {
-
           for (int i=0; i < concerti.size(); i++){
               myConcerti[i] = concerti.get(i);
           }
         }
-        ArrayList<String> lstConcerti = new ArrayList<String>(Arrays.asList(myConcerti));
 
 
-        if (adapter!= null) adapter.clear();
-        adapter =new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, lstConcerti);
-        int k = adapter.getCount();
-
+        ArrayAdapter<String> adapter =new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, myConcerti);
         listview.setAdapter(adapter);
-        int kk = adapter.getCount();
-        adapter.notifyDataSetChanged();
-
-
-
         return rootView;
 
 
     }
+
+
 }
