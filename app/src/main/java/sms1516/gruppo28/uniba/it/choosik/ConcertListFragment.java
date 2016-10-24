@@ -3,11 +3,15 @@ package sms1516.gruppo28.uniba.it.choosik;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -20,7 +24,6 @@ public class ConcertListFragment extends Fragment {
     ViewGroup upperContainer;
     String [] upperConcertiDaQuery;
 
-    String[] arrayNomiConcerti = {"aiuto", "aaaaaaaaahhh"};
 //    public class ConcertQueryTask extends QueryTask{
 //        public ConcertQueryTask(){
 //
@@ -90,7 +93,7 @@ public class ConcertListFragment extends Fragment {
         Bundle bundle = this.getArguments();
 
         ArrayList <String> concerti = bundle.getStringArrayList("res");
-        String [] myConcerti = new String [concerti.size()];
+        final String [] myConcerti = new String [concerti.size()];
         if (bundle != null) {
           for (int i=0; i < concerti.size(); i++){
               myConcerti[i] = concerti.get(i);
@@ -101,6 +104,25 @@ public class ConcertListFragment extends Fragment {
         ArrayAdapter<String> adapter =new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, myConcerti);
 
         listview.setAdapter(adapter);
+
+        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Bundle bundle = new Bundle();
+                bundle.putString("concerto", myConcerti[position]);
+                DetailCanzoniConcertoActivity nextFragment = new DetailCanzoniConcertoActivity();
+                nextFragment.setArguments(bundle);
+
+                FragmentManager fm = getFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                ft.replace(R.id.relativelayoutforfragment, nextFragment);
+                ft.commit();
+
+
+            }
+        });
+
         return rootView;
 
 
