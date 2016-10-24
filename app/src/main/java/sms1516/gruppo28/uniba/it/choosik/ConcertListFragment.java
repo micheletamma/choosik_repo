@@ -24,37 +24,37 @@ public class ConcertListFragment extends Fragment {
     String [] upperConcertiDaQuery;
 
     String[] arrayNomiConcerti = {"aiuto", "aaaaaaaaahhh"};
-//    public class ConcertQueryTask extends QueryTask{
-//        public ConcertQueryTask(){
-//
-//        }
-//        /**
-//         * Qui posso effettuare la richiesta dei concerti al database
-//         */
-//        @Override
-//        protected void onPostExecute(String result){
-//
-//            ArrayList<String> temp=getRisultato();
-//            String concertiDaQuery [] = new String[temp.size()-1];
-//            for (int i=0; i < temp.size()-1; i++){
-//                concertiDaQuery[i]=temp.get(i);
-//            }
-//            upperConcertiDaQuery = concertiDaQuery;
-//            View littleRootView = upperInflater.inflate(R.layout.fragment_concert,upperContainer,false);
-//            ListView listView = (ListView) littleRootView.findViewById(R.id.lista_concerti_view);
-//            ArrayAdapter <String> adapterConcerti = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,concertiDaQuery);
-//            listView.setAdapter(adapterConcerti);
-//
-//            super.onPostExecute(result);
-//
-//        }
-//
-//
-//
-//
-//
-//
-//    }
+    public class ConcertQueryTask extends QueryTask{
+        public ConcertQueryTask(){
+
+        }
+        /**
+         * Qui posso effettuare la richiesta dei concerti al database
+         */
+        @Override
+        protected void onPostExecute(String result){
+
+            ArrayList<String> temp=getRisultato();
+            String concertiDaQuery [] = new String[temp.size()-1];
+            for (int i=0; i < temp.size()-1; i++){
+                concertiDaQuery[i]=temp.get(i);
+            }
+            upperConcertiDaQuery = concertiDaQuery;
+            View littleRootView = upperInflater.inflate(R.layout.fragment_concert,upperContainer,false);
+            ListView listView = (ListView) littleRootView.findViewById(R.id.lista_concerti_view);
+            ArrayAdapter <String> adapterConcerti = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,concertiDaQuery);
+            listView.setAdapter(adapterConcerti);
+
+            super.onPostExecute(result);
+
+        }
+
+
+
+
+
+
+    }
 
 
 

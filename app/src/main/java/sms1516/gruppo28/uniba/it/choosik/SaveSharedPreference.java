@@ -12,6 +12,9 @@ import android.preference.PreferenceManager;
 public class SaveSharedPreference {
     static final String PREF_USER_NAME= "username";
     static final String PREF_EMAIL= "email";
+    static final String ISARTIST="isartist";
+
+
 
     static SharedPreferences getSharedPreferences(Context ctx) {
         return PreferenceManager.getDefaultSharedPreferences(ctx);
@@ -27,11 +30,23 @@ public class SaveSharedPreference {
         editor.commit();
     }
 
+    public static void setIsArtist(Context ctx,boolean isartist){
+        SharedPreferences.Editor editor=getSharedPreferences(ctx).edit();
+        editor.putBoolean(ISARTIST,isartist);
+        editor.commit();
+    }
+
+
     public static void setEmail(Context ctx, String email)
     {
         SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
         editor.putString(PREF_EMAIL, email);
         editor.commit();
+    }
+
+
+    public static boolean getIsArtist(Context ctx){
+        return getSharedPreferences(ctx).getBoolean(ISARTIST,false);
     }
 
     public static String getUserName(Context ctx)
