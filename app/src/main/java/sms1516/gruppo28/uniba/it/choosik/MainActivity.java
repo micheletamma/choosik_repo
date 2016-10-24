@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_concert) {
             setTitle("I miei concerti");
             MyQueryTask concertTask = new MyQueryTask();
-            String q="SELECT NomeEvento FROM Tappa WHERE Tappa.Id=(SELECT DISTINCT IdTappa FROM Utente" +" INNER JOIN Tappa_Canzone ON Utente.Id=Tappa_Canzone.IdUtente WHERE Utente.Id =" +"(SELECT Utente.Id FROM Utente WHERE Username = '"+u+"'));";
+            String q="SELECT NomeEvento FROM Tappa WHERE Tappa.Id IN (SELECT DISTINCT IdTappa FROM Utente" +" INNER JOIN Tappa_Canzone ON Utente.Id=Tappa_Canzone.IdUtente WHERE Utente.Id =" +"(SELECT Utente.Id FROM Utente WHERE Username = '"+u+"'));";
             concertTask.concertFlag = true;
             concertTask.execute(q);
 

@@ -19,4 +19,5 @@
     <style name="AppTheme.Button" parent="Widget.AppCompat.Button.Colored">
         <item name="colorButtonNormal">#C0C1C0</item>
     </style>
+
 </resources>
