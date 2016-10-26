@@ -39,9 +39,10 @@
             android:noHistory="true"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".SearchActivity"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/AppTheme"
             android:label="Ricerca"
-            android:noHistory="true"/>
+            android:noHistory="true"
+            />
 
     </application>
 
