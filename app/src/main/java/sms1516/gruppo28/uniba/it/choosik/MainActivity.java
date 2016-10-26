@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
+
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -22,21 +23,22 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     String u = "";
-    String [] concertiDaQuery;
-    static boolean artista=false;
-    SaveSharedPreference preferenza= new SaveSharedPreference();
+    String[] concertiDaQuery;
+    static boolean artista = false;
+    SaveSharedPreference preferenza = new SaveSharedPreference();
 
 
-
-
-    public class MyQueryTask extends QueryTask{
+    public class MyQueryTask extends QueryTask {
         Boolean concertFlag = false;
-        public MyQueryTask(){}
+
+        public MyQueryTask() {
+        }
+
         /**
          * Qui posso effettuare la richiesta dei concerti al database
          */
         @Override
-        protected void onPostExecute(String result){
+        protected void onPostExecute(String result) {
             super.onPostExecute(result);
 
             if (concertFlag) {
@@ -61,11 +63,8 @@ public class MainActivity extends AppCompatActivity
 //            listView.setAdapter(adapterConcerti);
 
 
-
-
                     concertListFragment.setArguments(bundle);
-                }
-                else {
+                } else {
 
                 }
                 manager.beginTransaction().replace(R.id.relativelayoutforfragment, concertListFragment, concertListFragment.getTag()).commit();
@@ -73,8 +72,8 @@ public class MainActivity extends AppCompatActivity
         }
 
 
-
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -107,6 +106,7 @@ public class MainActivity extends AppCompatActivity
             nav_Menu.findItem(R.id.nav_insert).setVisible(false);
         }
     }
+
 
 
 
@@ -151,18 +151,18 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_home) {
             setTitle("Home");
-            FragmentManager manager= getSupportFragmentManager();
+            FragmentManager manager = getSupportFragmentManager();
 
             /**
              * Quando si seleziona home nella navbar, essendo l'unica activity di fatto, controlla
              * la pila dei fragment aperti; questa pila avrà sempre 1 solo fragment aperto, poiche'
              * ogni fragment che si attiva rimpiazza il precedente. Se non vi sono fragment aperti,
              * non fa nulla, perche' vorra' dire che si e' gia' nella home.
-              */
+             */
             List frags = manager.getFragments();
             if (frags != null) {
-                Fragment ultimofrag = (Fragment) frags.get(frags.size()-1);
-                if (ultimofrag != null){
+                Fragment ultimofrag = (Fragment) frags.get(frags.size() - 1);
+                if (ultimofrag != null) {
                     manager.beginTransaction().remove(ultimofrag).commit();
                 }
             }
@@ -173,47 +173,50 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_search) {
             setTitle("Ricerca");
-            SearchFragment searchFragment= new SearchFragment();
-            FragmentManager manager= getSupportFragmentManager();
-            manager.beginTransaction().replace(R.id.relativelayoutforfragment,searchFragment,searchFragment.getTag()).commit();
 
+            Intent anIntent = new Intent(getApplicationContext(), SearchActivity.class);
+
+            startActivity(anIntent);
+//
         } else if (id == R.id.nav_concert) {
             setTitle("I miei concerti");
             MyQueryTask concertTask = new MyQueryTask();
-            String q="SELECT NomeEvento FROM Tappa WHERE Tappa.Id IN (SELECT DISTINCT IdTappa FROM Utente" +" INNER JOIN Tappa_Canzone ON Utente.Id=Tappa_Canzone.IdUtente WHERE Utente.Id =" +"(SELECT Utente.Id FROM Utente WHERE Username = '"+u+"'));";
+            String q = "SELECT NomeEvento FROM Tappa WHERE Tappa.Id IN (SELECT DISTINCT IdTappa FROM Utente" + " INNER JOIN Tappa_Canzone ON Utente.Id=Tappa_Canzone.IdUtente WHERE Utente.Id =" + "(SELECT Utente.Id FROM Utente WHERE Username = '" + u + "'));";
             concertTask.concertFlag = true;
             concertTask.execute(q);
 
         } else if (id == R.id.nav_about) {
             setTitle("About us");
-            AboutFragment aboutFragment= new AboutFragment();
-            FragmentManager manager= getSupportFragmentManager();
-            manager.beginTransaction().replace(R.id.relativelayoutforfragment,aboutFragment,aboutFragment.getTag()).commit();
+            AboutFragment aboutFragment = new AboutFragment();
+            FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction().replace(R.id.relativelayoutforfragment, aboutFragment, aboutFragment.getTag()).commit();
 
 
         } else if (id == R.id.nav_send) {
             setTitle("Contattaci");
-            SendFragment sendFragment= new SendFragment();
-            FragmentManager manager= getSupportFragmentManager();
-            manager.beginTransaction().replace(R.id.relativelayoutforfragment,sendFragment,sendFragment.getTag()).commit();
+            SendFragment sendFragment = new SendFragment();
+            FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction().replace(R.id.relativelayoutforfragment, sendFragment, sendFragment.getTag()).commit();
 
 
         } else if (id == R.id.nav_logout) {
-            Toast.makeText(this,"Sei uscito!",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Sei uscito!", Toast.LENGTH_SHORT).show();
             SaveSharedPreference.clearUserName(this);
             Intent i2login = new Intent(MainActivity.this, LoginActivity.class);
             // dopo aver fatto il logout, vengono rimosse tutte le activity nello stack
             i2login.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(i2login);
-        } else if (id==R.id.nav_insert){
+        } else if (id == R.id.nav_insert) {
             //inserimento delle tappe
             setTitle("Inserisci nuova tappa");
-            InsertFragment insertFragment= new InsertFragment();
-            FragmentManager manager= getSupportFragmentManager();
-            manager.beginTransaction().replace(R.id.relativelayoutforfragment,insertFragment,insertFragment.getTag()).commit();
+            InsertFragment insertFragment = new InsertFragment();
+            FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction().replace(R.id.relativelayoutforfragment, insertFragment, insertFragment.getTag()).commit();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
 }

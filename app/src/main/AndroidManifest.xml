@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="sms1516.gruppo28.uniba.it.choosik">
-    <uses-sdk android:minSdkVersion="16" android:targetSdkVersion="23" />
+
+    <uses-sdk
+        android:minSdkVersion="16"
+        android:targetSdkVersion="23" />
+
     <uses-permission android:name="android.permission.INTERNET" />
-    <permission android:name="android.permission.INTERACT_ACROSS_USERS_FULL" android:protectionLevel="signature"/>
+
+    <permission
+        android:name="android.permission.INTERACT_ACROSS_USERS_FULL"
+        android:protectionLevel="signature" />
+
+
 
     <application
         android:allowBackup="true"
@@ -20,22 +29,20 @@
         </activity>
         <activity
             android:name=".LoginActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-
-            />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".MainActivity"
             android:label="Home"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
-
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".RegisterActivity"
-            android:theme="@style/AppTheme.NoActionBar"
             android:noHistory="true"
-            >
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".SearchActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="Ricerca"
+            android:noHistory="true"/>
+
     </application>
 
 </manifest>
