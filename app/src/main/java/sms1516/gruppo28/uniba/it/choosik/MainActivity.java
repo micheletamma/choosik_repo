@@ -175,7 +175,6 @@ public class MainActivity extends AppCompatActivity
             setTitle("Ricerca");
 
             Intent anIntent = new Intent(getApplicationContext(), SearchActivity.class);
-            anIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
             startActivity(anIntent);
 //

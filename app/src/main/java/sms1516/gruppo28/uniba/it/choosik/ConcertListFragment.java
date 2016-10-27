@@ -23,7 +23,6 @@ public class ConcertListFragment extends Fragment {
     ViewGroup upperContainer;
     String [] upperConcertiDaQuery;
 
-    String[] arrayNomiConcerti = {"aiuto", "aaaaaaaaahhh"};
     public class ConcertQueryTask extends QueryTask{
         public ConcertQueryTask(){
 
@@ -48,10 +47,6 @@ public class ConcertListFragment extends Fragment {
             super.onPostExecute(result);
 
         }
-
-
-
-
 
 
     }
@@ -98,6 +93,9 @@ public class ConcertListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        //creazione di una view collegata a fragment_concert e di una listview collegata a
+        //lista_concerti_view
+
         View rootView = inflater.inflate(R.layout.fragment_concert, container, false);
         ListView listview = (ListView) rootView.findViewById(R.id.lista_concerti_view);
         upperInflater = inflater;
@@ -107,7 +105,7 @@ public class ConcertListFragment extends Fragment {
          * effettuo richiesta al database per ottenere dati
          */
 
-
+        //bundle passato da MainActivity per avere i dati dal database
         Bundle bundle = this.getArguments();
 
         String [] myConcerti = null;
@@ -118,7 +116,9 @@ public class ConcertListFragment extends Fragment {
           for (int i=0; i < concerti.size(); i++){
               myConcerti[i] = concerti.get(i);
           }
+            //creazione arrayadapter per trasformare i dati dell'array sottoforma di lista
             ArrayAdapter<String> adapter =new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, myConcerti);
+            //la listview riceve i dati sotto forma di lista
             listview.setAdapter(adapter);
             myConcertiToPass = myConcerti;
         } else {
@@ -126,7 +126,11 @@ public class ConcertListFragment extends Fragment {
         }
 
 
-
+        /**
+         * Settaggio listener per click.
+         * Nel momento in cui una tappa viene selezionata viene aperta la lista delle canzoni
+         * presenti in quella tappa.
+         */
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -142,15 +146,11 @@ public class ConcertListFragment extends Fragment {
                 detailClass.execute(q);
 
 
-
-
-
-
             }
         });
 
 
-
+        //la view con tutti i dati
         return rootView;
 
 
