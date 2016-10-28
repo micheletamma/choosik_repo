@@ -1,75 +1,115 @@
 package sms1516.gruppo28.uniba.it.choosik;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
-
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     String u = "";
-    String[] concertiDaQuery;
+    JSONObject artistResult;
+
     static boolean artista = false;
     SaveSharedPreference preferenza = new SaveSharedPreference();
 
+    private class JsonTask extends AsyncTask<String,Void,String> {
 
-    public class MyQueryTask extends QueryTask {
-        Boolean concertFlag = false;
 
-        public MyQueryTask() {
-        }
-
-        /**
-         * Qui posso effettuare la richiesta dei concerti al database
-         */
         @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
+        protected String doInBackground(String... strings) {
+            HttpURLConnection connection = null;
+            BufferedReader reader = null;
+            try {
+                URL url = new URL(strings[0]);
+                connection = (HttpURLConnection) url.openConnection();
+                connection.connect();
+                InputStream stream = connection.getInputStream();
 
-            if (concertFlag) {
-                ConcertListFragment concertListFragment = new ConcertListFragment();
-                FragmentManager manager = getSupportFragmentManager();
-                concertFlag = false;
-                if (getRisultato() != null) {
-                    Bundle bundle = new Bundle();
+                reader = new BufferedReader(new InputStreamReader(stream));
 
-                    ArrayList<String> temp = getRisultato();
-                    String array[] = new String[temp.size() - 1];
-                    bundle.putStringArrayList("res", temp);
-                    for (int i = 0; i < temp.size() - 1; i++) {
-                        array[i] = temp.get(i);
-                        bundle.putString(array[i], Integer.toString(i));
+                StringBuffer buffer = new StringBuffer();
+                String line = "";
 
-                    }
-                    concertiDaQuery = array.clone();
-
-//            ListView listView = (ListView) littleRootView.findViewById(R.id.lista_concerti_view);
-//            ArrayAdapter<String> adapterConcerti = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,concertiDaQuery);
-//            listView.setAdapter(adapterConcerti);
-
-
-                    concertListFragment.setArguments(bundle);
-                } else {
+                while ((line = reader.readLine()) != null) {
+                    buffer.append(line+"\n");
+                    Log.d("Response: ", "> " + line);   //here u ll get whole response...... :-)
 
                 }
-                manager.beginTransaction().replace(R.id.relativelayoutforfragment, concertListFragment, concertListFragment.getTag()).commit();
+
+                artistResult = new JSONObject(buffer.toString());
+                return buffer.toString();
+
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } finally {
+                if (connection != null) {
+                    connection.disconnect();
+                }
+                try {
+                    if (reader != null) {
+                        reader.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
+            return null;
         }
+
+        @Override
+        protected void onPostExecute(String s) {
+
+            try {
+                JSONArray arrayArtisti = artistResult.getJSONArray("objects");
+                String nomiArtisti []  = new String [arrayArtisti.length()];
+                for (int i=0; i <= arrayArtisti.length()-1;i++){
+                    JSONObject temp = arrayArtisti.getJSONObject(i);
+                    nomiArtisti[i] = temp.getString("nome");
+
+                }
+                Intent anIntent = new Intent(getApplicationContext(), SearchActivity.class);
+                anIntent.putExtra("nomiArtisti",nomiArtisti);
+                startActivity(anIntent);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+            super.onPostExecute(s);
+        }
+
 
 
     }
@@ -173,17 +213,14 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_search) {
             setTitle("Ricerca");
+            JsonTask artistTask = new JsonTask();
+            artistTask.execute("http://exrezzo.pythonanywhere.com/api/utente/?format=json&artista=true");
 
-            Intent anIntent = new Intent(getApplicationContext(), SearchActivity.class);
 
-            startActivity(anIntent);
 //
         } else if (id == R.id.nav_concert) {
             setTitle("I miei concerti");
-            MyQueryTask concertTask = new MyQueryTask();
-            String q = "SELECT NomeEvento FROM Tappa WHERE Tappa.Id IN (SELECT DISTINCT IdTappa FROM Utente" + " INNER JOIN Tappa_Canzone ON Utente.Id=Tappa_Canzone.IdUtente WHERE Utente.Id =" + "(SELECT Utente.Id FROM Utente WHERE Username = '" + u + "'));";
-            concertTask.concertFlag = true;
-            concertTask.execute(q);
+
 
         } else if (id == R.id.nav_about) {
             setTitle("About us");

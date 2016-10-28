@@ -3,14 +3,16 @@ package sms1516.gruppo28.uniba.it.choosik;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -33,16 +35,16 @@ public class ConcertListFragment extends Fragment {
         @Override
         protected void onPostExecute(String result){
 
-            ArrayList<String> temp=getRisultato();
-            String concertiDaQuery [] = new String[temp.size()-1];
-            for (int i=0; i < temp.size()-1; i++){
-                concertiDaQuery[i]=temp.get(i);
-            }
-            upperConcertiDaQuery = concertiDaQuery;
+//           ArrayList<String> temp=getRisultato();
+//            String concertiDaQuery [] = new String[temp.size()-1];
+//            for (int i=0; i < temp.size()-1; i++){
+//                concertiDaQuery[i]=temp.get(i);
+//            }
+//            upperConcertiDaQuery = concertiDaQuery;
             View littleRootView = upperInflater.inflate(R.layout.fragment_concert,upperContainer,false);
             ListView listView = (ListView) littleRootView.findViewById(R.id.lista_concerti_view);
-            ArrayAdapter <String> adapterConcerti = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,concertiDaQuery);
-            listView.setAdapter(adapterConcerti);
+//            ArrayAdapter <String> adapterConcerti = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,concertiDaQuery);
+//            listView.setAdapter(adapterConcerti);
 
             super.onPostExecute(result);
 
@@ -58,28 +60,28 @@ public class ConcertListFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String result) {
-            ArrayList<String> listaCanzoniTappa = getRisultato();
-            final String[] arrayCanzoniTappa = new String[listaCanzoniTappa.size()];
-            for (int i=0; i < listaCanzoniTappa.size(); i++){
-                arrayCanzoniTappa[i] = listaCanzoniTappa.get(i);
+//            ArrayList<String> listaCanzoniTappa = getRisultato();
+//            final String[] arrayCanzoniTappa = new String[listaCanzoniTappa.size()];
+//            for (int i=0; i < listaCanzoniTappa.size(); i++){
+//                arrayCanzoniTappa[i] = listaCanzoniTappa.get(i);
             }
 
             Bundle bundle = new Bundle();
 
-            DetailCanzoniConcertoActivity nextFragment = new DetailCanzoniConcertoActivity();
-            bundle.putStringArray("canzoniTappa",arrayCanzoniTappa);
-            nextFragment.setArguments(bundle);
-
-            FragmentManager fm = getFragmentManager();
-            FragmentTransaction ft = fm.beginTransaction();
-            ft.replace(R.id.relativelayoutforfragment, nextFragment);
-            ft.commit();
-
-
-
-
-            super.onPostExecute(result);
-        }
+//            DetailCanzoniConcertoActivity nextFragment = new DetailCanzoniConcertoActivity();
+//            bundle.putStringArray("canzoniTappa",arrayCanzoniTappa);
+//            nextFragment.setArguments(bundle);
+//
+//            FragmentManager fm = getFragmentManager();
+//            FragmentTransaction ft = fm.beginTransaction();
+//            ft.replace(R.id.relativelayoutforfragment, nextFragment);
+//            ft.commit();
+//
+//
+//
+//
+//            super.onPostExecute(result);
+//        }
     }
 
 
@@ -107,6 +109,32 @@ public class ConcertListFragment extends Fragment {
 
         //bundle passato da MainActivity per avere i dati dal database
         Bundle bundle = this.getArguments();
+        String receive = bundle.getString("JsonTappaString");
+        JSONArray listaTappe;
+        try {
+             listaTappe = new JSONArray(receive);
+            //listaTappe e' un array di oggetti Json
+            String nomeTappe []  = new String [listaTappe.length()];
+            for (int i=0; i <= listaTappe.length()-1;i++){
+                JSONObject temp = listaTappe.getJSONObject(i);
+                nomeTappe[i] = temp.getString("nome") +
+                        " a " + temp.getString("citta")
+                        + " il " +
+                temp.getString("data");
+                //creazione arrayadapter per trasformare i dati dell'array sottoforma di lista
+                ArrayAdapter<String> adapter =new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, nomeTappe);
+                //la listview riceve i dati sotto forma di lista
+                listview.setAdapter(adapter);
+
+            }
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+
 
         String [] myConcerti = null;
         final String[] myConcertiToPass;

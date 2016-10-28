@@ -37,13 +37,10 @@ public class LoginActivity extends AppCompatActivity {
         protected String doInBackground(String... strings) {
             HttpURLConnection connection = null;
             BufferedReader reader = null;
-
             try {
                 URL url = new URL(strings[0]);
                 connection = (HttpURLConnection) url.openConnection();
                 connection.connect();
-
-
                 InputStream stream = connection.getInputStream();
 
                 reader = new BufferedReader(new InputStreamReader(stream));

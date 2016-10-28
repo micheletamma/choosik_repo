@@ -1,51 +1,119 @@
 package sms1516.gruppo28.uniba.it.choosik;
 
+import android.content.Context;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
-    String user,email,password;
-    public class RegisterQueryTask extends QueryTask{
-        public RegisterQueryTask(){
+    String user, email, password;
+    private EditText usernameField, passwordField, emailField;
+    Map params = new HashMap();
+
+    public class SimpleTask extends AsyncTask<String, Void, String> {
+        public Context context;
+        JSONObject risultato;
+
+
+        public JSONObject getRisultato() {
+            return risultato;
+        }
+
+        public SimpleTask(Context ctx) {
+
+            this.context = ctx;
 
         }
+
+        public SimpleTask() {
+        }
+
 
         @Override
-        protected void onPostExecute(String result){
-            ArrayList<String> temp=getRisultato();
-            //Nella prima posizione dell'array si trova l'username dell'utente
-            //Controllo che l'username non sia gia' nel database
+        protected String doInBackground(String... strings) {
+            //instantiates httpclient to make request
+            DefaultHttpClient httpclient = new DefaultHttpClient();
 
-            if (temp!=null){
-                //l'utente deve inserire un altro nome utente
-                Toast.makeText(RegisterActivity.this,"Utente gia' esistente",Toast.LENGTH_SHORT).show();
-            } else{
-                //posso inserire i dati nel database
-                InsertTask insert = new InsertTask((RegisterActivity.this));
-                //creo la query di inserimento
-                user = user.replace(" ","");
-                password = password.replace(" ","");
-                email = email.replace(" ","");
-                String q="INSERT INTO Utente(Username, Password, Email) VALUES ('" + user + "', '" + password + "', '" + email + "');";
-                q = q.replace(" ", "%20");
-                q=q.replace("'","%27");
-                insert.execute(q);
+            //url with the post data
+            HttpPost httpost = new HttpPost(strings[0]);
+
+            //convert parameters into JSON object
+            JSONObject holder = new JSONObject(params);
+
+            //passes the results to a string builder/entity
+            StringEntity se = null;
+            try {
+                se = new StringEntity(holder.toString());
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+
+            //sets the post request as the resulting string
+            httpost.setEntity(se);
+            //sets a request header so the page receving the request
+            //will know what to do with it
+            httpost.setHeader("Accept", "application/json");
+            httpost.setHeader("Content-type", "application/json");
+            String message = "ok";
+            //Handles what is returned from the page
+            ResponseHandler responseHandler = new BasicResponseHandler();
+            try {
+             httpclient.execute(httpost, responseHandler);
+            } catch (ClientProtocolException e){
+                Log.e ("errore", e.getMessage());
+                message = "permesso negato";
+            } catch (IOException e) {
+                e.printStackTrace();
+                Log.e ("errore",e.getMessage());
+
 
             }
+
+            return message;
+        }
+
+
+        @Override
+        protected void onPostExecute(String result) {
             super.onPostExecute(result);
+            if (result.equals("ok")) {
+                Toast.makeText(getApplicationContext(), "Registrazione completata, effettua il login!", Toast.LENGTH_SHORT).show();
+                getApplicationContext()
+                        .startActivity(new Intent(getApplicationContext(), LoginActivity.class)
+                                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
+
+
+            } else {
+                Toast.makeText(getApplicationContext(), "Username gia' esistente!", Toast.LENGTH_SHORT).show();
+
+            }
 
         }
+
 
     }
 
-    private EditText usernameField,passwordField, emailField;
+
 
 
 
@@ -60,45 +128,39 @@ public class RegisterActivity extends AppCompatActivity {
         assert button != null;
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                usernameField = (EditText)findViewById(R.id.txtUsername);
-                passwordField = (EditText)findViewById(R.id.txtPassword);
-                emailField = (EditText)findViewById(R.id.txtEmail);
-                TextView avvisoField = (TextView)findViewById(R.id.txtAvviso);
+                usernameField = (EditText) findViewById(R.id.txtUsername);
+                passwordField = (EditText) findViewById(R.id.txtPassword);
+                emailField = (EditText) findViewById(R.id.txtEmail);
+                TextView avvisoField = (TextView) findViewById(R.id.txtAvviso);
                 avvisoField.setText("");
                 String usr = usernameField.getText().toString();
                 user = usr;
-                String psw= passwordField.getText().toString();
-                password=psw;
+                String psw = passwordField.getText().toString();
+                password = psw;
                 String mail = emailField.getText().toString();
-                email=mail;
-                RegisterQueryTask checkUsr = new RegisterQueryTask();
-                if (mail.contains("@") & mail.contains(".")){
-                checkUsr.execute("Select%20Username%20FROM%20Utente%20WHERE%20Username%20=%20%27"+usr+"%27;");}
-                else {
-                        avvisoField.setText("La tua mail non è valida");
+                email = mail;
+                Map registrazione = new HashMap();
+                registrazione.put("username", usr);
+                registrazione.put("password", psw);
+                registrazione.put("email",mail);
+                params = registrazione;
+                if (mail.contains("@") & mail.contains(".")) {
+                    try {
+                        SimpleTask task = new SimpleTask();
+                        task.execute("http://exrezzo.pythonanywhere.com/api/utente/");
+
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                } else {
+                    avvisoField.setText("La tua mail non è valida");
 
                 }
-
-
-//                String x = checkUsr.ciao;
-//                AsyncTask.Status status = checkUsr.getStatus();
-//                String test = status.name();
-//                while (checkUsr.getStatus() != AsyncTask.Status.FINISHED);
-
-
-
-//                ArrayList<String> res = checkUsr.risultato;
-//
-//                if (res.get(0).equals(usr)){
-//                    //messaggio d'errore
-//
-//                }
-//                else {
-//                    //registrazione ok
-//                }
             }
-        });
 
+        });
     }
 
 

@@ -1,7 +1,6 @@
 package sms1516.gruppo28.uniba.it.choosik;
 
 import java.util.HashMap;
-import java.util.Map;
 
 
 /**
@@ -10,7 +9,12 @@ import java.util.Map;
 
 public class Dizionario {
     static HashMap dizProv;
+    static String [] nomi;
 
+
+    public static String[] getNomi() {
+        return nomi;
+    }
 
     public static HashMap dizionarioProvicia() {
         String[] nomiProvince = {
@@ -22,7 +26,7 @@ public class Dizionario {
                 "Gorizia", "Grosseto", "Imperia", "Isernia", "La Spezia", "Latina", "Lecce", "Lecco",
                 "Livorno", "Lodi", "Lucca", "Macerata", "Mantova", "Massa-Carrara", "Matera", "Messina",
                 "Milano", "Modena", "Napoli", "Novara", "Nuoro", "Oristano", "Padova", "Palermo", "Parma",
-                "Pavia", "Perugia", "Pesa ro e Urbino", "Pescara", "Piacenza", "Pisa", "Pistoia",
+                "Pavia", "Perugia", "Pesaro e Urbino", "Pescara", "Piacenza", "Pisa", "Pistoia",
                 "Pordenone", "Potenza", "Prato", "Ragusa", "Ravenna", "Reggio Calabria", "Reggio Emilia",
                 "Rieti", "Rimini", "Roma", "Rovigo", "Salerno", "Sassari", "Savona", "Siena", "Siracusa",
                 "Sondrio", "Taranto", "Teramo", "Terni", "Torino", "Trapani", "Trento", "Treviso",
@@ -45,6 +49,7 @@ public class Dizionario {
         for (int i = 0; i < nomiProvince.length; i++) {
             dizProv.put(nomiProvince[i], siglaprovincie[i]);
         }
+        nomi=nomiProvince;
         return dizProv;
 
     }
