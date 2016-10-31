@@ -50,8 +50,8 @@ public class MainActivity extends AppCompatActivity
         protected String doInBackground(String... strings) {
             HttpURLConnection connection = null;
             BufferedReader reader = null;
-            // se si va in ricerca dal menu si fa questo tipo di richiesta
-            if (searchActivityFlag == true) {
+
+
                 try {
                     URL url = new URL(strings[0]);
                     connection = (HttpURLConnection) url.openConnection();
@@ -91,10 +91,7 @@ public class MainActivity extends AppCompatActivity
                         e.printStackTrace();
                     }
                 }
-                //se si va in i miei concerti si fa questo tipo di richiesta
-            } else if (myConcertsFragmentFlag == true) {
 
-            }
 
 
             return null;
@@ -106,6 +103,8 @@ public class MainActivity extends AppCompatActivity
             //se dobbiamo andare nella ricerca facciamo questo
 
             if (searchActivityFlag == true) {
+
+                searchActivityFlag = false;
 
 
                 try {
@@ -244,9 +243,12 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_concert) {
             setTitle("I miei concerti");
             myConcertsFragmentFlag = true;
-            MyConcertsFragment myConcertsFragment = new MyConcertsFragment();
-            FragmentManager manager = getSupportFragmentManager();
-            manager.beginTransaction().replace(R.id.relativelayoutforfragment, myConcertsFragment, myConcertsFragment.getTag()).commit();
+            JsonTask concertiVotatiTask = new JsonTask();
+            //inserire url per prendere i concerti con le canzoni che l'utente ha votato
+            concertiVotatiTask.execute();
+//            MyConcertsFragment myConcertsFragment = new MyConcertsFragment();
+//            FragmentManager manager = getSupportFragmentManager();
+//            manager.beginTransaction().replace(R.id.relativelayoutforfragment, myConcertsFragment, myConcertsFragment.getTag()).commit();
 
 
         } else if (id == R.id.nav_about) {
