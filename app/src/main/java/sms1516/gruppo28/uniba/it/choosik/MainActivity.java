@@ -33,6 +33,10 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    //flag che servono per doInBackground e onPost execute
+    boolean searchActivityFlag = false;
+    boolean myConcertsFragmentFlag = false;
+
     String u = "";
     JSONObject artistResult;
 
@@ -46,64 +50,82 @@ public class MainActivity extends AppCompatActivity
         protected String doInBackground(String... strings) {
             HttpURLConnection connection = null;
             BufferedReader reader = null;
-            try {
-                URL url = new URL(strings[0]);
-                connection = (HttpURLConnection) url.openConnection();
-                connection.connect();
-                InputStream stream = connection.getInputStream();
-
-                reader = new BufferedReader(new InputStreamReader(stream));
-
-                StringBuffer buffer = new StringBuffer();
-                String line = "";
-
-                while ((line = reader.readLine()) != null) {
-                    buffer.append(line+"\n");
-                    Log.d("Response: ", "> " + line);   //here u ll get whole response...... :-)
-
-                }
-
-                artistResult = new JSONObject(buffer.toString());
-                return buffer.toString();
-
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            } finally {
-                if (connection != null) {
-                    connection.disconnect();
-                }
+            // se si va in ricerca dal menu si fa questo tipo di richiesta
+            if (searchActivityFlag == true) {
                 try {
-                    if (reader != null) {
-                        reader.close();
+                    URL url = new URL(strings[0]);
+                    connection = (HttpURLConnection) url.openConnection();
+                    connection.connect();
+                    InputStream stream = connection.getInputStream();
+
+                    reader = new BufferedReader(new InputStreamReader(stream));
+
+                    StringBuffer buffer = new StringBuffer();
+                    String line = "";
+
+                    while ((line = reader.readLine()) != null) {
+                        buffer.append(line + "\n");
+                        Log.d("Response: ", "> " + line);   //here u ll get whole response...... :-)
+
                     }
+
+                    artistResult = new JSONObject(buffer.toString());
+                    return buffer.toString();
+
+
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } finally {
+                    if (connection != null) {
+                        connection.disconnect();
+                    }
+                    try {
+                        if (reader != null) {
+                            reader.close();
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
+                //se si va in i miei concerti si fa questo tipo di richiesta
+            } else if (myConcertsFragmentFlag == true) {
+
             }
+
+
             return null;
         }
 
         @Override
         protected void onPostExecute(String s) {
 
-            try {
-                JSONArray arrayArtisti = artistResult.getJSONArray("objects");
-                String nomiArtisti []  = new String [arrayArtisti.length()];
-                for (int i=0; i <= arrayArtisti.length()-1;i++){
-                    JSONObject temp = arrayArtisti.getJSONObject(i);
-                    nomiArtisti[i] = temp.getString("nome");
+            //se dobbiamo andare nella ricerca facciamo questo
 
+            if (searchActivityFlag == true) {
+
+
+                try {
+                    JSONArray arrayArtisti = artistResult.getJSONArray("objects");
+                    String nomiArtisti[] = new String[arrayArtisti.length()];
+                    for (int i = 0; i <= arrayArtisti.length() - 1; i++) {
+                        JSONObject temp = arrayArtisti.getJSONObject(i);
+                        nomiArtisti[i] = temp.getString("nome");
+
+                    }
+                    Intent anIntent = new Intent(getApplicationContext(), SearchActivity.class);
+                    anIntent.putExtra("nomiArtisti", nomiArtisti);
+                    startActivity(anIntent);
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-                Intent anIntent = new Intent(getApplicationContext(), SearchActivity.class);
-                anIntent.putExtra("nomiArtisti",nomiArtisti);
-                startActivity(anIntent);
-            } catch (JSONException e) {
-                e.printStackTrace();
+                //se andiamo in i miei concerti si fa questo
+            } else if (myConcertsFragmentFlag == true) {
+
+
             }
 
 
@@ -213,6 +235,7 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_search) {
             setTitle("Ricerca");
+            searchActivityFlag = true;
             JsonTask artistTask = new JsonTask();
             artistTask.execute("http://exrezzo.pythonanywhere.com/api/utente/?format=json&artista=true");
 
@@ -220,6 +243,10 @@ public class MainActivity extends AppCompatActivity
 //
         } else if (id == R.id.nav_concert) {
             setTitle("I miei concerti");
+            myConcertsFragmentFlag = true;
+            MyConcertsFragment myConcertsFragment = new MyConcertsFragment();
+            FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction().replace(R.id.relativelayoutforfragment, myConcertsFragment, myConcertsFragment.getTag()).commit();
 
 
         } else if (id == R.id.nav_about) {
