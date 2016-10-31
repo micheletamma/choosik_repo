@@ -103,15 +103,16 @@ public class SearchActivity extends AppCompatActivity
             try {
                 JSONArray arrayTappe = concertResult.getJSONArray("objects");
                 String tappe []  = new String [arrayTappe.length()];
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                ConcertListFragment concertListFragment = new ConcertListFragment();
-                fragmentManager.beginTransaction().add(R.id.lista_concerti_view,concertListFragment,concertListFragment.getTag())
-                        .commit();
                 Bundle JsonTappa = new Bundle();
                 JsonTappa.putString("JsonTappaString",arrayTappe.toString());
-//                Intent anIntent = new Intent(getApplicationContext(), SearchActivity.class);
-//                anIntent.putExtra("nomiArtisti",nomiArtisti);
-//                startActivity(anIntent);
+                ConcertListFragment concertListFragment = new ConcertListFragment();
+                concertListFragment.setArguments(JsonTappa);
+                setContentView(R.layout.search_container);
+                FragmentManager manager = getSupportFragmentManager();
+                manager.beginTransaction().add(R.id.search_container, concertListFragment).commit();
+
+
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -206,14 +207,15 @@ public class SearchActivity extends AppCompatActivity
         String luogo = luogoAutoComplete.getText().toString();
         TextView dateDisplay = (TextView) findViewById(R.id.dateDisplay);
         String data = dateDisplay.getText().toString();
+//        artista = artista.replace(" ", "");
 
         if (isBtnDatePressed){
             //devo includere la data nella ricerca
-            req = "http://exrezzo.pythonanywhere.com/api/canzoneintappa/?format=json&tappa__citta=" + luogo
-            + "&tappa__data=" + data + "&artista__nome=" + artista;
+            req = "http://exrezzo.pythonanywhere.com/api/tappa/?format=json&citta=" + luogo
+            + "&data=" + data + "&tour__artista__nome=" + artista;
         } else {
-            req = "http://exrezzo.pythonanywhere.com/api/canzoneintappa/?format=json&tappa__citta=" + luogo
-                    + "&artista__nome=" + artista;
+            req = "http://exrezzo.pythonanywhere.com/api/tappa/?format=json&citta=" + luogo
+                    + "&tour__artista__nome=" + artista;
         }
         //posso eseguire il task di ricerca
         JsonTask searchTask = new JsonTask();

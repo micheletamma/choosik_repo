@@ -14,8 +14,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,69 +21,6 @@ import java.util.ArrayList;
 public class ConcertListFragment extends Fragment {
     LayoutInflater upperInflater;
     ViewGroup upperContainer;
-    String [] upperConcertiDaQuery;
-
-    public class ConcertQueryTask extends QueryTask{
-        public ConcertQueryTask(){
-
-        }
-        /**
-         * Qui posso effettuare la richiesta dei concerti al database
-         */
-        @Override
-        protected void onPostExecute(String result){
-
-//           ArrayList<String> temp=getRisultato();
-//            String concertiDaQuery [] = new String[temp.size()-1];
-//            for (int i=0; i < temp.size()-1; i++){
-//                concertiDaQuery[i]=temp.get(i);
-//            }
-//            upperConcertiDaQuery = concertiDaQuery;
-            View littleRootView = upperInflater.inflate(R.layout.fragment_concert,upperContainer,false);
-            ListView listView = (ListView) littleRootView.findViewById(R.id.lista_concerti_view);
-//            ArrayAdapter <String> adapterConcerti = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,concertiDaQuery);
-//            listView.setAdapter(adapterConcerti);
-
-            super.onPostExecute(result);
-
-        }
-
-
-    }
-
-    public class DetailClass extends QueryTask {
-        public DetailClass() {
-
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-//            ArrayList<String> listaCanzoniTappa = getRisultato();
-//            final String[] arrayCanzoniTappa = new String[listaCanzoniTappa.size()];
-//            for (int i=0; i < listaCanzoniTappa.size(); i++){
-//                arrayCanzoniTappa[i] = listaCanzoniTappa.get(i);
-            }
-
-            Bundle bundle = new Bundle();
-
-//            DetailCanzoniConcertoActivity nextFragment = new DetailCanzoniConcertoActivity();
-//            bundle.putStringArray("canzoniTappa",arrayCanzoniTappa);
-//            nextFragment.setArguments(bundle);
-//
-//            FragmentManager fm = getFragmentManager();
-//            FragmentTransaction ft = fm.beginTransaction();
-//            ft.replace(R.id.relativelayoutforfragment, nextFragment);
-//            ft.commit();
-//
-//
-//
-//
-//            super.onPostExecute(result);
-//        }
-    }
-
-
-
     public ConcertListFragment() {
         // Required empty public constructor
     }
@@ -114,10 +49,11 @@ public class ConcertListFragment extends Fragment {
         try {
              listaTappe = new JSONArray(receive);
             //listaTappe e' un array di oggetti Json
-            String nomeTappe []  = new String [listaTappe.length()];
+            final String nomeTappe []  = new String [listaTappe.length()];
             for (int i=0; i <= listaTappe.length()-1;i++){
                 JSONObject temp = listaTappe.getJSONObject(i);
-                nomeTappe[i] = temp.getString("nome") +
+
+                nomeTappe[i] = temp.getJSONObject("tour").getString("nomeTour") +
                         " a " + temp.getString("citta")
                         + " il " +
                 temp.getString("data");
@@ -125,7 +61,25 @@ public class ConcertListFragment extends Fragment {
                 ArrayAdapter<String> adapter =new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, nomeTappe);
                 //la listview riceve i dati sotto forma di lista
                 listview.setAdapter(adapter);
+                /**
+                 * Settaggio listener per click.
+                 * Nel momento in cui una tappa viene selezionata viene aperta la lista delle canzoni
+                 * presenti in quella tappa.
+                 */
+                listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+                        String tappaSelezionata = nomeTappe[position];
+                        StringBuilder sb = new StringBuilder(tappaSelezionata);
+                        sb.deleteCharAt(0);
+                        sb.deleteCharAt(sb.length()-1);
+                        tappaSelezionata = sb.toString();
+                        //posso cercare le canzoni della tappa selezionata
+
+
+                    }
+                });
             }
 
 
@@ -135,53 +89,8 @@ public class ConcertListFragment extends Fragment {
 
 
 
-
-        String [] myConcerti = null;
-        final String[] myConcertiToPass;
-        if (bundle != null) {
-            ArrayList <String> concerti = bundle.getStringArrayList("res");
-            myConcerti = new String [concerti.size()];
-          for (int i=0; i < concerti.size(); i++){
-              myConcerti[i] = concerti.get(i);
-          }
-            //creazione arrayadapter per trasformare i dati dell'array sottoforma di lista
-            ArrayAdapter<String> adapter =new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, myConcerti);
-            //la listview riceve i dati sotto forma di lista
-            listview.setAdapter(adapter);
-            myConcertiToPass = myConcerti;
-        } else {
-            myConcertiToPass = null;
-        }
-
-
-        /**
-         * Settaggio listener per click.
-         * Nel momento in cui una tappa viene selezionata viene aperta la lista delle canzoni
-         * presenti in quella tappa.
-         */
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                String tappaSelezionata = myConcertiToPass[position];
-                StringBuilder sb = new StringBuilder(tappaSelezionata);
-                sb.deleteCharAt(0);
-                sb.deleteCharAt(sb.length()-1);
-                tappaSelezionata = sb.toString();
-
-                DetailClass detailClass = new DetailClass();
-                String q = "SELECT Titolo FROM Canzone WHERE Id IN (SELECT IdCanzone FROM Tappa_Canzone WHERE IdTappa = (SELECT Id FROM Tappa WHERE NomeEvento = '"+ tappaSelezionata+"'));";
-                detailClass.execute(q);
-
-
-            }
-        });
-
-
         //la view con tutti i dati
         return rootView;
-
-
     }
 
 

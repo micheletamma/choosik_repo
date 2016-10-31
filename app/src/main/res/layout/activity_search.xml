@@ -8,8 +8,11 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="sms1516.gruppo28.uniba.it.choosik.SearchActivity"
-    android:background="#C0C1C0">
-        <Button android:id="@+id/pickDate"
+    android:background="#C0C1C0"
+    android:id="@+id/SearchActivityContainer">
+
+
+<Button android:id="@+id/pickDate"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Imposta la data"
