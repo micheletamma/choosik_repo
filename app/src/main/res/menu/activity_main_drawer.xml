@@ -11,7 +11,7 @@
         <item
             android:id="@+id/nav_search"
             android:icon="@drawable/search_48px"
-            android:title="Ricerca artisti" />
+            android:title="Ricerca evento" />
         <item
             android:id="@+id/nav_concert"
             android:icon="@drawable/dj_48px"

@@ -209,13 +209,21 @@ public class SearchActivity extends AppCompatActivity
         String data = dateDisplay.getText().toString();
 //        artista = artista.replace(" ", "");
 
+        req = "http://exrezzo.pythonanywhere.com/api/tappa/?format=json";
         if (isBtnDatePressed){
             //devo includere la data nella ricerca
-            req = "http://exrezzo.pythonanywhere.com/api/tappa/?format=json&citta=" + luogo
-            + "&data=" + data + "&tour__artista__nome=" + artista;
+            req += "&data=" + data;
+            if (!luogo.equals("")){
+                req+= "&citta=" + luogo;
+            } else if (!artista.equals("")){
+                req+= "&tour__artista__nome=" + artista;
+            }
         } else {
-            req = "http://exrezzo.pythonanywhere.com/api/tappa/?format=json&citta=" + luogo
-                    + "&tour__artista__nome=" + artista;
+            if (!luogo.equals("")){
+                req+= "&citta=" + luogo;
+            } else if (!artista.equals("")){
+                req+= "&tour__artista__nome=" + artista;
+            }
         }
         //posso eseguire il task di ricerca
         JsonTask searchTask = new JsonTask();
