@@ -32,8 +32,7 @@ import java.util.HashMap;
  * La classe Search Activity e' estesa a MainActivity in modo tale da implementare
  * il nav_menu
  */
-public class SearchActivity extends AppCompatActivity
-{
+public class SearchActivity extends AppCompatActivity {
     /**
      * Nel metodo onCreate carichiamo lo stesso menu della Main Activity
      * Si implementa un Date Picker per gestire le date in input
@@ -47,10 +46,105 @@ public class SearchActivity extends AppCompatActivity
     int mYear;
     int mMonth;
     int mDay;
+    protected DatePickerDialog.OnDateSetListener mDateSetListener =
+            new DatePickerDialog.OnDateSetListener() {
+                public void onDateSet(DatePicker view, int year,
+                                      int monthOfYear, int dayOfMonth) {
+                    mYear = year;
+                    mMonth = monthOfYear;
+                    mDay = dayOfMonth;
+                    updateDisplay();
+                }
+            };
     Boolean isBtnDatePressed;
 
-    private class JsonTask extends AsyncTask<String,Void,String> {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_search);
+        Bundle extras = getIntent().getExtras();
+        Dizionario dizionario = new Dizionario();
+        HashMap x = dizionario.dizionarioProvicia();
 
+
+        ArrayAdapter<String> provincia = new ArrayAdapter<String>(
+                this,
+                android.R.layout.simple_dropdown_item_1line,
+                dizionario.getNomi()
+        );
+        AutoCompleteTextView luogoTxtView = (AutoCompleteTextView) findViewById(R.id.txtViewLuogo);
+        luogoTxtView.setAdapter(provincia);
+        String[] nomiArtisti = extras.getStringArray("nomiArtisti");
+        AutoCompleteTextView autocomplete = (AutoCompleteTextView) findViewById(R.id.txtViewArtista);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                this,
+                android.R.layout.simple_dropdown_item_1line,
+                nomiArtisti
+        );
+        autocomplete.setAdapter(adapter);
+        isBtnDatePressed = false;
+
+        String utente = SaveSharedPreference.getUserName(getApplicationContext());
+        String mail = SaveSharedPreference.getEmail(getApplicationContext());
+        mDateDisplay = (TextView) findViewById(R.id.dateDisplay);
+        mPickDate = (Button) findViewById(R.id.pickDate);
+        mPickDate.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                isBtnDatePressed = true;
+                showDialog(0);
+            }
+        });
+
+        final Calendar c = Calendar.getInstance();
+        mYear = c.get(Calendar.YEAR);
+        mMonth = c.get(Calendar.MONTH);
+        mDay = c.get(Calendar.DAY_OF_MONTH);
+        updateDisplay();
+    }
+
+    protected void updateDisplay() {
+        mDateDisplay.setText(
+                new StringBuilder()
+                        .append(mYear).append("-")
+                        .append(mMonth + 1).append("-")
+                        .append(mDay).append("")
+        );
+    }
+
+    protected Dialog onCreateDialog(int id) {
+        return new DatePickerDialog(this,
+                mDateSetListener,
+                mYear, mMonth, mDay);
+    }
+
+    /**
+     * Il metodo e' interrogato alla pressione del button Ricerca
+     */
+    public void search(View v) {
+        String req = "";
+        AutoCompleteTextView artistaAutoComplete = (AutoCompleteTextView) findViewById(R.id.txtViewArtista);
+        assert artistaAutoComplete != null;
+        String artista = artistaAutoComplete.getText().toString();
+        AutoCompleteTextView luogoAutoComplete = (AutoCompleteTextView) findViewById(R.id.txtViewLuogo);
+        String luogo = luogoAutoComplete.getText().toString();
+        TextView dateDisplay = (TextView) findViewById(R.id.dateDisplay);
+        String data = dateDisplay.getText().toString();
+
+        if (isBtnDatePressed) {
+            //devo includere la data nella ricerca
+            req = "http://exrezzo.pythonanywhere.com/api/canzoneintappa/?format=json&tappa__citta=" + luogo
+                    + "&tappa__data=" + data + "&artista__nome=" + artista;
+        } else {
+            req = "http://exrezzo.pythonanywhere.com/api/canzoneintappa/?format=json&tappa__citta=" + luogo
+                    + "&artista__nome=" + artista;
+        }
+        //posso eseguire il task di ricerca
+        JsonTask searchTask = new JsonTask();
+        searchTask.execute(req);
+
+    }
+
+    private class JsonTask extends AsyncTask<String, Void, String> {
 
 
         @Override
@@ -69,7 +163,7 @@ public class SearchActivity extends AppCompatActivity
                 String line = "";
 
                 while ((line = reader.readLine()) != null) {
-                    buffer.append(line+"\n");
+                    buffer.append(line + "\n");
                     Log.d("Response: ", "> " + line);   //here u ll get whole response...... :-)
 
                 }
@@ -102,13 +196,13 @@ public class SearchActivity extends AppCompatActivity
         protected void onPostExecute(String s) {
             try {
                 JSONArray arrayTappe = concertResult.getJSONArray("objects");
-                String tappe []  = new String [arrayTappe.length()];
+                String tappe[] = new String[arrayTappe.length()];
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 ConcertListFragment concertListFragment = new ConcertListFragment();
-                fragmentManager.beginTransaction().add(R.id.lista_concerti_view,concertListFragment,concertListFragment.getTag())
+                fragmentManager.beginTransaction().add(R.id.lista_concerti_view, concertListFragment, concertListFragment.getTag())
                         .commit();
                 Bundle JsonTappa = new Bundle();
-                JsonTappa.putString("JsonTappaString",arrayTappe.toString());
+                JsonTappa.putString("JsonTappaString", arrayTappe.toString());
 //                Intent anIntent = new Intent(getApplicationContext(), SearchActivity.class);
 //                anIntent.putExtra("nomiArtisti",nomiArtisti);
 //                startActivity(anIntent);
@@ -120,108 +214,8 @@ public class SearchActivity extends AppCompatActivity
         }
 
 
-
     }
 
 
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search);
-        Bundle extras = getIntent().getExtras();
-        Dizionario dizionario = new Dizionario();
-        HashMap x = dizionario.dizionarioProvicia();
-
-
-        ArrayAdapter<String> provincia = new ArrayAdapter<String>(
-                this,
-                android.R.layout.simple_dropdown_item_1line,
-                dizionario.getNomi()
-        );
-        AutoCompleteTextView luogoTxtView = (AutoCompleteTextView) findViewById(R.id.txtViewLuogo);
-        luogoTxtView.setAdapter(provincia);
-        String [] nomiArtisti = extras.getStringArray("nomiArtisti");
-        AutoCompleteTextView autocomplete = (AutoCompleteTextView) findViewById(R.id.txtViewArtista);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                this,
-                android.R.layout.simple_dropdown_item_1line,
-                nomiArtisti
-        );
-        autocomplete.setAdapter(adapter);
-        isBtnDatePressed = false;
-
-        String utente=SaveSharedPreference.getUserName(getApplicationContext());
-        String mail=SaveSharedPreference.getEmail(getApplicationContext());
-        mDateDisplay = (TextView) findViewById(R.id.dateDisplay);
-        mPickDate = (Button) findViewById(R.id.pickDate);
-        mPickDate.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                isBtnDatePressed=true;
-                showDialog(0);
-            }
-        });
-
-        final Calendar c = Calendar.getInstance();
-        mYear = c.get(Calendar.YEAR);
-        mMonth = c.get(Calendar.MONTH);
-        mDay = c.get(Calendar.DAY_OF_MONTH);
-        updateDisplay();
-    }
-
-    protected void updateDisplay() {
-        mDateDisplay.setText(
-                new StringBuilder()
-                        .append(mYear).append("-")
-                        .append(mMonth + 1).append("-")
-                        .append(mDay).append("")
-                        );
-    }
-    protected DatePickerDialog.OnDateSetListener mDateSetListener =
-            new DatePickerDialog.OnDateSetListener() {
-                public void onDateSet(DatePicker view, int year,
-                                      int monthOfYear, int dayOfMonth) {
-                    mYear = year;
-                    mMonth = monthOfYear;
-                    mDay = dayOfMonth;
-                    updateDisplay();
-                }
-            };
-
-    protected Dialog onCreateDialog(int id) {
-        return new DatePickerDialog(this,
-                mDateSetListener,
-                mYear, mMonth, mDay);
-    }
-
-    /**
-     *Il metodo e' interrogato alla pressione del button Ricerca
-     */
-    public void search (View v){
-        String req="";
-        AutoCompleteTextView artistaAutoComplete = (AutoCompleteTextView) findViewById(R.id.txtViewArtista);
-        assert artistaAutoComplete != null;
-        String artista = artistaAutoComplete.getText().toString();
-        AutoCompleteTextView luogoAutoComplete = (AutoCompleteTextView) findViewById(R.id.txtViewLuogo);
-        String luogo = luogoAutoComplete.getText().toString();
-        TextView dateDisplay = (TextView) findViewById(R.id.dateDisplay);
-        String data = dateDisplay.getText().toString();
-
-        if (isBtnDatePressed){
-            //devo includere la data nella ricerca
-            req = "http://exrezzo.pythonanywhere.com/api/canzoneintappa/?format=json&tappa__citta=" + luogo
-            + "&tappa__data=" + data + "&artista__nome=" + artista;
-        } else {
-            req = "http://exrezzo.pythonanywhere.com/api/canzoneintappa/?format=json&tappa__citta=" + luogo
-                    + "&artista__nome=" + artista;
-        }
-        //posso eseguire il task di ricerca
-        JsonTask searchTask = new JsonTask();
-        searchTask.execute(req);
-
-    }
-
-
-
-    }
+}
 

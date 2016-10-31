@@ -13,7 +13,8 @@ public class DatePickerFragment extends DialogFragment {
     DatePickerDialog.OnDateSetListener ondateSet;
     private int year, month, day;
 
-    public DatePickerFragment() {}
+    public DatePickerFragment() {
+    }
 
     public void setCallBack(DatePickerDialog.OnDateSetListener ondate) {
         ondateSet = ondate;

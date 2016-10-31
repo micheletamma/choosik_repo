@@ -1,10 +1,9 @@
 package sms1516.gruppo28.uniba.it.choosik;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.content.Intent;
 
 public class SplashActivity extends ActionBarActivity {
     private static int SPLASH_TIMEOUT = 3000;

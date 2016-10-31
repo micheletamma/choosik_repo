@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpPost;
@@ -28,18 +29,74 @@ import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
     String user, email, password;
-    private EditText usernameField, passwordField, emailField, provField;
     Map params = new HashMap();
+    private EditText usernameField, passwordField, emailField, provField;
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_register);
+        Dizionario dizionario = new Dizionario();
+        HashMap x = dizionario.dizionarioProvicia();
+
+        ArrayAdapter<String> provincia = new ArrayAdapter<String>(
+                this,
+                android.R.layout.simple_dropdown_item_1line,
+                dizionario.getNomi()
+        );
+        AutoCompleteTextView luogoTxtView = (AutoCompleteTextView) findViewById(R.id.txtProvincia);
+        luogoTxtView.setAdapter(provincia);
+        TextView avvisoField = (TextView) findViewById(R.id.txtAvviso);
+        avvisoField.setText("");
+        Button button = (Button) findViewById(R.id.btnRegister);
+        assert button != null;
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                usernameField = (EditText) findViewById(R.id.txtUsername);
+                passwordField = (EditText) findViewById(R.id.txtPassword);
+                emailField = (EditText) findViewById(R.id.txtEmail);
+                provField = (EditText) findViewById(R.id.txtProvincia);
+                TextView avvisoField = (TextView) findViewById(R.id.txtAvviso);
+                avvisoField.setText("");
+                String usr = usernameField.getText().toString();
+                user = usr;
+                String psw = passwordField.getText().toString();
+                password = psw;
+                String mail = emailField.getText().toString();
+                email = mail;
+                String prov = provField.getText().toString();
+
+                Map registrazione = new HashMap();
+
+                registrazione.put("username", usr);
+                registrazione.put("password", psw);
+                registrazione.put("email", mail);
+                registrazione.put("provincia", prov);
+
+                params = registrazione;
+                if (mail.contains("@") & mail.contains(".")) {
+                    try {
+                        SimpleTask task = new SimpleTask();
+                        task.execute("http://exrezzo.pythonanywhere.com/api/utente/");
+
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                } else {
+                    avvisoField.setText("La tua mail non è valida");
+
+                }
+            }
+
+        });
+    }
 
     public class SimpleTask extends AsyncTask<String, Void, String> {
         public Context context;
         JSONObject risultato;
 
-
-        public JSONObject getRisultato() {
-            return risultato;
-        }
 
         public SimpleTask(Context ctx) {
 
@@ -50,6 +107,9 @@ public class RegisterActivity extends AppCompatActivity {
         public SimpleTask() {
         }
 
+        public JSONObject getRisultato() {
+            return risultato;
+        }
 
         @Override
         protected String doInBackground(String... strings) {
@@ -81,12 +141,12 @@ public class RegisterActivity extends AppCompatActivity {
             ResponseHandler responseHandler = new BasicResponseHandler();
             try {
                 httpclient.execute(httpost, responseHandler);
-            } catch (ClientProtocolException e){
-                Log.e ("errore", e.getMessage());
+            } catch (ClientProtocolException e) {
+                Log.e("errore", e.getMessage());
                 message = "permesso negato";
             } catch (IOException e) {
                 e.printStackTrace();
-                Log.e ("errore",e.getMessage());
+                Log.e("errore", e.getMessage());
 
 
             }
@@ -112,70 +172,6 @@ public class RegisterActivity extends AppCompatActivity {
 
         }
     }
-
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
-        Dizionario dizionario = new Dizionario();
-        HashMap x = dizionario.dizionarioProvicia();
-
-        ArrayAdapter<String> provincia = new ArrayAdapter<String>(
-                this,
-                android.R.layout.simple_dropdown_item_1line,
-                dizionario.getNomi()
-        );
-        AutoCompleteTextView luogoTxtView = (AutoCompleteTextView) findViewById(R.id.txtProvincia);
-        luogoTxtView.setAdapter(provincia);
-        TextView avvisoField = (TextView)findViewById(R.id.txtAvviso);
-        avvisoField.setText("");
-        Button button = (Button) findViewById(R.id.btnRegister);
-        assert button != null;
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                usernameField = (EditText) findViewById(R.id.txtUsername);
-                passwordField = (EditText) findViewById(R.id.txtPassword);
-                emailField = (EditText) findViewById(R.id.txtEmail);
-                provField = (EditText) findViewById(R.id.txtProvincia);
-                TextView avvisoField = (TextView) findViewById(R.id.txtAvviso);
-                avvisoField.setText("");
-                String usr = usernameField.getText().toString();
-                user = usr;
-                String psw = passwordField.getText().toString();
-                password = psw;
-                String mail = emailField.getText().toString();
-                email = mail;
-                String prov = provField.getText().toString();
-
-                Map registrazione = new HashMap();
-
-                registrazione.put("username", usr);
-                registrazione.put("password", psw);
-                registrazione.put("email",mail);
-                registrazione.put("provincia", prov);
-
-                params = registrazione;
-                if (mail.contains("@") & mail.contains(".")) {
-                    try {
-                        SimpleTask task = new SimpleTask();
-                        task.execute("http://exrezzo.pythonanywhere.com/api/utente/");
-
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                } else {
-                    avvisoField.setText("La tua mail non è valida");
-
-                }
-            }
-
-        });
-    }
-
-
 
 
 }

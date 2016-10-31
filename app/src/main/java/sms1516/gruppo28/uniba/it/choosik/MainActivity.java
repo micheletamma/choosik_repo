@@ -33,108 +33,13 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    static boolean artista = false;
     //flag che servono per doInBackground e onPost execute
     boolean searchActivityFlag = false;
     boolean myConcertsFragmentFlag = false;
-
     String u = "";
     JSONObject artistResult;
-
-    static boolean artista = false;
     SaveSharedPreference preferenza = new SaveSharedPreference();
-
-    private class JsonTask extends AsyncTask<String,Void,String> {
-
-
-        @Override
-        protected String doInBackground(String... strings) {
-            HttpURLConnection connection = null;
-            BufferedReader reader = null;
-            // se si va in ricerca dal menu si fa questo tipo di richiesta
-            if (searchActivityFlag == true) {
-                try {
-                    URL url = new URL(strings[0]);
-                    connection = (HttpURLConnection) url.openConnection();
-                    connection.connect();
-                    InputStream stream = connection.getInputStream();
-
-                    reader = new BufferedReader(new InputStreamReader(stream));
-
-                    StringBuffer buffer = new StringBuffer();
-                    String line = "";
-
-                    while ((line = reader.readLine()) != null) {
-                        buffer.append(line + "\n");
-                        Log.d("Response: ", "> " + line);   //here u ll get whole response...... :-)
-
-                    }
-
-                    artistResult = new JSONObject(buffer.toString());
-                    return buffer.toString();
-
-
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } finally {
-                    if (connection != null) {
-                        connection.disconnect();
-                    }
-                    try {
-                        if (reader != null) {
-                            reader.close();
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                //se si va in i miei concerti si fa questo tipo di richiesta
-            } else if (myConcertsFragmentFlag == true) {
-
-            }
-
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-
-            //se dobbiamo andare nella ricerca facciamo questo
-
-            if (searchActivityFlag == true) {
-
-
-                try {
-                    JSONArray arrayArtisti = artistResult.getJSONArray("objects");
-                    String nomiArtisti[] = new String[arrayArtisti.length()];
-                    for (int i = 0; i <= arrayArtisti.length() - 1; i++) {
-                        JSONObject temp = arrayArtisti.getJSONObject(i);
-                        nomiArtisti[i] = temp.getString("nome");
-
-                    }
-                    Intent anIntent = new Intent(getApplicationContext(), SearchActivity.class);
-                    anIntent.putExtra("nomiArtisti", nomiArtisti);
-                    startActivity(anIntent);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                //se andiamo in i miei concerti si fa questo
-            } else if (myConcertsFragmentFlag == true) {
-
-
-            }
-
-
-            super.onPostExecute(s);
-        }
-
-
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -168,9 +73,6 @@ public class MainActivity extends AppCompatActivity
             nav_Menu.findItem(R.id.nav_insert).setVisible(false);
         }
     }
-
-
-
 
     @Override
     public void onBackPressed() {
@@ -280,6 +182,98 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private class JsonTask extends AsyncTask<String, Void, String> {
+
+
+        @Override
+        protected String doInBackground(String... strings) {
+            HttpURLConnection connection = null;
+            BufferedReader reader = null;
+            // se si va in ricerca dal menu si fa questo tipo di richiesta
+            if (searchActivityFlag == true) {
+                try {
+                    URL url = new URL(strings[0]);
+                    connection = (HttpURLConnection) url.openConnection();
+                    connection.connect();
+                    InputStream stream = connection.getInputStream();
+
+                    reader = new BufferedReader(new InputStreamReader(stream));
+
+                    StringBuffer buffer = new StringBuffer();
+                    String line = "";
+
+                    while ((line = reader.readLine()) != null) {
+                        buffer.append(line + "\n");
+                        Log.d("Response: ", "> " + line);   //here u ll get whole response...... :-)
+
+                    }
+
+                    artistResult = new JSONObject(buffer.toString());
+                    return buffer.toString();
+
+
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } finally {
+                    if (connection != null) {
+                        connection.disconnect();
+                    }
+                    try {
+                        if (reader != null) {
+                            reader.close();
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                //se si va in i miei concerti si fa questo tipo di richiesta
+            } else if (myConcertsFragmentFlag == true) {
+
+            }
+
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+
+            //se dobbiamo andare nella ricerca facciamo questo
+
+            if (searchActivityFlag == true) {
+
+
+                try {
+                    JSONArray arrayArtisti = artistResult.getJSONArray("objects");
+                    String nomiArtisti[] = new String[arrayArtisti.length()];
+                    for (int i = 0; i <= arrayArtisti.length() - 1; i++) {
+                        JSONObject temp = arrayArtisti.getJSONObject(i);
+                        nomiArtisti[i] = temp.getString("nome");
+
+                    }
+                    Intent anIntent = new Intent(getApplicationContext(), SearchActivity.class);
+                    anIntent.putExtra("nomiArtisti", nomiArtisti);
+                    startActivity(anIntent);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                //se andiamo in i miei concerti si fa questo
+            } else if (myConcertsFragmentFlag == true) {
+
+
+            }
+
+
+            super.onPostExecute(s);
+        }
+
+
     }
 
 

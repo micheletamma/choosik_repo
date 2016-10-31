@@ -3,98 +3,99 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#C0C1C0"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="sms1516.gruppo28.uniba.it.choosik.RegisterActivity"
-    android:background="#C0C1C0">
+    tools:context="sms1516.gruppo28.uniba.it.choosik.RegisterActivity">
 
     <ImageView
+        android:id="@+id/imageView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/imageView5"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/originale"/>
+        android:src="@drawable/originale" />
 
 
     <EditText
+        android:id="@+id/txtUsername"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/txtUsername"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/imageView5"
+        android:layout_marginTop="42dp"
         android:hint="@string/usr"
         android:maxLines="1"
         android:singleLine="true"
-        android:textAlignment="center"
-        android:layout_below="@+id/imageView5"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="42dp" />
+        android:textAlignment="center" />
 
 
     <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:ems="10"
         android:id="@+id/txtPassword"
-        android:text=""
-        android:hint="@string/psw"
-        android:textAlignment="center"
-        android:layout_below="@+id/txtUsername"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
-    <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/txtEmail"
-        android:text=""
-        android:hint="Email"
-        android:maxLines="1"
-        android:singleLine="true"
-        android:textAlignment="center"
-        android:layout_below="@+id/txtPassword"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_below="@+id/txtUsername"
+        android:ems="10"
+        android:hint="@string/psw"
+        android:inputType="textPassword"
+        android:text=""
+        android:textAlignment="center" />
+
+    <EditText
+        android:id="@+id/txtEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/txtPassword"
+        android:hint="Email"
         android:inputType="textEmailAddress"
-        android:selectAllOnFocus="false" />
+        android:maxLines="1"
+        android:selectAllOnFocus="false"
+        android:singleLine="true"
+        android:text=""
+        android:textAlignment="center" />
 
     <TextView
+        android:id="@+id/txtAvviso"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=""
-        android:id="@+id/txtAvviso"
         android:layout_below="@+id/btnRegister"
         android:layout_centerHorizontal="true"
+        android:text=""
         android:textColor="@color/colorAccent"
         android:textSize="15dp"
         android:textStyle="italic" />
 
     <Button
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:text="Registrami"
         android:id="@+id/btnRegister"
-        android:textColor="@android:color/tab_indicator_text"
-        android:theme="@style/AppTheme.Button"
-        android:textStyle="bold"
-        android:layout_below="@+id/txtEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="71dp" />
+        android:layout_below="@+id/txtEmail"
+        android:layout_marginTop="71dp"
+        android:text="Registrami"
+        android:textColor="@android:color/tab_indicator_text"
+        android:textStyle="bold"
+        android:theme="@style/AppTheme.Button" />
 
     <AutoCompleteTextView
+        android:id="@+id/txtProvincia"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text=""
-        android:id="@+id/txtProvincia"
-        android:hint="Seleziona Provincia"
-        android:layout_below="@+id/txtEmail"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_below="@+id/txtEmail"
         android:layout_marginLeft="14dp"
         android:layout_marginStart="14dp"
+        android:hint="Seleziona Provincia"
+        android:text=""
         android:textAlignment="center" />
 
 </RelativeLayout>

@@ -10,10 +10,9 @@ import android.preference.PreferenceManager;
  */
 
 public class SaveSharedPreference {
-    static final String PREF_USER_NAME= "username";
-    static final String PREF_EMAIL= "email";
-    static final String ISARTIST="isartist";
-
+    static final String PREF_USER_NAME = "username";
+    static final String PREF_EMAIL = "email";
+    static final String ISARTIST = "isartist";
 
 
     static SharedPreferences getSharedPreferences(Context ctx) {
@@ -23,39 +22,35 @@ public class SaveSharedPreference {
     /**
      * Setta nelle preferenze il nome utente che si e' loggato.
      */
-    public static void setUserName(Context ctx, String userName)
-    {
+    public static void setUserName(Context ctx, String userName) {
         SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
         editor.putString(PREF_USER_NAME, userName);
         editor.commit();
     }
 
-    public static void setIsArtist(Context ctx,boolean isartist){
-        SharedPreferences.Editor editor=getSharedPreferences(ctx).edit();
-        editor.putBoolean(ISARTIST,isartist);
+    public static void setIsArtist(Context ctx, boolean isartist) {
+        SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
+        editor.putBoolean(ISARTIST, isartist);
         editor.commit();
     }
 
 
-    public static void setEmail(Context ctx, String email)
-    {
+    public static void setEmail(Context ctx, String email) {
         SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
         editor.putString(PREF_EMAIL, email);
         editor.commit();
     }
 
 
-    public static boolean getIsArtist(Context ctx){
-        return getSharedPreferences(ctx).getBoolean(ISARTIST,false);
+    public static boolean getIsArtist(Context ctx) {
+        return getSharedPreferences(ctx).getBoolean(ISARTIST, false);
     }
 
-    public static String getUserName(Context ctx)
-    {
+    public static String getUserName(Context ctx) {
         return getSharedPreferences(ctx).getString(PREF_USER_NAME, "");
     }
 
-    public static String getEmail(Context ctx)
-    {
+    public static String getEmail(Context ctx) {
         return getSharedPreferences(ctx).getString(PREF_EMAIL, "");
     }
 
@@ -63,8 +58,7 @@ public class SaveSharedPreference {
      * Metodo da richiamare nel navbar per eseguire il logut, cancellando l'username registrato
      * come loggato.
      */
-    public static void clearUserName(Context ctx)
-    {
+    public static void clearUserName(Context ctx) {
         SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
         editor.clear(); // cancella tutti i dati salvati nelle preferenze
         editor.commit();

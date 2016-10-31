@@ -3,82 +3,86 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#C0C1C0"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="sms1516.gruppo28.uniba.it.choosik.SearchActivity"
-    android:background="#C0C1C0">
-        <Button android:id="@+id/pickDate"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Imposta la data"
-            android:textColor="@color/colorAccent"
-            android:layout_below="@+id/dateDisplay"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-        <TextView android:id="@+id/dateDisplay"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="  Seleziona data"
-            android:textSize="18dp"
-            android:drawableEnd="@drawable/data"
-            android:drawableRight="@drawable/data"
-            android:layout_centerVertical="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:textColorHint="#000000"
-            android:textColorLink="#000000"
-            android:textColorHighlight="#000000"
-            android:textIsSelectable="true"
-            android:textColor="#000000" />
+    tools:context="sms1516.gruppo28.uniba.it.choosik.SearchActivity">
 
-    <AutoCompleteTextView
+    <Button
+        android:id="@+id/pickDate"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text=""
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/dateDisplay"
+        android:text="Imposta la data"
+        android:textColor="@color/colorAccent" />
+
+    <TextView
+        android:id="@+id/dateDisplay"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:drawableEnd="@drawable/data"
+        android:drawableRight="@drawable/data"
+        android:text="  Seleziona data"
+        android:textColor="#000000"
+        android:textColorHighlight="#000000"
+        android:textColorHint="#000000"
+        android:textColorLink="#000000"
+        android:textIsSelectable="true"
+        android:textSize="18dp" />
+
+    <AutoCompleteTextView
         android:id="@+id/txtViewArtista"
-        android:hint="Seleziona artista"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/imageView12"
         android:drawableEnd="@drawable/dj_48px"
         android:drawableRight="@drawable/dj_48px"
-        android:layout_below="@+id/imageView12"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:hint="Seleziona artista"
+        android:text="" />
 
     <AutoCompleteTextView
+        android:id="@+id/txtViewLuogo"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/txtViewLuogo"
-        android:drawableEnd="@drawable/place"
-        android:drawableRight="@drawable/place"
         android:layout_above="@+id/dateDisplay"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:hint="Seleziona luogo"/>
+        android:drawableEnd="@drawable/place"
+        android:drawableRight="@drawable/place"
+        android:hint="Seleziona luogo" />
 
     <Button
+        android:id="@+id/btnCerca"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Cerca"
-        android:id="@+id/btnCerca"
-        android:layout_below="@+id/pickDate"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="62dp"
-        android:textColor="@android:color/black"
-        android:theme="@style/AppTheme.Button"
-        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/pickDate"
+        android:layout_marginTop="62dp"
+        android:onClick="search"
+        android:text="Cerca"
+        android:textColor="@android:color/black"
         android:textStyle="bold"
-        android:onClick="search"/>
+        android:theme="@style/AppTheme.Button" />
 
     <ImageView
+        android:id="@+id/imageView12"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/imageView12"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/solo_scritta"/>
+        android:src="@drawable/solo_scritta" />
 
 
 </RelativeLayout>

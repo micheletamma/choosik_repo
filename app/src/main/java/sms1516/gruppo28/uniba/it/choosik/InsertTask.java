@@ -19,15 +19,14 @@ import java.util.ArrayList;
 /**
  * Created by Michele on 19/10/2016.
  */
-public class InsertTask extends AsyncTask<String,Void,String> {
-    public Context context;
+public class InsertTask extends AsyncTask<String, Void, String> {
     public static ArrayList<String> risultato = new ArrayList<String>();
+    public Context context;
 
 
+    public InsertTask(Context ctx) {
 
-    public InsertTask(Context ctx){
-
-        this.context=ctx;
+        this.context = ctx;
 
     }
 
@@ -40,8 +39,8 @@ public class InsertTask extends AsyncTask<String,Void,String> {
 
     @Override
     protected String doInBackground(String... arg0) {
-        try{
-            String query = (String)arg0[0];
+        try {
+            String query = (String) arg0[0];
             String link = "http://gruppotamma.esy.es/insert.php?sql=" + query;
 
             URL url = new URL(link);
@@ -53,7 +52,7 @@ public class InsertTask extends AsyncTask<String,Void,String> {
 
 
             StringBuffer sb = new StringBuffer("");
-            String line="";
+            String line = "";
             while ((line = in.readLine()) != null) {
                 sb.append(line);
                 risultato.add(line);
@@ -64,19 +63,18 @@ public class InsertTask extends AsyncTask<String,Void,String> {
 //            if (risultato.size()!=1){
 //            risultato.remove(risultato.size()-1);}
             return sb.toString();
-        }
-
-        catch(Exception e){
+        } catch (Exception e) {
             return new String("Exception: " + e.getMessage());
         }
     }
+
     @Override
-    protected void onPostExecute(String result){
+    protected void onPostExecute(String result) {
         //Registro i dati utente nel database
         super.onPostExecute(result);
-        if (risultato.get(0).equals("Query ok")){
+        if (risultato.get(0).equals("Query ok")) {
             context.startActivity(new Intent(context, LoginActivity.class));
-            Toast.makeText(context,"Nuovo utente registrato. Effettua il login!",Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Nuovo utente registrato. Effettua il login!", Toast.LENGTH_SHORT).show();
 
         }
 
