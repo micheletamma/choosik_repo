@@ -13,12 +13,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RatingBar;
+import android.widget.TextView;
 
 /**
  * Created by marcouva on 20/10/16.
  */
 
-public class DetailCanzoniConcertoActivity extends Fragment {
+public class DetailCanzoniConcerto extends Fragment {
     Bundle bundle;
 
 
@@ -27,11 +28,12 @@ public class DetailCanzoniConcertoActivity extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 //        return super.onCreateView(inflater, container, savedInstanceState);
         bundle = this.getArguments();
-        String[] arrayCanzoniPassate = bundle.getStringArray("canzoniTappa");
-
+        String[] arrayCanzoniPassate = bundle.getStringArray("titoloCanzone");
+        String nomeTappa = bundle.getString("nomeTappa");
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
         final ListView listview = (ListView) rootView.findViewById(R.id.lista_canzoni_view);
-
+        TextView tappa = (TextView) rootView.findViewById(R.id.tappa);
+        tappa.setText(nomeTappa);
         //simple_list_item_1 deve essere cambiato con una nostra lista di item da creare
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, arrayCanzoniPassate);
         listview.setAdapter(adapter);
