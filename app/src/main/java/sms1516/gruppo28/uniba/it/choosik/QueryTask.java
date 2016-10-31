@@ -17,15 +17,14 @@ import java.util.ArrayList;
 /**
  * Created by Michele on 19/10/2016.
  */
-public class QueryTask extends AsyncTask<String,Void,String> {
+public class QueryTask extends AsyncTask<String, Void, String> {
     public Context context;
-    public  ArrayList<String> risultato = new ArrayList<String>();
+    public ArrayList<String> risultato = new ArrayList<String>();
 
 
+    public QueryTask(Context ctx) {
 
-    public QueryTask(Context ctx){
-
-        this.context=ctx;
+        this.context = ctx;
 
     }
 
@@ -38,10 +37,10 @@ public class QueryTask extends AsyncTask<String,Void,String> {
 
     @Override
     protected String doInBackground(String... arg0) {
-        try{
-            String query = (String)arg0[0];
+        try {
+            String query = (String) arg0[0];
             query = query.replace(" ", "%20");
-            query=query.replace("'","%27");
+            query = query.replace("'", "%27");
             String link = "http://gruppotamma.esy.es/query.php?sql=" + query;
 
             URL url = new URL(link);
@@ -53,11 +52,12 @@ public class QueryTask extends AsyncTask<String,Void,String> {
 
 
             StringBuffer sb = new StringBuffer("");
-            String line="";
+            String line = "";
             while ((line = in.readLine()) != null) {
                 sb.append(line);
-                if (!line.contains("\t")){
-                    risultato.add(line);}
+                if (!line.contains("\t")) {
+                    risultato.add(line);
+                }
             }
 
 
@@ -67,14 +67,13 @@ public class QueryTask extends AsyncTask<String,Void,String> {
             }
 //            risultato.remove(risultato.size()-1);
             return sb.toString();
-        }
-
-        catch(Exception e){
+        } catch (Exception e) {
             return new String("Exception: " + e.getMessage());
         }
     }
+
     @Override
-    protected void onPostExecute(String result){
+    protected void onPostExecute(String result) {
         super.onPostExecute(result);
 
     }

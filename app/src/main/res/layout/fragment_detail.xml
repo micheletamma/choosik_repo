@@ -8,22 +8,20 @@
         android:id="@+id/prova"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textStyle="bold"
         android:gravity="center|top"
-        android:text="Canzoni del concerto" />
+        android:text="Canzoni del concerto"
+        android:textStyle="bold" />
 
     <ListView
         android:id="@+id/lista_canzoni_view"
-        android:dividerHeight="5dp"
-        android:divider="@android:drawable/screen_background_dark_transparent"
-        android:paddingTop="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:divider="@android:drawable/screen_background_dark_transparent"
+        android:dividerHeight="5dp"
+        android:paddingTop="10dp">
 
 
     </ListView>
-
-
 
 
 </FrameLayout>

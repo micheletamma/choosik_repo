@@ -19,13 +19,12 @@
         android:src="@drawable/minions" />
 
     <TextView
-        android:id = "@+id/nome_utente"
+        android:id="@+id/nome_utente"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:text="#param:nome utente"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        />
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
         android:id="@+id/email"

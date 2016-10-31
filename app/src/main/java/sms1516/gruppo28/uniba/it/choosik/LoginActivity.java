@@ -25,96 +25,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText usernameField, passwordField;
 
-
-    private class JsonLoginTask extends AsyncTask<String,Void,String>{
-        JSONObject loginresult;
-        String username;
-        String email;
-        boolean artista;
-
-
-        @Override
-        protected String doInBackground(String... strings) {
-            HttpURLConnection connection = null;
-            BufferedReader reader = null;
-            try {
-                URL url = new URL(strings[0]);
-                connection = (HttpURLConnection) url.openConnection();
-                connection.connect();
-                InputStream stream = connection.getInputStream();
-
-                reader = new BufferedReader(new InputStreamReader(stream));
-
-                StringBuffer buffer = new StringBuffer();
-                String line = "";
-
-                while ((line = reader.readLine()) != null) {
-                    buffer.append(line+"\n");
-                    Log.d("Response: ", "> " + line);   //here u ll get whole response...... :-)
-
-                }
-
-                return buffer.toString();
-
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                if (connection != null) {
-                    connection.disconnect();
-                }
-                try {
-                    if (reader != null) {
-                        reader.close();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            try {
-                // salva in loginresult gli oggetti in formato json ricevuti dalla url
-                loginresult = new JSONObject(s);
-                Log.d("login result", loginresult.getJSONArray("objects").get(0).toString());
-
-                // prende come array di oggetti json tutti i dizionari della risposta, se
-                // ce n'e' 1, vuol dire che la combinazione username psw e' corretta
-                if (loginresult.getJSONArray("objects").length() == 1){
-                    JSONObject datiutente = loginresult.getJSONArray("objects").getJSONObject(0);
-                    // preleva username e psw dell'utente loggato correttamente
-                    username = datiutente.getString("username");
-                    artista = datiutente.getBoolean("artista");
-                    email = datiutente.getString("email");
-                    // salva i dati nelle preferenze essendo corretti per evitare in seguito di
-                    // rifare la login
-                    SaveSharedPreference.setUserName(getApplicationContext(), username);
-                    SaveSharedPreference.setIsArtist(getApplicationContext(), artista);
-                    SaveSharedPreference.setEmail(getApplicationContext(), email);
-                    // avvia la mainActivity
-                    getApplicationContext()
-                            .startActivity(new Intent(getApplicationContext(), MainActivity.class)
-                                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                                    .putExtra("Username", username)
-                                    .putExtra("artista", artista)
-                                    .putExtra("Email", email));
-                } else {
-                    // credenziali errate
-                    Toast.makeText(getApplicationContext(),"Autenticazione fallita",Toast.LENGTH_SHORT).show();
-                }
-            } catch (Exception e){
-                Log.e("errore", e.getMessage());
-            }
-            super.onPostExecute(s);
-        }
-    }
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         /**
@@ -142,7 +52,6 @@ public class LoginActivity extends AppCompatActivity {
 
     /**
      * @param view Il metodo è invocato dal button di "activity_login"
-     *
      */
     public void login(View view) {
         String username = usernameField.getText().toString();
@@ -157,6 +66,96 @@ public class LoginActivity extends AppCompatActivity {
     public void register(View view) {
         Context context = this;
         context.startActivity(new Intent(context, RegisterActivity.class));
+    }
+
+
+    private class JsonLoginTask extends AsyncTask<String, Void, String> {
+        JSONObject loginresult;
+        String username;
+        String email;
+        boolean artista;
+
+
+        @Override
+        protected String doInBackground(String... strings) {
+            HttpURLConnection connection = null;
+            BufferedReader reader = null;
+            try {
+                URL url = new URL(strings[0]);
+                connection = (HttpURLConnection) url.openConnection();
+                connection.connect();
+                InputStream stream = connection.getInputStream();
+
+                reader = new BufferedReader(new InputStreamReader(stream));
+
+                StringBuffer buffer = new StringBuffer();
+                String line = "";
+
+                while ((line = reader.readLine()) != null) {
+                    buffer.append(line + "\n");
+                    Log.d("Response: ", "> " + line);   //here u ll get whole response...... :-)
+
+                }
+
+                return buffer.toString();
+
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (connection != null) {
+                    connection.disconnect();
+                }
+                try {
+                    if (reader != null) {
+                        reader.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
+
+        @Override
+
+        protected void onPostExecute(String s) {
+            try {
+                // salva in loginresult gli oggetti in formato json ricevuti dalla url
+                loginresult = new JSONObject(s);
+                Log.d("login result", loginresult.getJSONArray("objects").get(0).toString());
+
+                // prende come array di oggetti json tutti i dizionari della risposta, se
+                // ce n'e' 1, vuol dire che la combinazione username psw e' corretta
+                if (loginresult.getJSONArray("objects").length() == 1) {
+                    JSONObject datiutente = loginresult.getJSONArray("objects").getJSONObject(0);
+                    // preleva username e psw dell'utente loggato correttamente
+                    username = datiutente.getString("username");
+                    artista = datiutente.getBoolean("artista");
+                    email = datiutente.getString("email");
+                    // salva i dati nelle preferenze essendo corretti per evitare in seguito di
+                    // rifare la login
+                    SaveSharedPreference.setUserName(getApplicationContext(), username);
+                    SaveSharedPreference.setIsArtist(getApplicationContext(), artista);
+                    SaveSharedPreference.setEmail(getApplicationContext(), email);
+                    // avvia la mainActivity
+                    getApplicationContext()
+                            .startActivity(new Intent(getApplicationContext(), MainActivity.class)
+                                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                                    .putExtra("Username", username)
+                                    .putExtra("artista", artista)
+                                    .putExtra("Email", email));
+                } else {
+                    // credenziali errate
+                    Toast.makeText(getApplicationContext(), "Autenticazione fallita", Toast.LENGTH_SHORT).show();
+                }
+            } catch (Exception e) {
+                Log.e("errore", e.getMessage());
+            }
+            super.onPostExecute(s);
+        }
     }
 
 }

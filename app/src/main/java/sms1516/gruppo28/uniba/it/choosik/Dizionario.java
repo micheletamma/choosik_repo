@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 public class Dizionario {
     static HashMap dizProv;
-    static String [] nomi;
+    static String[] nomi;
 
 
     public static String[] getNomi() {
@@ -49,7 +49,7 @@ public class Dizionario {
         for (int i = 0; i < nomiProvince.length; i++) {
             dizProv.put(nomiProvince[i], siglaprovincie[i]);
         }
-        nomi=nomiProvince;
+        nomi = nomiProvince;
         return dizProv;
 
     }

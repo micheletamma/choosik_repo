@@ -2,9 +2,9 @@ package sms1516.gruppo28.uniba.it.choosik;
 
 
 import android.app.Dialog;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +22,6 @@ public class DetailCanzoniConcertoActivity extends Fragment {
     Bundle bundle;
 
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -34,7 +33,7 @@ public class DetailCanzoniConcertoActivity extends Fragment {
         final ListView listview = (ListView) rootView.findViewById(R.id.lista_canzoni_view);
 
         //simple_list_item_1 deve essere cambiato con una nostra lista di item da creare
-        ArrayAdapter<String> adapter =new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, arrayCanzoniPassate);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, arrayCanzoniPassate);
         listview.setAdapter(adapter);
 
 
@@ -46,7 +45,7 @@ public class DetailCanzoniConcertoActivity extends Fragment {
                 Dialog dialog = new Dialog(getContext());
                 dialog.setContentView(R.layout.rank_dialog);
                 dialog.setCancelable(true);
-                RatingBar ratingBar= (RatingBar) dialog.findViewById(R.id.dialog_ratingbar);
+                RatingBar ratingBar = (RatingBar) dialog.findViewById(R.id.dialog_ratingbar);
                 ratingBar.setRating(3); // qui bisogna settare il rating preso in input dall'utente
                 Button button = (Button) dialog.findViewById(R.id.bottone_vota);
                 button.setOnClickListener(new View.OnClickListener() {
@@ -59,12 +58,10 @@ public class DetailCanzoniConcertoActivity extends Fragment {
                 dialog.show();
 
 
-
             }
         });
 
         return rootView;
-
 
 
     }
