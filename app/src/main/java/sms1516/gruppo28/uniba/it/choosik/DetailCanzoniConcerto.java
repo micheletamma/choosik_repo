@@ -148,20 +148,27 @@ public class DetailCanzoniConcerto extends Fragment {
                 final String canzoneDaVotare = arrayCanzoniPassate[position];
 
 
-                Dialog dialog = new Dialog(getContext());
+                final Dialog dialog = new Dialog(getContext());
                 dialog.setContentView(R.layout.rank_dialog);
                 dialog.setCancelable(true);
                 final RatingBar ratingBar = (RatingBar) dialog.findViewById(R.id.dialog_ratingbar);
                 Button button = (Button) dialog.findViewById(R.id.bottone_vota);
+
+
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        HashMap username = new HashMap();
+                        username.put("username", utente);
+                        HashMap canzoneInTappa = new HashMap();
+                        canzoneInTappa.put("resource_uri","/api/canzoneintappa/"+ idCanzoniPassate[position]+ "/");
                         //da implementare
-                        params.put("utente__username",utente);
+                        params.put("utente",username);
                         params.put("votoNum",ratingBar.getRating());
-                        params.put("resource_uri", "/api/canzoneintappa/"+ idCanzoniPassate[position]+ "/" );
+                        params.put("canzoneInTappa",canzoneInTappa);
                         SimpleTask task = new SimpleTask();
                         task.execute("http://exrezzo.pythonanywhere.com/api/votocanzoneintappa/?format=json");
+                        dialog.cancel();
                     }
                 });
 
