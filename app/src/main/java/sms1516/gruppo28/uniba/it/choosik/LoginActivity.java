@@ -150,12 +150,10 @@ public class LoginActivity extends AppCompatActivity {
                                     .putExtra("Username", username)
                                     .putExtra("artista", artista)
                                     .putExtra("Email", email));
-                } else {
-                    // credenziali errate
-                    Toast.makeText(getApplicationContext(), "Autenticazione fallita", Toast.LENGTH_SHORT).show();
                 }
             } catch (Exception e) {
                 Log.e("errore", e.getMessage());
+                Toast.makeText(getApplicationContext(), "Autenticazione fallita", Toast.LENGTH_SHORT).show();
             }
             super.onPostExecute(s);
         }

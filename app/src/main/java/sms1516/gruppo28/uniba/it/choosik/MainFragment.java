@@ -26,7 +26,7 @@ public class MainFragment extends Fragment {
         ImageView emptyImg = (ImageView) rootView.findViewById(R.id.imgEmpty);
         TextView emptyTxt = (TextView) rootView.findViewById(R.id.txtEmpty);
         TextView titolo = (TextView) rootView.findViewById(R.id.txtTitoloMainFragment);
-        titolo.setText("Ecco i concerti nella provincia di " + provincia);
+        titolo.setText("Ecco i concerti nella provincia di \n" + provincia);
         String [] arrayConcertiVicini = bundle.getStringArray("nomeConcerto");
         ArrayAdapter<String> concertiVicini = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, arrayConcertiVicini);
         ListView listview = (ListView) rootView.findViewById(R.id.lista_concerti_vicini_view);
