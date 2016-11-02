@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -32,6 +33,8 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
+
+import static android.graphics.Color.BLUE;
 
 /**
  * Created by marcouva on 20/10/16.
@@ -125,18 +128,31 @@ public class DetailCanzoniConcerto extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 //        return super.onCreateView(inflater, container, savedInstanceState);
         bundle = this.getArguments();
         final String[] arrayCanzoniPassate = bundle.getStringArray("titoloCanzone");
         String nomeTappa = bundle.getString("nomeTappa");
         final int[] idCanzoniPassate = bundle.getIntArray("idCanzoni");
-        View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
         final ListView listview = (ListView) rootView.findViewById(R.id.lista_canzoni_view);
         TextView tappa = (TextView) rootView.findViewById(R.id.tappa);
         tappa.setText(nomeTappa);
         //simple_list_item_1 deve essere cambiato con una nostra lista di item da creare
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.list_item_rating,R.id.text_item, arrayCanzoniPassate);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.list_item_rating,R.id.text_item, arrayCanzoniPassate){
+            @NonNull
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                if (convertView == null) {
+                    convertView = inflater.inflate(R.layout.list_item_rating,parent,false);
+                }
+                TextView textItem = (TextView) convertView.findViewById(R.id.text_item);
+                textItem.setText(arrayCanzoniPassate[position]);
+
+                convertView.setEnabled(false);
+                return convertView;
+            }
+        };
         listview.setAdapter(adapter);
 
 

@@ -106,6 +106,11 @@ public class ConcertListFragment extends Fragment {
                 titoli.putIntArray("idCanzoni", idCanzoni);
                 DetailCanzoniConcerto detailCanzoniConcerto = new DetailCanzoniConcerto();
                 detailCanzoniConcerto.setArguments(titoli);
+
+
+
+
+
                 FragmentManager manager = getFragmentManager();
                 manager.beginTransaction().replace(R.id.search_container,detailCanzoniConcerto).commit();
 
