@@ -8,16 +8,17 @@
 
 
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/textitem"
-        android:layout_width="match_parent"
+        android:id="@+id/text_item"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/colorAccent"></TextView>
 
     <RatingBar
-        android:layout_above="@id/textitem"
-        android:layout_width="wrap_content"
+        android:numStars="5"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:rating="1.5" />
+        android:stepSize="0.1"
+        android:isIndicator="true"/>
 
 </RelativeLayout>
 

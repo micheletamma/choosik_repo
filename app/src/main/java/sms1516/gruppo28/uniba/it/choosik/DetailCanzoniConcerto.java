@@ -130,18 +130,19 @@ public class DetailCanzoniConcerto extends Fragment {
         bundle = this.getArguments();
         final String[] arrayCanzoniPassate = bundle.getStringArray("titoloCanzone");
         String nomeTappa = bundle.getString("nomeTappa");
+        final int[] idCanzoniPassate = bundle.getIntArray("idCanzoni");
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
         final ListView listview = (ListView) rootView.findViewById(R.id.lista_canzoni_view);
         TextView tappa = (TextView) rootView.findViewById(R.id.tappa);
         tappa.setText(nomeTappa);
         //simple_list_item_1 deve essere cambiato con una nostra lista di item da creare
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, arrayCanzoniPassate);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.list_item_rating,R.id.text_item, arrayCanzoniPassate);
         listview.setAdapter(adapter);
 
 
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
                 //prendo l'utente
                 final String utente = SaveSharedPreference.getUserName(getContext());
                 final String canzoneDaVotare = arrayCanzoniPassate[position];
@@ -157,9 +158,9 @@ public class DetailCanzoniConcerto extends Fragment {
                     @Override
                     public void onClick(View v) {
                         //da implementare
-                        params.put("username",utente);
+                        params.put("utente__username",utente);
                         params.put("votoNum",ratingBar.getRating());
-                        params.put("canzoneInTappa", canzoneDaVotare);
+                        params.put("resource_uri", "/api/canzoneintappa/"+ idCanzoniPassate[position]+ "/" );
                         SimpleTask task = new SimpleTask();
                         task.execute("http://exrezzo.pythonanywhere.com/api/votocanzoneintappa/?format=json");
                     }

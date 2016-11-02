@@ -7,7 +7,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="kidemurt" />
+        android:text="Votazione" />
 
     <RatingBar
         android:id="@+id/dialog_ratingbar"
@@ -19,7 +19,6 @@
         android:clickable="true"
         android:isIndicator="false"
         android:numStars="5"
-        android:rating="2"
         android:stepSize="1.0" />
 
     <Button

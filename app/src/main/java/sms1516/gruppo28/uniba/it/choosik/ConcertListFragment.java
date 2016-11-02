@@ -92,14 +92,17 @@ public class ConcertListFragment extends Fragment {
             try {
                 JSONArray arrayCanzoni = detailCanzoni.getJSONArray("objects");
                 String titoloCanzone []  = new String [arrayCanzoni.length()];
+                int[] idCanzoni = new int[arrayCanzoni.length()];
                for (int i=0;i<titoloCanzone.length;i++){
                    JSONObject temp = arrayCanzoni.getJSONObject(i);
                    titoloCanzone[i]=temp.getJSONObject("canzone").getString("titolo");
+                   idCanzoni[i] = Integer.parseInt(temp.getJSONObject("canzone").getString("id"));
                }
                 //adesso l'array titoloCanzone e' popolato dai titoli della tappa cliccata
                 Bundle titoli = new Bundle();
                 titoli.putStringArray("titoloCanzone",titoloCanzone);
                 titoli.putString("nomeTappa",nomeTappa);
+                titoli.putIntArray("idCanzoni", idCanzoni);
                 DetailCanzoniConcerto detailCanzoniConcerto = new DetailCanzoniConcerto();
                 detailCanzoniConcerto.setArguments(titoli);
                 FragmentManager manager = getFragmentManager();
