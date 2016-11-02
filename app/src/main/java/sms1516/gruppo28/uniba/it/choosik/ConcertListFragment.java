@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -135,7 +136,8 @@ public class ConcertListFragment extends Fragment {
         ListView listview = (ListView) rootView.findViewById(R.id.lista_concerti_view);
         upperInflater = inflater;
         upperContainer=container;
-
+        TextView txtTitolo = (TextView) rootView.findViewById(R.id.txtTitoloConcertFragment);
+        txtTitolo.setText("Lista concerti");
         /**
          * effettuo richiesta al database per ottenere dati
          */
@@ -188,6 +190,8 @@ public class ConcertListFragment extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+
 
 
 

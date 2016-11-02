@@ -73,6 +73,7 @@ public class LoginActivity extends AppCompatActivity {
         JSONObject loginresult;
         String username;
         String email;
+        String prov;
         boolean artista;
 
 
@@ -135,11 +136,13 @@ public class LoginActivity extends AppCompatActivity {
                     username = datiutente.getString("username");
                     artista = datiutente.getBoolean("artista");
                     email = datiutente.getString("email");
+                    prov=datiutente.getString("provincia");
                     // salva i dati nelle preferenze essendo corretti per evitare in seguito di
                     // rifare la login
                     SaveSharedPreference.setUserName(getApplicationContext(), username);
                     SaveSharedPreference.setIsArtist(getApplicationContext(), artista);
                     SaveSharedPreference.setEmail(getApplicationContext(), email);
+                    SaveSharedPreference.setProvincia(getApplicationContext(),prov);
                     // avvia la mainActivity
                     getApplicationContext()
                             .startActivity(new Intent(getApplicationContext(), MainActivity.class)

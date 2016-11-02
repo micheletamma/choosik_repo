@@ -17,20 +17,41 @@
         android:paddingTop="10dp"
         android:touchscreenBlocksFocus="false"
         android:layout_alignParentBottom="true"
-        android:layout_below="@+id/textView6">
+        android:layout_below="@+id/txtTitoloConcertFragment">
 
     </ListView>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView6"
+        android:id="@+id/txtTitoloConcertFragment"
         android:gravity="center|top"
-        android:text="Lista concerti"
+        android:text="Lista concerti in cui hai votato"
         android:textStyle="bold"
         android:textAlignment="center"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imgEmpty"
+        android:src="@drawable/empty_happy"
+        android:visibility="invisible"
+        android:layout_below="@+id/txtTitoloConcertFragment"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="81dp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/non_hai_ancora_votato_alcun_concerto_usa_la_nostra_funziona_di_ricerca_nel_menu"
+        android:id="@+id/txtEmpty"
+        android:visibility="invisible"
+        android:textAlignment="center"
+        android:textColor="#fe4949"
+        android:textSize="18sp"
+        android:layout_below="@+id/imgEmpty"
         android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

@@ -14,5 +14,7 @@
     <string name="usr">Username</string>
     <string name="psw">Password</string>
     <string name="mail">about@gruppotamma.esy.es</string>
+    <string name="non_e_stato_trovato_alcun_concerto_nelle_vicinanze_n_usa_la_nostra_funzione_di_ricerca_nel_menu">Non e\' stato trovato alcun \n concerto nelle vicinanze. \n Usa la nostra funzione \n di ricerca nel menu.</string>
+    <string name="non_hai_ancora_votato_alcun_concerto_usa_la_nostra_funziona_di_ricerca_nel_menu">Non hai ancora votato alcun concerto. Usa la nostra funziona di ricerca nel menu</string>
 
 </resources>

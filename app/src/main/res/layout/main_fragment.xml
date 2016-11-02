@@ -2,4 +2,45 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:id="@+id/txtTitoloMainFragment"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textSize="20sp"
+        />
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/lista_concerti_vicini_view"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:divider="@android:drawable/screen_background_dark_transparent"
+        android:layout_below="@+id/txtTitoloMainFragment" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imgEmpty"
+        android:src="@drawable/empty_happy"
+        android:visibility="invisible"
+        android:layout_below="@+id/txtTitoloMainFragment"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="68dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/non_e_stato_trovato_alcun_concerto_nelle_vicinanze_n_usa_la_nostra_funzione_di_ricerca_nel_menu"
+        android:id="@+id/txtEmpty"
+        android:visibility="invisible"
+        android:textAlignment="center"
+        android:textColor="#fe4949"
+        android:textSize="18dp"
+        android:layout_below="@+id/imgEmpty"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>

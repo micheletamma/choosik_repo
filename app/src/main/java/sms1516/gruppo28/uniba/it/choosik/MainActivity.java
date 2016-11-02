@@ -38,6 +38,9 @@ public class MainActivity extends AppCompatActivity
     boolean myConcertsFragmentFlag = false;
     boolean mainFragmentFlag = false;
 
+    String provincia;
+
+
     String u = "";
     JSONObject artistResult;
 
@@ -146,12 +149,28 @@ public class MainActivity extends AppCompatActivity
                 }
 
             } else if (mainFragmentFlag){
+                mainFragmentFlag=false;
+                try {
+                    JSONArray arrayConcertiVicini = artistResult.getJSONArray("objects");
+                    String nomeConcerto[] = new String[arrayConcertiVicini.length()];
+                    for (int i = 0; i <= arrayConcertiVicini.length() - 1; i++) {
+                        JSONObject temp = arrayConcertiVicini.getJSONObject(i);
+                        nomeConcerto[i] = temp.getJSONObject("tour").getString("nomeTour")
+                                + " a " + temp.getString("citta")
+                                + " il " + temp.getString("data");
+
+                    }
+                    Bundle nomi = new Bundle();
+                    nomi.putStringArray("nomeConcerto",nomeConcerto);
+                    FragmentManager manager = getSupportFragmentManager();
+                    MainFragment mainFragment = new MainFragment();
+                    mainFragment.setArguments(nomi);
+                    manager.beginTransaction().replace(R.id.relativelayoutforfragment,mainFragment).commit();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
 
-
-                FragmentManager manager = getSupportFragmentManager();
-                MainFragment mainFragment = new MainFragment();
-                manager.beginTransaction().replace(R.id.relativelayoutforfragment,mainFragment).commit();
             }
 
 
@@ -184,6 +203,7 @@ public class MainActivity extends AppCompatActivity
         artista = SaveSharedPreference.getIsArtist(this);
         u = utente; //estrapolo il nome utente al di fuori del metodo interno
         String postaelettronica = receive.getStringExtra("Email");
+        provincia=SaveSharedPreference.getProvincia(this);
         View header = navigationView.getHeaderView(0);
         TextView nome = (TextView) header.findViewById(R.id.nome_utente);
         nome.setText(utente);
@@ -193,6 +213,10 @@ public class MainActivity extends AppCompatActivity
             Menu nav_Menu = navigationView.getMenu();
             nav_Menu.findItem(R.id.nav_insert).setVisible(false);
         }
+        mainFragmentFlag=true;
+        JsonTask mainTask = new JsonTask();
+        mainTask.execute("http://exrezzo.pythonanywhere.com/api/tappa/?format=json&citta="+provincia);
+
     }
 
 
@@ -240,6 +264,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_home) {
             setTitle("Home");
             FragmentManager manager = getSupportFragmentManager();
+            mainFragmentFlag = true;
 
             /**
              * Quando si seleziona home nella navbar, essendo l'unica activity di fatto, controlla
@@ -255,6 +280,8 @@ public class MainActivity extends AppCompatActivity
                 }
             }
             JsonTask mainTask = new JsonTask();
+            mainTask.execute("http://exrezzo.pythonanywhere.com/api/tappa/?format=json&citta="+provincia);
+
 
 
 
