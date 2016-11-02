@@ -13,6 +13,7 @@ public class SaveSharedPreference {
     static final String PREF_USER_NAME = "username";
     static final String PREF_EMAIL = "email";
     static final String ISARTIST = "isartist";
+    static final String PROVINCIA = "provincia";
 
 
     static SharedPreferences getSharedPreferences(Context ctx) {
@@ -40,6 +41,11 @@ public class SaveSharedPreference {
         editor.putString(PREF_EMAIL, email);
         editor.commit();
     }
+    public static void setProvincia(Context ctx, String provincia) {
+        SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
+        editor.putString(PROVINCIA, provincia);
+        editor.commit();
+    }
 
 
     public static boolean getIsArtist(Context ctx) {
@@ -52,6 +58,9 @@ public class SaveSharedPreference {
 
     public static String getEmail(Context ctx) {
         return getSharedPreferences(ctx).getString(PREF_EMAIL, "");
+    }
+    public static String getProvincia(Context ctx) {
+        return getSharedPreferences(ctx).getString(PROVINCIA, "");
     }
 
     /**

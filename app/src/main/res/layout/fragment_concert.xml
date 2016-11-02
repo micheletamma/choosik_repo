@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/textView6"
         android:gravity="center|top"
-        android:text="Hai votato nelle seguenti tappe"
+        android:text="Lista concerti"
         android:textStyle="bold"
         android:textAlignment="center"
         android:textSize="20dp"

@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity
     //flag che servono per doInBackground e onPost execute
     boolean searchActivityFlag = false;
     boolean myConcertsFragmentFlag = false;
+    boolean mainFragmentFlag = false;
 
     String u = "";
     JSONObject artistResult;
@@ -144,6 +145,13 @@ public class MainActivity extends AppCompatActivity
                     e.printStackTrace();
                 }
 
+            } else if (mainFragmentFlag){
+
+
+
+                FragmentManager manager = getSupportFragmentManager();
+                MainFragment mainFragment = new MainFragment();
+                manager.beginTransaction().replace(R.id.relativelayoutforfragment,mainFragment).commit();
             }
 
 
@@ -246,6 +254,9 @@ public class MainActivity extends AppCompatActivity
                     manager.beginTransaction().remove(ultimofrag).commit();
                 }
             }
+            JsonTask mainTask = new JsonTask();
+
+
 
 //            Intent i=new Intent(MainActivity.this,MainActivity.class);
 //            startActivity(i);
