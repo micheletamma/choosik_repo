@@ -1,4 +1,4 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -6,16 +6,31 @@
 
 
 
+
     <ListView
         android:id="@+id/lista_concerti_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="435dp"
         android:divider="@android:drawable/screen_background_dark_transparent"
         android:dividerHeight="5dp"
         android:headerDividersEnabled="true"
         android:paddingTop="10dp"
-        android:touchscreenBlocksFocus="false">
+        android:touchscreenBlocksFocus="false"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/textView6">
 
     </ListView>
 
-</FrameLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView6"
+        android:gravity="center|top"
+        android:text="Hai votato nelle seguenti tappe"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:textSize="20dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>

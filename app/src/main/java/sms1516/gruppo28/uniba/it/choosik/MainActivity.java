@@ -123,7 +123,26 @@ public class MainActivity extends AppCompatActivity
                 }
                 //se andiamo in i miei concerti si fa questo
             } else if (myConcertsFragmentFlag == true) {
+                myConcertsFragmentFlag=false;
+                try {
+                    JSONArray arrayMieiConcerti = artistResult.getJSONArray("objects");
+                    String nomeTour[] = new String[arrayMieiConcerti.length()];
+                    for (int i = 0; i <= arrayMieiConcerti.length() - 1; i++) {
+                        JSONObject temp = arrayMieiConcerti.getJSONObject(i);
+                        nomeTour[i] = temp.getJSONObject("tour").getString("nomeTour")
+                                + " a " + temp.getString("citta")
+                                + " il " + temp.getString("data");
 
+                    }
+                    Bundle nomi = new Bundle();
+                    nomi.putStringArray("nomeTour",nomeTour);
+                    MyConcertsFragment myConcertsFragment = new MyConcertsFragment();
+                    FragmentManager manager = getSupportFragmentManager();
+                    myConcertsFragment.setArguments(nomi);
+                    manager.beginTransaction().replace(R.id.relativelayoutforfragment, myConcertsFragment, myConcertsFragment.getTag()).commit();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
             }
 
@@ -245,7 +264,7 @@ public class MainActivity extends AppCompatActivity
             myConcertsFragmentFlag = true;
             JsonTask concertiVotatiTask = new JsonTask();
             //inserire url per prendere i concerti con le canzoni che l'utente ha votato
-            concertiVotatiTask.execute();
+            concertiVotatiTask.execute("http://exrezzo.pythonanywhere.com/api/mieiconcerti/?username="+SaveSharedPreference.getUserName(this));
 //            MyConcertsFragment myConcertsFragment = new MyConcertsFragment();
 //            FragmentManager manager = getSupportFragmentManager();
 //            manager.beginTransaction().replace(R.id.relativelayoutforfragment, myConcertsFragment, myConcertsFragment.getTag()).commit();
