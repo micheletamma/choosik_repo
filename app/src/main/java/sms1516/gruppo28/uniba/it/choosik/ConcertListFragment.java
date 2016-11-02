@@ -109,6 +109,8 @@ public class ConcertListFragment extends Fragment {
 
             } catch (JSONException e) {
                 e.printStackTrace();
+            } catch (NullPointerException e){
+                //qui dentro gestisco il caso in cui questo concerto non abbia canzoni
             }
 
             super.onPostExecute(s);

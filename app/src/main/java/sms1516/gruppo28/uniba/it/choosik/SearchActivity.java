@@ -1,7 +1,9 @@
 package sms1516.gruppo28.uniba.it.choosik;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -102,16 +104,29 @@ public class SearchActivity extends AppCompatActivity
         protected void onPostExecute(String s) {
             try {
                 JSONArray arrayTappe = concertResult.getJSONArray("objects");
-                String tappe []  = new String [arrayTappe.length()];
-                Bundle JsonTappa = new Bundle();
-                JsonTappa.putString("JsonTappaString",arrayTappe.toString());
-                ConcertListFragment concertListFragment = new ConcertListFragment();
-                concertListFragment.setArguments(JsonTappa);
-                setContentView(R.layout.search_container);
-                FragmentManager manager = getSupportFragmentManager();
-                manager.beginTransaction().add(R.id.search_container, concertListFragment).commit();
+                if (arrayTappe.length()==0){
+                    //vuol dire che non esistono concerti per questa ricerca
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(SearchActivity.this);
+                            dialog.setTitle("Ricerca errata")
+                            .setMessage("Non esiste alcun concerto con questi parametri di ricerca.\nProva ad usare i nostri suggerimenti!")
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            })
 
-
+                            .setIcon(R.drawable.metal_music_48px)
+                            .show();
+                } else {
+                    String tappe []  = new String [arrayTappe.length()];
+                    Bundle JsonTappa = new Bundle();
+                    JsonTappa.putString("JsonTappaString",arrayTappe.toString());
+                    ConcertListFragment concertListFragment = new ConcertListFragment();
+                    concertListFragment.setArguments(JsonTappa);
+                    setContentView(R.layout.search_container);
+                    FragmentManager manager = getSupportFragmentManager();
+                    manager.beginTransaction().add(R.id.search_container, concertListFragment).commit();
+                }
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -215,13 +230,15 @@ public class SearchActivity extends AppCompatActivity
             req += "&data=" + data;
             if (!luogo.equals("")){
                 req+= "&citta=" + luogo;
-            } else if (!artista.equals("")){
+            }
+            if (!artista.equals("")){
                 req+= "&tour__artista__nome=" + artista;
             }
         } else {
             if (!luogo.equals("")){
                 req+= "&citta=" + luogo;
-            } else if (!artista.equals("")){
+            }
+            if (!artista.equals("")){
                 req+= "&tour__artista__nome=" + artista;
             }
         }
