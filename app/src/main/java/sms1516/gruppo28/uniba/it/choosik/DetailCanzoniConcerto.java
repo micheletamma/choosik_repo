@@ -152,7 +152,6 @@ public class DetailCanzoniConcerto extends Fragment {
                 dialog.setContentView(R.layout.rank_dialog);
                 dialog.setCancelable(true);
                 final RatingBar ratingBar = (RatingBar) dialog.findViewById(R.id.dialog_ratingbar);
-                ratingBar.setRating(3); // qui bisogna settare il rating preso in input dall'utente
                 Button button = (Button) dialog.findViewById(R.id.bottone_vota);
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
