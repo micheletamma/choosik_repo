@@ -34,6 +34,9 @@ public class MainFragment extends Fragment {
 
     JSONObject detailCanzoni;
     String nomeTappa;
+    int idTappa;
+    boolean flagListaCanzoniTask;
+    Bundle titoli = new Bundle();
 
     public MainFragment(){}
 
@@ -89,29 +92,38 @@ public class MainFragment extends Fragment {
         @Override
         protected void onPostExecute(String s) {
             try {
-                JSONArray arrayCanzoni = detailCanzoni.getJSONArray("objects");
-                String titoloCanzone []  = new String [arrayCanzoni.length()];
-                int[] idCanzoni = new int[arrayCanzoni.length()];
-                for (int i=0;i<titoloCanzone.length;i++){
-                    JSONObject temp = arrayCanzoni.getJSONObject(i);
-                    titoloCanzone[i]=temp.getJSONObject("canzone").getString("titolo");
-                    idCanzoni[i] = Integer.parseInt(temp.getJSONObject("canzone").getString("id"));
+                if (flagListaCanzoniTask) {
+                    flagListaCanzoniTask=false;
+                    JSONArray arrayCanzoni = detailCanzoni.getJSONArray("objects");
+                    String titoloCanzone[] = new String[arrayCanzoni.length()];
+                    int[] idCanzoni = new int[arrayCanzoni.length()];
+                    for (int i = 0; i < titoloCanzone.length; i++) {
+                        JSONObject temp = arrayCanzoni.getJSONObject(i);
+                        titoloCanzone[i] = temp.getJSONObject("canzone").getString("titolo");
+                        idCanzoni[i] = Integer.parseInt(temp.getString("id"));
+                    }
+                    //adesso l'array titoloCanzone e' popolato dai titoli della tappa cliccata
+
+                    titoli.putStringArray("titoloCanzone", titoloCanzone);
+                    titoli.putString("nomeTappa", nomeTappa);
+                    titoli.putIntArray("idCanzoni", idCanzoni);
+                    titoli.putInt("idTappa", idTappa);
+                    JsonTask taskVoto = new JsonTask();
+                    taskVoto.execute("http://exrezzo.pythonanywhere.com/api/canzoniintappavotate/?format=json&idTappa="
+                            + Integer.toString(idTappa) + "&username=" + SaveSharedPreference.getUserName(getContext()));
+                } else {
+                    JSONArray array = detailCanzoni.getJSONArray("objects");
+                    String [] canzoniVotate = new String[array.length()];
+                    for (int i=0;i<array.length();i++){
+                        canzoniVotate[i] = array.getJSONObject(i).getString("votata");
+                    }
+
+                    titoli.putStringArray("canzoniVotate",canzoniVotate);
+                    FragmentManager manager = getFragmentManager();
+                    DetailCanzoniConcerto detailCanzoniConcerto = new DetailCanzoniConcerto();
+                    detailCanzoniConcerto.setArguments(titoli);
+                    manager.beginTransaction().replace(R.id.relativelayoutforfragment,detailCanzoniConcerto).commit();
                 }
-                //adesso l'array titoloCanzone e' popolato dai titoli della tappa cliccata
-                Bundle titoli = new Bundle();
-                titoli.putStringArray("titoloCanzone",titoloCanzone);
-                titoli.putString("nomeTappa",nomeTappa);
-                titoli.putIntArray("idCanzoni", idCanzoni);
-                DetailCanzoniConcerto detailCanzoniConcerto = new DetailCanzoniConcerto();
-                detailCanzoniConcerto.setArguments(titoli);
-
-
-
-
-
-                FragmentManager manager = getFragmentManager();
-                manager.beginTransaction().replace(R.id.relativelayoutforfragment,detailCanzoniConcerto).commit();
-
 
 
             } catch (JSONException e) {
@@ -126,6 +138,8 @@ public class MainFragment extends Fragment {
 
 
     }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -151,6 +165,8 @@ public class MainFragment extends Fragment {
                 nomeTappa=arrayConcertiVicini[position];
                 //ricerco le canzoni della tappa con l'id uguale a idToSearch
                 JsonTask detailCanzoni = new JsonTask();
+                flagListaCanzoniTask=true;
+                idTappa=Integer.parseInt(idToSearch);
                 detailCanzoni.execute("http://exrezzo.pythonanywhere.com/api/canzoneintappa/?format=json&tappa__id="+idToSearch);
             }
 
