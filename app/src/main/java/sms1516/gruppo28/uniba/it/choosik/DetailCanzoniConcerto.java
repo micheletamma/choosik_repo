@@ -138,8 +138,11 @@ public class DetailCanzoniConcerto extends Fragment {
         final ListView listview = (ListView) rootView.findViewById(R.id.lista_canzoni_view);
         TextView tappa = (TextView) rootView.findViewById(R.id.tappa);
         tappa.setText(nomeTappa);
-        //simple_list_item_1 deve essere cambiato con una nostra lista di item da creare
+        //definizione dell'adapter con una nostra lista di item che contiene anche il rating
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.list_item_rating,R.id.text_item, arrayCanzoniPassate){
+            //override del metodo getview per fare in modo che se le canzoni della tappa sono state
+            //già votate dall'utente, l'elemento deve essere non cliccabile e deve avvisare che la
+            //tappa è stata già votata
             @NonNull
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {

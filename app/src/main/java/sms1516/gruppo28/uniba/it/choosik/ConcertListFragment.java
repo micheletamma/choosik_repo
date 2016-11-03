@@ -3,6 +3,7 @@ package sms1516.gruppo28.uniba.it.choosik;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
@@ -131,7 +132,7 @@ public class ConcertListFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         //creazione di una view collegata a fragment_concert e di una listview collegata a
@@ -147,7 +148,7 @@ public class ConcertListFragment extends Fragment {
          * effettuo richiesta al database per ottenere dati
          */
 
-        //bundle passato da MainActivity per avere i dati dal database
+        //bundle passato da MainActivity per avere i dati json dal database
         Bundle bundle = this.getArguments();
         String receive = bundle.getString("JsonTappaString");
         JSONArray listaTappe;
@@ -155,16 +156,48 @@ public class ConcertListFragment extends Fragment {
              listaTappe = new JSONArray(receive);
             //listaTappe e' un array di oggetti Json
             final String nomeTappe []  = new String [listaTappe.length()];
+
+            final String[] nomeTappeArray = new String[listaTappe.length()];
+            final String[] luogoTappeArray = new String[listaTappe.length()];
+            final String[] dataTappeArray = new String[listaTappe.length()];
+
+
             final int idTappe [] = new int [listaTappe.length()];
+
+            //ciclo per rendere gli oggetti json json come una array di stringhe
             for (int i=0; i <= listaTappe.length()-1;i++){
                 JSONObject temp = listaTappe.getJSONObject(i);
                 idTappe[i] = Integer.parseInt(temp.getString("id"));
                 nomeTappe[i] = temp.getJSONObject("tour").getString("nomeTour") +
                         " a " + temp.getString("citta")
-                        + " il " +
-                temp.getString("data");
+                        + " il " + temp.getString("data");
+                //da json a stringa
+                nomeTappeArray[i] = temp.getJSONObject("tour").getString("nomeTour");
+                luogoTappeArray[i] = temp.getString("citta");
+                dataTappeArray[i] = temp.getString("data");
+
+
                 //creazione arrayadapter per trasformare i dati dell'array sottoforma di lista
-                ArrayAdapter<String> adapter =new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, nomeTappe);
+                ArrayAdapter<String> adapter =new ArrayAdapter<String>(getActivity(), R.layout.list_concert_item,R.id.nomeTour, nomeTappe){
+                    //override del metodo getview per fare in modo che nella view nome, luogo e
+                    // data compaiano uno sotto l'altro
+                    @NonNull
+                    @Override
+                    public View getView(int position, View convertView, ViewGroup parent) {
+                        if (convertView == null) {
+                            convertView = inflater.inflate(R.layout.list_concert_item,parent,false);
+                        }
+
+                        TextView nomeTour = (TextView) convertView.findViewById(R.id.nomeTour);
+                        nomeTour.setText(nomeTappeArray[position]);
+                        TextView luogoTour = (TextView) convertView.findViewById(R.id.luogoTour);
+                        luogoTour.setText(luogoTappeArray[position]);
+                        TextView dataTour = (TextView) convertView.findViewById(R.id.dataTour);
+                        dataTour.setText(dataTappeArray[position]);
+
+                        return convertView;
+                    }
+                };
                 //la listview riceve i dati sotto forma di lista
                 listview.setAdapter(adapter);
 

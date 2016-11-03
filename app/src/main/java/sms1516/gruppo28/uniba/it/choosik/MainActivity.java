@@ -139,10 +139,13 @@ public class MainActivity extends AppCompatActivity
 
                     }
                     Bundle nomi = new Bundle();
-                    nomi.putStringArray("nomeTour",nomeTour);
+                    Bundle jsonArrayTappe = new Bundle();
+                    jsonArrayTappe.putString("jsonArrayTappe",arrayMieiConcerti.toString());
+                    //nomi.putStringArray("nomeTour",nomeTour);
                     MyConcertsFragment myConcertsFragment = new MyConcertsFragment();
                     FragmentManager manager = getSupportFragmentManager();
                     myConcertsFragment.setArguments(nomi);
+                    myConcertsFragment.setArguments(jsonArrayTappe);
                     manager.beginTransaction().replace(R.id.relativelayoutforfragment, myConcertsFragment, myConcertsFragment.getTag()).commit();
                 } catch (JSONException e) {
                     e.printStackTrace();
