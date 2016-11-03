@@ -130,21 +130,11 @@ public class MainActivity extends AppCompatActivity
                 myConcertsFragmentFlag=false;
                 try {
                     JSONArray arrayMieiConcerti = artistResult.getJSONArray("objects");
-                    String nomeTour[] = new String[arrayMieiConcerti.length()];
-                    for (int i = 0; i <= arrayMieiConcerti.length() - 1; i++) {
-                        JSONObject temp = arrayMieiConcerti.getJSONObject(i);
-                        nomeTour[i] = temp.getJSONObject("tour").getString("nomeTour")
-                                + " a " + temp.getString("citta")
-                                + " il " + temp.getString("data");
-
-                    }
-                    Bundle nomi = new Bundle();
                     Bundle jsonArrayTappe = new Bundle();
                     jsonArrayTappe.putString("jsonArrayTappe",arrayMieiConcerti.toString());
                     //nomi.putStringArray("nomeTour",nomeTour);
                     MyConcertsFragment myConcertsFragment = new MyConcertsFragment();
                     FragmentManager manager = getSupportFragmentManager();
-                    myConcertsFragment.setArguments(nomi);
                     myConcertsFragment.setArguments(jsonArrayTappe);
                     manager.beginTransaction().replace(R.id.relativelayoutforfragment, myConcertsFragment, myConcertsFragment.getTag()).commit();
                 } catch (JSONException e) {

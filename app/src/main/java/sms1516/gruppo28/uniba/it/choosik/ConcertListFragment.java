@@ -165,7 +165,7 @@ public class ConcertListFragment extends Fragment {
             final int idTappe [] = new int [listaTappe.length()];
 
             //ciclo per rendere gli oggetti json json come una array di stringhe
-            for (int i=0; i <= listaTappe.length()-1;i++){
+            for (int i=0; i <= listaTappe.length()-1;i++) {
                 JSONObject temp = listaTappe.getJSONObject(i);
                 idTappe[i] = Integer.parseInt(temp.getString("id"));
                 nomeTappe[i] = temp.getJSONObject("tour").getString("nomeTour") +
@@ -175,6 +175,8 @@ public class ConcertListFragment extends Fragment {
                 nomeTappeArray[i] = temp.getJSONObject("tour").getString("nomeTour");
                 luogoTappeArray[i] = temp.getString("citta");
                 dataTappeArray[i] = temp.getString("data");
+
+            }
 
 
                 //creazione arrayadapter per trasformare i dati dell'array sottoforma di lista
@@ -201,7 +203,7 @@ public class ConcertListFragment extends Fragment {
                 //la listview riceve i dati sotto forma di lista
                 listview.setAdapter(adapter);
 
-            }
+
 
             /**
              * Settaggio listener per click.
