@@ -118,10 +118,31 @@ public class ConcertListFragment extends Fragment {
                 } else {
                     JSONArray array = detailCanzoni.getJSONArray("objects");
                     String [] canzoniVotate = new String[array.length()];
+                    /**
+                     * Aggiungo parte da copiare MARCO UVA
+                     */
+                    float [] media = new float [array.length()];
+                    /**
+                     * fine UVA
+                     */
                     for (int i=0;i<array.length();i++){
                         canzoniVotate[i] = array.getJSONObject(i).getString("votata");
+                        /** AGGIUNGI UVA
+                         *
+                         */
+                        media[i] = Float.parseFloat(array.getJSONObject(i).getString("votoMedio"));
+                        /** fine aggiungi uva
+                         *
+                         */
                     }
 
+                    /** aggiungi uva
+                     *
+                     */
+                    titoli.putFloatArray("mediaCanzoni",media);
+                    /**fine aggiungi uva
+                     *
+                     */
                     titoli.putStringArray("canzoniVotate",canzoniVotate);
                     FragmentManager manager = getFragmentManager();
                     DetailCanzoniConcerto detailCanzoniConcerto = new DetailCanzoniConcerto();

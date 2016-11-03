@@ -215,6 +215,7 @@ public class DetailCanzoniConcerto extends Fragment {
         final String[] arrayCanzoniPassate = bundle.getStringArray("titoloCanzone");
         String nomeTappa = bundle.getString("nomeTappa");
         final int[] idCanzoniPassate = bundle.getIntArray("idCanzoni");
+        final float [] mediaCanzoni = bundle.getFloatArray("mediaCanzoni");
         final View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
         final ListView listview = (ListView) rootView.findViewById(R.id.lista_canzoni_view);
         TextView tappa = (TextView) rootView.findViewById(R.id.tappa);
@@ -237,7 +238,10 @@ public class DetailCanzoniConcerto extends Fragment {
                     convertView = inflater.inflate(R.layout.list_item_rating, parent, false);
                 }
                 TextView textItem = (TextView) convertView.findViewById(R.id.text_item);
+                TextView textMedia = (TextView) convertView.findViewById(R.id.text_media);
                 textItem.setText(arrayCanzoniPassate[position]);
+                textMedia.setText("Voto medio: " + Float.toString(mediaCanzoni[position]));
+
                 if (canzoniVotate[position].contains("true")) {
 
                     textItem.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_true, 0);
@@ -250,6 +254,7 @@ public class DetailCanzoniConcerto extends Fragment {
                     }
 
                 }
+
                 return convertView;
 
             }
