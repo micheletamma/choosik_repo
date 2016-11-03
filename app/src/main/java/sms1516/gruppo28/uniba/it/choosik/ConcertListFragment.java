@@ -130,13 +130,19 @@ public class ConcertListFragment extends Fragment {
 
     }
 
-
+    /**
+     * creazione di una view collegata a fragment_concert e di una listview collegata a
+     * lista_concerti_view.
+     * Tramite un bundle passato da MainActivity ricevo i dati json da convertire in stringa.
+     * Successivamente, tramite un ciclo for, trasformo il json in vari array con nomi, luoghi e
+     * date dei concerti a cui si fa riferimento.
+     * Grazie all'ArrayAdapter passiamo questi array per mostrare i dati in una view
+     */
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        //creazione di una view collegata a fragment_concert e di una listview collegata a
-        //lista_concerti_view
+
 
         View rootView = inflater.inflate(R.layout.fragment_concert, container, false);
         ListView listview = (ListView) rootView.findViewById(R.id.lista_concerti_view);
@@ -144,9 +150,7 @@ public class ConcertListFragment extends Fragment {
         upperContainer=container;
         TextView txtTitolo = (TextView) rootView.findViewById(R.id.txtTitoloConcertFragment);
         txtTitolo.setText("Lista concerti");
-        /**
-         * effettuo richiesta al database per ottenere dati
-         */
+
 
         //bundle passato da MainActivity per avere i dati json dal database
         Bundle bundle = this.getArguments();
