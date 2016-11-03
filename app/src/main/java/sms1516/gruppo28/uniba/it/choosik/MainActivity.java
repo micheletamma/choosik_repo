@@ -146,15 +146,19 @@ public class MainActivity extends AppCompatActivity
                 try {
                     JSONArray arrayConcertiVicini = artistResult.getJSONArray("objects");
                     String nomeConcerto[] = new String[arrayConcertiVicini.length()];
+                    int[] arrayIdTappe = new int[arrayConcertiVicini.length()];
                     for (int i = 0; i <= arrayConcertiVicini.length() - 1; i++) {
                         JSONObject temp = arrayConcertiVicini.getJSONObject(i);
                         nomeConcerto[i] = temp.getJSONObject("tour").getString("nomeTour")
                                 + " a " + temp.getString("citta")
                                 + " il " + temp.getString("data");
+                        arrayIdTappe[i] = Integer.parseInt(temp.getString("id"));
+
 
                     }
                     Bundle nomi = new Bundle();
                     nomi.putStringArray("nomeConcerto",nomeConcerto);
+                    nomi.putIntArray("arrayIdTappe", arrayIdTappe);
                     FragmentManager manager = getSupportFragmentManager();
                     MainFragment mainFragment = new MainFragment();
                     mainFragment.setArguments(nomi);
