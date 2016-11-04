@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/txtTitoloConcertFragment"
         android:gravity="center|top"
-        android:text="Lista concerti in cui hai votato"
+        android:text="Lista concerti"
         android:textStyle="bold"
         android:textAlignment="center"
         android:textSize="20sp"
