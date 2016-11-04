@@ -50,6 +50,7 @@ public class DetailCanzoniConcerto extends Fragment {
     int idTappa;
     boolean toUpdate;
     int positionToUpdate;
+    int votoUpdate;
 
     Map params = new HashMap();
 
@@ -216,39 +217,43 @@ public class DetailCanzoniConcerto extends Fragment {
         String nomeTappa = bundle.getString("nomeTappa");
         final int[] idCanzoniPassate = bundle.getIntArray("idCanzoni");
         final float [] mediaCanzoni = bundle.getFloatArray("mediaCanzoni");
+        final int[] votoCanzoni = bundle.getIntArray("votoCanzone");
         final View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
         final ListView listview = (ListView) rootView.findViewById(R.id.lista_canzoni_view);
         TextView tappa = (TextView) rootView.findViewById(R.id.tappa);
         tappa.setText(nomeTappa);
         idTappa = bundle.getInt("idTappa");
         final String[] canzoniVotate = bundle.getStringArray("canzoniVotate");
+//        RatingBar ratingBar = (RatingBar) rootView.findViewById(R.id.rating_bar);
         //definizione dell'adapter con una nostra lista di item che contiene anche il rating
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.list_item_rating, R.id.text_item, arrayCanzoniPassate) {
             //override del metodo getview per fare in modo che se le canzoni della tappa sono state
             //già votate dall'utente, l'elemento deve essere non cliccabile e deve avvisare che la
             //tappa è stata già votata
-            RatingBar ratingBar = (RatingBar) rootView.findViewById(R.id.rating_bar);
+
             @NonNull
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
-
-
                 if (convertView == null) {
-
                     convertView = inflater.inflate(R.layout.list_item_rating, parent, false);
+
                 }
+                RatingBar ratingBar = (RatingBar) convertView.findViewById(R.id.rating_bar);
                 TextView textItem = (TextView) convertView.findViewById(R.id.text_item);
                 TextView textMedia = (TextView) convertView.findViewById(R.id.text_media);
                 textItem.setText(arrayCanzoniPassate[position]);
                 textMedia.setText("Voto medio: " + Float.toString(mediaCanzoni[position]));
+                float indice = (float)votoCanzoni[position];
 
                 if (canzoniVotate[position].contains("true")) {
-
+                    ratingBar.setRating(votoCanzoni[position]);
                     textItem.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_true, 0);
                 }
                 if (toUpdate){
                     if (position==positionToUpdate){
                         toUpdate=false;
+                        votoCanzoni[positionToUpdate]= votoUpdate;
+                        ratingBar.setRating(votoUpdate);
                         textItem.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.icon_true, 0);
                         canzoniVotate[position]="true";
                     }
@@ -300,6 +305,7 @@ public class DetailCanzoniConcerto extends Fragment {
                             ListView listview = (ListView) rootView.findViewById(R.id.lista_canzoni_view);
                             toUpdate = true;
                             positionToUpdate = position;
+                            votoUpdate=(int)ratingBar.getRating();
                             listview.setAdapter(listview.getAdapter());
 
 

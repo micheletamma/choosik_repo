@@ -118,6 +118,7 @@ public class ConcertListFragment extends Fragment {
                 } else {
                     JSONArray array = detailCanzoni.getJSONArray("objects");
                     String [] canzoniVotate = new String[array.length()];
+                    int [] votoCanzone = new int [array.length()];
                     /**
                      * Aggiungo parte da copiare MARCO UVA
                      */
@@ -131,6 +132,12 @@ public class ConcertListFragment extends Fragment {
                          *
                          */
                         media[i] = Float.parseFloat(array.getJSONObject(i).getString("votoMedio"));
+                        if (canzoniVotate[i].contains("true")){
+                            votoCanzone[i] = Integer.parseInt(array.getJSONObject(i).getString("numVoto"));
+                        } else {
+                            votoCanzone[i]=0;
+                        }
+
                         /** fine aggiungi uva
                          *
                          */
@@ -140,6 +147,7 @@ public class ConcertListFragment extends Fragment {
                      *
                      */
                     titoli.putFloatArray("mediaCanzoni",media);
+                    titoli.putIntArray("votoCanzone",votoCanzone);
                     /**fine aggiungi uva
                      *
                      */
