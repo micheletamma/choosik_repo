@@ -281,7 +281,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            setTitle("Home");
+            setTitle("Choosik");
             FragmentManager manager = getSupportFragmentManager();
             mainFragmentFlag = true;
 
