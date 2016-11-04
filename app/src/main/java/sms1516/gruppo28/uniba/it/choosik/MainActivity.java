@@ -307,7 +307,7 @@ public class MainActivity extends AppCompatActivity
 
 
         } else if (id == R.id.nav_search) {
-            setTitle("Ricerca");
+            setTitle("Choosik");
             searchActivityFlag = true;
             JsonTask artistTask = new JsonTask();
             artistTask.execute("http://exrezzo.pythonanywhere.com/api/utente/?format=json&artista=true");
