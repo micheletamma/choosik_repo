@@ -136,7 +136,9 @@ public class MainActivity extends AppCompatActivity
                     MyConcertsFragment myConcertsFragment = new MyConcertsFragment();
                     FragmentManager manager = getSupportFragmentManager();
                     myConcertsFragment.setArguments(jsonArrayTappe);
-                    manager.beginTransaction().replace(R.id.relativelayoutforfragment, myConcertsFragment, myConcertsFragment.getTag()).commit();
+                    manager.beginTransaction().replace(R.id.relativelayoutforfragment, myConcertsFragment, myConcertsFragment.getTag())
+                            .addToBackStack(myConcertsFragment.getTag())
+                            .commit();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -315,7 +317,7 @@ public class MainActivity extends AppCompatActivity
 
 //
         } else if (id == R.id.nav_concert) {
-            setTitle("I miei concerti");
+            setTitle("Choosik");
             myConcertsFragmentFlag = true;
             JsonTask concertiVotatiTask = new JsonTask();
             //inserire url per prendere i concerti con le canzoni che l'utente ha votato
@@ -326,17 +328,21 @@ public class MainActivity extends AppCompatActivity
 
 
         } else if (id == R.id.nav_about) {
-            setTitle("About us");
+            setTitle("Choosik");
             AboutFragment aboutFragment = new AboutFragment();
             FragmentManager manager = getSupportFragmentManager();
-            manager.beginTransaction().replace(R.id.relativelayoutforfragment, aboutFragment, aboutFragment.getTag()).commit();
+            manager.beginTransaction().replace(R.id.relativelayoutforfragment, aboutFragment, aboutFragment.getTag())
+                    .addToBackStack(aboutFragment.getTag())
+                    .commit();
 
 
         } else if (id == R.id.nav_send) {
-            setTitle("Contattaci");
+            setTitle("Choosik");
             SendFragment sendFragment = new SendFragment();
             FragmentManager manager = getSupportFragmentManager();
-            manager.beginTransaction().replace(R.id.relativelayoutforfragment, sendFragment, sendFragment.getTag()).commit();
+            manager.beginTransaction().replace(R.id.relativelayoutforfragment, sendFragment, sendFragment.getTag())
+                    .addToBackStack(sendFragment.getTag())
+                    .commit();
 
 
         } else if (id == R.id.nav_logout) {
