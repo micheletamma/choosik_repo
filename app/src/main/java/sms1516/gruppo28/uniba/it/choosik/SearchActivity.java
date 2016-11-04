@@ -40,7 +40,7 @@ public class SearchActivity extends AppCompatActivity
     TextView mDateDisplay;
     Button mPickDate;
     JSONObject concertResult;
-
+    Bundle receiver;
 
     int mYear;
     int mMonth;
@@ -142,7 +142,7 @@ public class SearchActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-        Bundle extras = getIntent().getExtras();
+
         Dizionario dizionario = new Dizionario();
         HashMap x = dizionario.dizionarioProvicia();
 
@@ -154,14 +154,29 @@ public class SearchActivity extends AppCompatActivity
         );
         AutoCompleteTextView luogoTxtView = (AutoCompleteTextView) findViewById(R.id.txtViewLuogo);
         luogoTxtView.setAdapter(provincia);
-        String [] nomiArtisti = extras.getStringArray("nomiArtisti");
+
         AutoCompleteTextView autocomplete = (AutoCompleteTextView) findViewById(R.id.txtViewArtista);
+        if (getIntent().getExtras()!=null){
+            Bundle extras;
+            extras = getIntent().getExtras();
+            String [] nomiArtisti=extras.getStringArray("nomiArtisti");
+            SaveSharedPreference.setArtisti(getApplicationContext(), extras.getStringArray("nomiArtisti"));
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 this,
                 android.R.layout.simple_dropdown_item_1line,
                 nomiArtisti
         );
         autocomplete.setAdapter(adapter);
+        } else {
+            String [] nomiArtisti = SaveSharedPreference.getArtisti(getApplicationContext());
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                    this,
+                    android.R.layout.simple_dropdown_item_1line,
+                    nomiArtisti
+            );
+            autocomplete.setAdapter(adapter);
+        }
+
         isBtnDatePressed = false;
 
         String utente=SaveSharedPreference.getUserName(getApplicationContext());

@@ -4,6 +4,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Classe per controllo e gestione della sequenza di activity nel caso in cui l'utente sia
  * gia loggato o meno.
@@ -14,6 +18,7 @@ public class SaveSharedPreference {
     static final String PREF_EMAIL = "email";
     static final String ISARTIST = "isartist";
     static final String PROVINCIA = "provincia";
+    static final String ARTISTI ="artisti";
 
 
     static SharedPreferences getSharedPreferences(Context ctx) {
@@ -29,6 +34,12 @@ public class SaveSharedPreference {
         editor.commit();
     }
 
+    public static void setArtisti(Context ctx, String [] artisti){
+        SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
+        Set<String> mySet = new HashSet<String>(Arrays.asList(artisti));
+        editor.putStringSet(ARTISTI,mySet);
+        editor.commit();
+    }
     public static void setIsArtist(Context ctx, boolean isartist) {
         SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
         editor.putBoolean(ISARTIST, isartist);
@@ -47,6 +58,14 @@ public class SaveSharedPreference {
         editor.commit();
     }
 
+    public static String [] getArtisti (Context ctx){
+        String [] test = new String []{"c","a"};
+        Set<String> temp = new HashSet<String>(Arrays.asList(test));
+        String [] artisti = new String [getSharedPreferences(ctx).getStringSet(ARTISTI,temp).size()];
+        Set<String> mySet = new HashSet<String>(getSharedPreferences(ctx).getStringSet(ARTISTI,temp));
+        artisti = mySet.toArray(artisti);
+        return artisti;
+    }
 
     public static boolean getIsArtist(Context ctx) {
         return getSharedPreferences(ctx).getBoolean(ISARTIST, false);

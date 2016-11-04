@@ -1,12 +1,14 @@
 package sms1516.gruppo28.uniba.it.choosik;
 
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -289,31 +291,32 @@ public class ConcertListFragment extends Fragment {
 
 
 
-//    @Override
-//    public void onResume() {
-//
-//        super.onResume();
-//
-//        getView().setFocusableInTouchMode(true);
-//        getView().requestFocus();
-//        getView().setOnKeyListener(new View.OnKeyListener() {
-//            @Override
-//            public boolean onKey(View v, int keyCode, KeyEvent event) {
-//
-//                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
-////                    Fragment fragment = getFragmentManager().findFragmentByTag("concertListFragment");
-//                    getFragmentManager().popBackStackImmediate("concertListFragment",0);
-//
-//                    // handle back button
-////                    getFragmentManager().beginTransaction().remove(fragment).commit();
-//                    return true;
-//
-//                }
-//
-//                return false;
-//            }
-//        });
-//    }
+    @Override
+    public void onResume() {
+
+        super.onResume();
+
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
+//                    Fragment fragment = getFragmentManager().findFragmentByTag("concertListFragment");
+                    //vuol dire che ho premuto il pulsante back
+                    Intent i = new Intent(getContext(),SearchActivity.class);
+                    startActivity(i);
+                    // handle back button
+//                    getFragmentManager().beginTransaction().remove(fragment).commit();
+                    return true;
+
+                }
+
+                return false;
+            }
+        });
+    }
 
 
 
