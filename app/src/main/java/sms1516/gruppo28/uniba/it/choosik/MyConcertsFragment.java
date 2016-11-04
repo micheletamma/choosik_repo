@@ -42,10 +42,6 @@ public class MyConcertsFragment extends Fragment {
 
     private class JsonTask extends AsyncTask<String,Void,String> {
 
-
-
-
-
         @Override
         protected String doInBackground(String... strings) {
             HttpURLConnection connection = null;
