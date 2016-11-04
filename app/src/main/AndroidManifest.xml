@@ -37,11 +37,12 @@
         <activity
             android:name=".RegisterActivity"
             android:noHistory="true"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".LoginActivity"
+            />
         <activity android:name=".SearchActivity"
             android:theme="@style/AppTheme"
-            android:label="Ricerca"
-            />
+            android:parentActivityName=".MainActivity" />
 
     </application>
 

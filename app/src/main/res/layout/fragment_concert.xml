@@ -2,11 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="sms1516.gruppo28.uniba.it.choosik.ConcertListFragment">
-
-
-
-
+    tools:context="sms1516.gruppo28.uniba.it.choosik.ConcertListFragment"
+    >
     <ListView
         android:id="@+id/lista_concerti_view"
         android:layout_width="match_parent"

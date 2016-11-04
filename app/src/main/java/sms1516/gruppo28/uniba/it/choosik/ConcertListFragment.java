@@ -155,7 +155,7 @@ public class ConcertListFragment extends Fragment {
                     FragmentManager manager = getFragmentManager();
                     DetailCanzoniConcerto detailCanzoniConcerto = new DetailCanzoniConcerto();
                     detailCanzoniConcerto.setArguments(titoli);
-                    manager.beginTransaction().replace(R.id.search_container, detailCanzoniConcerto).commit();
+                    manager.beginTransaction().replace(R.id.search_container, detailCanzoniConcerto).addToBackStack("detailCanzoniConcerto").commit();
                 }
 
 
@@ -286,6 +286,35 @@ public class ConcertListFragment extends Fragment {
         //la view con tutti i dati
         return rootView;
     }
+
+
+
+//    @Override
+//    public void onResume() {
+//
+//        super.onResume();
+//
+//        getView().setFocusableInTouchMode(true);
+//        getView().requestFocus();
+//        getView().setOnKeyListener(new View.OnKeyListener() {
+//            @Override
+//            public boolean onKey(View v, int keyCode, KeyEvent event) {
+//
+//                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
+////                    Fragment fragment = getFragmentManager().findFragmentByTag("concertListFragment");
+//                    getFragmentManager().popBackStackImmediate("concertListFragment",0);
+//
+//                    // handle back button
+////                    getFragmentManager().beginTransaction().remove(fragment).commit();
+//                    return true;
+//
+//                }
+//
+//                return false;
+//            }
+//        });
+//    }
+
 
 
 }

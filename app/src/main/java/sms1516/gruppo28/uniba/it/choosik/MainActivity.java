@@ -180,8 +180,9 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -196,10 +197,10 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setItemIconTintList(null);
         Intent receive = getIntent();
-        String utente = receive.getStringExtra("Username");
+        String utente = SaveSharedPreference.getUserName(this);
         artista = SaveSharedPreference.getIsArtist(this);
         u = utente; //estrapolo il nome utente al di fuori del metodo interno
-        String postaelettronica = receive.getStringExtra("Email");
+        String postaelettronica = SaveSharedPreference.getEmail(this);
         provincia=SaveSharedPreference.getProvincia(this);
         View header = navigationView.getHeaderView(0);
         TextView nome = (TextView) header.findViewById(R.id.nome_utente);
@@ -217,8 +218,27 @@ public class MainActivity extends AppCompatActivity
     }
 
 
+    @Override
+    protected void onResume() {
+        updateNavigHome();
+        super.onResume();
 
 
+    }
+
+    @Override
+    protected void onRestart() {
+        updateNavigHome();
+        super.onRestart();
+
+    }
+
+    public void updateNavigHome(){
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View header = navigationView.getHeaderView(0);
+        TextView nome = (TextView) header.findViewById(R.id.nome_utente);
+        nome.setText(SaveSharedPreference.getUserName(this));
+    }
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

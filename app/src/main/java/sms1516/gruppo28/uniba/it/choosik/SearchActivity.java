@@ -30,14 +30,10 @@ import java.net.URL;
 import java.util.Calendar;
 import java.util.HashMap;
 
-/**
- * La classe Search Activity e' estesa a MainActivity in modo tale da implementare
- * il nav_menu
- */
+
 public class SearchActivity extends AppCompatActivity
 {
     /**
-     * Nel metodo onCreate carichiamo lo stesso menu della Main Activity
      * Si implementa un Date Picker per gestire le date in input
      */
 
@@ -123,9 +119,10 @@ public class SearchActivity extends AppCompatActivity
                     JsonTappa.putString("JsonTappaString",arrayTappe.toString());
                     ConcertListFragment concertListFragment = new ConcertListFragment();
                     concertListFragment.setArguments(JsonTappa);
+
                     setContentView(R.layout.search_container);
                     FragmentManager manager = getSupportFragmentManager();
-                    manager.beginTransaction().add(R.id.search_container, concertListFragment).commit();
+                    manager.beginTransaction().add(R.id.search_container, concertListFragment,"concertListFragment").commit();
                 }
 
             } catch (JSONException e) {
@@ -249,6 +246,5 @@ public class SearchActivity extends AppCompatActivity
     }
 
 
-
-    }
+}
 

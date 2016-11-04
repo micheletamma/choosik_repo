@@ -6,6 +6,8 @@
         <item name="colorPrimary">#FF5E6B71</item>
         <item name="colorPrimaryDark">#FF000000</item>
         <item name="colorAccent">#D5FF4040</item>
+        <item name="homeAsUpIndicator">@drawable/home_48px</item>
+
 
 
     </style>
