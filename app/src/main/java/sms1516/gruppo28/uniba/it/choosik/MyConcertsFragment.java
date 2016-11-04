@@ -116,9 +116,24 @@ public class MyConcertsFragment extends Fragment {
                 } else {
                     JSONArray array = detailCanzoni.getJSONArray("objects");
                     String [] canzoniVotate = new String[array.length()];
+
+                    int [] votoCanzone = new int [array.length()];
+
+                    float [] media = new float [array.length()];
+
                     for (int i=0;i<array.length();i++){
                         canzoniVotate[i] = array.getJSONObject(i).getString("votata");
+
+                        media[i] = Float.parseFloat(array.getJSONObject(i).getString("votoMedio"));
+                        if (canzoniVotate[i].contains("true")){
+                            votoCanzone[i] = Integer.parseInt(array.getJSONObject(i).getString("numVoto"));
+                        } else {
+                            votoCanzone[i]=0;
+                        }
                     }
+
+                    titoli.putFloatArray("mediaCanzoni",media);
+                    titoli.putIntArray("votoCanzone",votoCanzone);
 
                     titoli.putStringArray("canzoniVotate",canzoniVotate);
                     FragmentManager manager = getFragmentManager();
