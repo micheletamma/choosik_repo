@@ -170,7 +170,8 @@ public class MainActivity extends AppCompatActivity
                     FragmentManager manager = getSupportFragmentManager();
                     MainFragment mainFragment = new MainFragment();
                     mainFragment.setArguments(nomi);
-                    manager.beginTransaction().replace(R.id.relativelayoutforfragment,mainFragment).commit();
+                    manager.beginTransaction().replace(R.id.relativelayoutforfragment,mainFragment)
+                            .commit();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
