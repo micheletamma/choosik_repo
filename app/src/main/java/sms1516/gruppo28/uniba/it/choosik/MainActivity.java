@@ -1,5 +1,6 @@
 package sms1516.gruppo28.uniba.it.choosik;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -9,9 +10,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -120,8 +123,11 @@ public class MainActivity extends AppCompatActivity
 
                     }
                     Intent anIntent = new Intent(getApplicationContext(), SearchActivity.class);
+                    anIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     anIntent.putExtra("nomiArtisti", nomiArtisti);
                     startActivity(anIntent);
+
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -136,7 +142,7 @@ public class MainActivity extends AppCompatActivity
                     MyConcertsFragment myConcertsFragment = new MyConcertsFragment();
                     FragmentManager manager = getSupportFragmentManager();
                     myConcertsFragment.setArguments(jsonArrayTappe);
-                    manager.beginTransaction().replace(R.id.relativelayoutforfragment, myConcertsFragment, myConcertsFragment.getTag())
+                    manager.beginTransaction().replace(R.id.relativelayoutforfragment, myConcertsFragment)
                             .addToBackStack(myConcertsFragment.getTag())
                             .commit();
                 } catch (JSONException e) {
@@ -249,7 +255,10 @@ public class MainActivity extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
+
+
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -265,12 +274,6 @@ public class MainActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -365,4 +368,40 @@ public class MainActivity extends AppCompatActivity
     }
 
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            exitByBackKey();
+
+            //moveTaskToBack(false);
+
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    protected void exitByBackKey() {
+
+        AlertDialog alertbox = new AlertDialog.Builder(this)
+                .setMessage("Vuoi davvero uscire dall'applicazione?")
+                .setPositiveButton("Si", new DialogInterface.OnClickListener() {
+
+                    // do something when the button is clicked
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        moveTaskToBack(true);
+//                        finish();
+                        //close();
+
+
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+
+                    // do something when the button is clicked
+                    public void onClick(DialogInterface arg0, int arg1) {
+                    }
+                })
+                .show();
+
+    }
 }
