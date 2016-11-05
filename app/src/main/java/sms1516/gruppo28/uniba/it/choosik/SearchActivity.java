@@ -4,11 +4,13 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -41,7 +43,7 @@ public class SearchActivity extends AppCompatActivity
     Button mPickDate;
     JSONObject concertResult;
     Bundle receiver;
-
+    public static int contatore=0;
     int mYear;
     int mMonth;
     int mDay;
@@ -119,10 +121,12 @@ public class SearchActivity extends AppCompatActivity
                     JsonTappa.putString("JsonTappaString",arrayTappe.toString());
                     ConcertListFragment concertListFragment = new ConcertListFragment();
                     concertListFragment.setArguments(JsonTappa);
-
+                    SaveSharedPreference.setContatore(getApplicationContext(),SaveSharedPreference.getContatore(getApplicationContext())+1);
                     setContentView(R.layout.search_container);
                     FragmentManager manager = getSupportFragmentManager();
-                    manager.beginTransaction().add(R.id.search_container, concertListFragment,"concertListFragment").commit();
+                    manager.beginTransaction().add(R.id.search_container, concertListFragment,"concertListFragment")
+                            .commit();
+
                 }
 
             } catch (JSONException e) {
@@ -261,5 +265,39 @@ public class SearchActivity extends AppCompatActivity
     }
 
 
+    @Override
+    public void onResume() {
+
+        super.onResume();
+
+        findViewById(android.R.id.content).setFocusableInTouchMode(true);
+        findViewById(android.R.id.content).requestFocus();
+        findViewById(android.R.id.content).setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
+//                    Fragment fragment = getFragmentManager().findFragmentByTag("concertListFragment");
+                    //vuol dire che ho premuto il pulsante back
+                    if (SaveSharedPreference.getContatore(getApplicationContext()) <= 0){
+                    Intent i = new Intent(getApplicationContext(),MainActivity.class);
+                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                    startActivity(i);
+
+                    } else {
+
+                        SaveSharedPreference.setContatore(getApplicationContext(),SaveSharedPreference.getContatore(getApplicationContext())-1);
+                    }
+                    // handle back button
+//                    getFragmentManager().beginTransaction().remove(fragment).commit();
+
+                    return true;
+
+                }
+
+                return false;
+            }
+        });
+    }
 }
 

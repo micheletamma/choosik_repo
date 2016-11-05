@@ -155,9 +155,12 @@ public class ConcertListFragment extends Fragment {
                      */
                     titoli.putStringArray("canzoniVotate",canzoniVotate);
                     FragmentManager manager = getFragmentManager();
+                    SaveSharedPreference.setContatore(getContext(),SaveSharedPreference.getContatore(getContext())+1);
                     DetailCanzoniConcerto detailCanzoniConcerto = new DetailCanzoniConcerto();
                     detailCanzoniConcerto.setArguments(titoli);
                     manager.beginTransaction().replace(R.id.search_container, detailCanzoniConcerto).addToBackStack("detailCanzoniConcerto").commit();
+
+
                 }
 
 
@@ -307,8 +310,10 @@ public class ConcertListFragment extends Fragment {
                     //vuol dire che ho premuto il pulsante back
                     Intent i = new Intent(getContext(),SearchActivity.class);
                     startActivity(i);
+                    SaveSharedPreference.setContatore(getContext(),SaveSharedPreference.getContatore(getContext())-1);
                     // handle back button
 //                    getFragmentManager().beginTransaction().remove(fragment).commit();
+
                     return true;
 
                 }

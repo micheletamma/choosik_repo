@@ -2,17 +2,21 @@ package sms1516.gruppo28.uniba.it.choosik;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Entity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -26,6 +30,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.entity.StringEntity;
 
 /**
  * Created by Michele on 24/10/2016.
@@ -45,37 +50,7 @@ public class InsertFragment extends Fragment {
         final View rootView = inflater.inflate(R.layout.fragment_insert,container,false);
         final ListView listView =(ListView) rootView.findViewById(R.id.lista_tour_artista);
 
-        AsyncHttpClient client = new AsyncHttpClient();
-        client.get("http://exrezzo.pythonanywhere.com/api/tour/?artista__username="+
-                SaveSharedPreference.getUserName(getContext()), new JsonHttpResponseHandler() {
-            @Override
-            public void onStart() {
-                // called before request is started
-                progress = ProgressDialog.show(getActivity(), "I nostri criceti sono al lavoro...", "", true);
-            }
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                // If the response is JSONObject instead of expected JSONArray
-                progress.dismiss();
-                try {
-                    JSONArray tourArrayJson = response.getJSONArray("objects");
-                    String[] nomiTourArray = new String[tourArrayJson.length()];
-                    for (int i=0; i < tourArrayJson.length(); i++){
-                        nomiTourArray[i] = tourArrayJson.getJSONObject(i).getString("nomeTour");
-                    }
-
-                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, nomiTourArray);
-                    listView.setAdapter(adapter);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Log.e("errore json", e.getMessage());
-                }
-            }
-
-
-        });
-
+        populateTourList(listView);
 
         ImageButton imgBtn = (ImageButton) rootView.findViewById(R.id.imageButton);
         imgBtn.setOnClickListener(new View.OnClickListener() {
@@ -96,27 +71,31 @@ public class InsertFragment extends Fragment {
                         String inputTourString = inputTourEditText.getText().toString();
 
                         AsyncHttpClient client = new AsyncHttpClient();
-                        RequestParams  tour2post = new RequestParams();
-                        //HashMap<String,String> username = new HashMap();
+                        JSONObject tour2postJson = new JSONObject();
+                        JSONObject artistaJson = new JSONObject();
+                        StringEntity tour2postEntity = null;
                         try {
-                            //username.put("username", SaveSharedPreference.getUserName(getContext()));
-                            String username = "{\"username\":\"" + SaveSharedPreference.getUserName(getContext())+"\"},";
-                            tour2post.put("artista", username);
-                            tour2post.put("nomeTour", inputTourString);
+                            artistaJson.put("username", SaveSharedPreference.getUserName(getContext()));
+                            tour2postJson.put("artista", artistaJson);
+                            tour2postJson.put("nomeTour", inputTourString);
+                            tour2postEntity= new StringEntity(tour2postJson.toString());
+
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
 
-                        client.post("http://exrezzo.pythonanywhere.com/api/tour/",tour2post, new AsyncHttpResponseHandler() {
+                        client.post(getContext(),"http://exrezzo.pythonanywhere.com/api/tour/",tour2postEntity,"application/json", new AsyncHttpResponseHandler() {
                             @Override
                             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                                 Log.e("POST del tour ok", statusCode+"");
+                                populateTourList(listView);
                             }
 
                             @Override
                             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                                 Log.e("POST del tour NOOOO", statusCode+" "+responseBody.toString()+ "" +
                                         error.getMessage());
+                                Toast.makeText(getContext(), "Tour non inserito: si e' verificato un problema!", Toast.LENGTH_SHORT).show();
                             }
                         });
                         insertTourDialog.cancel();
@@ -129,5 +108,58 @@ public class InsertFragment extends Fragment {
 
         // Inflate the layout for this fragment
         return rootView;
+    }
+
+    private void populateTourList(final ListView listView){
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.get("http://exrezzo.pythonanywhere.com/api/tour/?artista__username="+
+                SaveSharedPreference.getUserName(getContext()), new JsonHttpResponseHandler() {
+            @Override
+            public void onStart() {
+                // called before request is started
+                progress = ProgressDialog.show(getActivity(), "I nostri criceti sono al lavoro...", "", true);
+            }
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                // If the response is JSONObject instead of expected JSONArray
+                progress.dismiss();
+                try {
+                    JSONArray tourArrayJson = response.getJSONArray("objects");
+                    final String[] nomiTourArray = new String[tourArrayJson.length()];
+                    final int[] idsTourArray =new  int[tourArrayJson.length()];
+                    for (int i=0; i < tourArrayJson.length(); i++){
+                        nomiTourArray[i] = tourArrayJson.getJSONObject(i).getString("nomeTour");
+                        idsTourArray[i] = tourArrayJson.getJSONObject(i).getInt("id");
+                    }
+
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, nomiTourArray);
+                    listView.setAdapter(adapter);
+                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                            Bundle bundleTappe = new Bundle();
+                            bundleTappe.putInt("idTour",idsTourArray[i]);
+                            bundleTappe.putString("nomeTour", nomiTourArray[i]);
+                            FragmentManager fm = getFragmentManager();
+                            TourDetailFragment tourDetail = new TourDetailFragment();
+
+                            tourDetail.setArguments(bundleTappe);
+                            fm.beginTransaction()
+                            .replace(R.id.relativelayoutforfragment,tourDetail)
+                            .addToBackStack("tourDetail")
+                            .commit();
+
+                        }
+                    });
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.e("errore json", e.getMessage());
+                }
+            }
+
+
+        });
+
     }
 }

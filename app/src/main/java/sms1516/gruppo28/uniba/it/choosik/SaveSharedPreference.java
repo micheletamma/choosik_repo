@@ -19,6 +19,7 @@ public class SaveSharedPreference {
     static final String ISARTIST = "isartist";
     static final String PROVINCIA = "provincia";
     static final String ARTISTI ="artisti";
+    static int contatore;
 
 
     static SharedPreferences getSharedPreferences(Context ctx) {
@@ -31,6 +32,12 @@ public class SaveSharedPreference {
     public static void setUserName(Context ctx, String userName) {
         SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
         editor.putString(PREF_USER_NAME, userName);
+        editor.commit();
+    }
+
+    static void setContatore(Context ctx, int c){
+        SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
+        editor.putInt("contatore",c);
         editor.commit();
     }
 
@@ -56,6 +63,10 @@ public class SaveSharedPreference {
         SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
         editor.putString(PROVINCIA, provincia);
         editor.commit();
+    }
+
+    static int getContatore (Context ctx){
+        return getSharedPreferences(ctx).getInt("contatore",0);
     }
 
     public static String [] getArtisti (Context ctx){
