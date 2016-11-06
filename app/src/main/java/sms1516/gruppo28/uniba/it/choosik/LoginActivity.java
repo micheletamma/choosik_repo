@@ -58,6 +58,7 @@ public class LoginActivity extends AppCompatActivity {
      */
     public void login(View view) {
         String username = usernameField.getText().toString();
+        username = username.replace(" ","");
         String password = passwordField.getText().toString();
         new JsonLoginTask().execute("http://exrezzo.pythonanywhere.com/api/utente/?username=" +
                 username +

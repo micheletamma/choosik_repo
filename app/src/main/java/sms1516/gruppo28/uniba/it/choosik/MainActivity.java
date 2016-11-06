@@ -347,7 +347,7 @@ public class MainActivity extends AppCompatActivity
             startActivity(i2login);
         } else if (id == R.id.nav_insert) {
             //inserimento delle tappe
-            setTitle("Inserisci nuova tappa");
+            setTitle("Choosik");
             InsertFragment insertFragment = new InsertFragment();
             FragmentManager manager = getSupportFragmentManager();
             manager.beginTransaction().replace(R.id.relativelayoutforfragment, insertFragment, insertFragment.getTag())
