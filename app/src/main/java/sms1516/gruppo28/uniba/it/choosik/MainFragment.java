@@ -152,10 +152,7 @@ public class MainFragment extends Fragment {
             super.onPostExecute(s);
         }
 
-
-
     }
-
 
 
     @Override
@@ -197,6 +194,5 @@ public class MainFragment extends Fragment {
 
         return rootView;
     }
-
 
 }

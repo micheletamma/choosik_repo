@@ -289,7 +289,7 @@ public class SearchActivity extends AppCompatActivity
                         SaveSharedPreference.setContatore(getApplicationContext(),SaveSharedPreference.getContatore(getApplicationContext())-1);
                     }
                     // handle back button
-//                    getFragmentManager().beginTransaction().remove(fragment).commit();
+
 
                     return true;
 

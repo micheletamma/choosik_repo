@@ -121,17 +121,6 @@ public class DetailCanzoniConcerto extends Fragment {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-//            if (result.equals("ok")) {
-//                Toast.makeText(getApplicationContext(), "Registrazione completata, effettua il login!", Toast.LENGTH_SHORT).show();
-//                getApplicationContext()
-//                        .startActivity(new Intent(getApplicationContext(), LoginActivity.class)
-//                                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
-//
-//
-//            } else {
-//                Toast.makeText(getApplicationContext(), "Username gia' esistente!", Toast.LENGTH_SHORT).show();
-//
-//            }
 
         }
     }
@@ -212,7 +201,7 @@ public class DetailCanzoniConcerto extends Fragment {
     @Nullable
     @Override
     public View onCreateView(final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable final Bundle savedInstanceState) {
-//        return super.onCreateView(inflater, container, savedInstanceState);
+
         bundle = this.getArguments();
         final String[] arrayCanzoniPassate = bundle.getStringArray("titoloCanzone");
         String nomeTappa = bundle.getString("nomeTappa");
@@ -225,7 +214,6 @@ public class DetailCanzoniConcerto extends Fragment {
         tappa.setText(nomeTappa);
         idTappa = bundle.getInt("idTappa");
         final String[] canzoniVotate = bundle.getStringArray("canzoniVotate");
-//        RatingBar ratingBar = (RatingBar) rootView.findViewById(R.id.rating_bar);
         //definizione dell'adapter con una nostra lista di item che contiene anche il rating
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.list_item_rating, R.id.text_item, arrayCanzoniPassate) {
             //override del metodo getview per fare in modo che se le canzoni della tappa sono state

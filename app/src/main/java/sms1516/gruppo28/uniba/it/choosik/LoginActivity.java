@@ -167,8 +167,6 @@ public class LoginActivity extends AppCompatActivity {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             exitByBackKey();
 
-            //moveTaskToBack(false);
-
             return true;
         }
         return super.onKeyDown(keyCode, event);
@@ -183,8 +181,6 @@ public class LoginActivity extends AppCompatActivity {
                     // do something when the button is clicked
                     public void onClick(DialogInterface arg0, int arg1) {
                         moveTaskToBack(true);
-//                        finish();
-                        //close();
 
 
                     }

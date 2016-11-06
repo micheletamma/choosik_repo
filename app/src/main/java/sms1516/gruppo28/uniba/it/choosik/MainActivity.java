@@ -14,7 +14,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -99,8 +98,6 @@ public class MainActivity extends AppCompatActivity
                     }
                 }
 
-
-
             return null;
         }
 
@@ -138,7 +135,6 @@ public class MainActivity extends AppCompatActivity
                     JSONArray arrayMieiConcerti = artistResult.getJSONArray("objects");
                     Bundle jsonArrayTappe = new Bundle();
                     jsonArrayTappe.putString("jsonArrayTappe",arrayMieiConcerti.toString());
-                    //nomi.putStringArray("nomeTour",nomeTour);
                     MyConcertsFragment myConcertsFragment = new MyConcertsFragment();
                     FragmentManager manager = getSupportFragmentManager();
                     myConcertsFragment.setArguments(jsonArrayTappe);
@@ -162,7 +158,6 @@ public class MainActivity extends AppCompatActivity
                                 + " il " + temp.getString("data");
                         arrayIdTappe[i] = Integer.parseInt(temp.getString("id"));
 
-
                     }
                     Bundle nomi = new Bundle();
                     nomi.putStringArray("nomeConcerto",nomeConcerto);
@@ -170,27 +165,22 @@ public class MainActivity extends AppCompatActivity
                     FragmentManager manager = getSupportFragmentManager();
                     MainFragment mainFragment = new MainFragment();
                     mainFragment.setArguments(nomi);
-                    manager.beginTransaction().replace(R.id.relativelayoutforfragment,mainFragment)
+                    manager.beginTransaction().replace(R.id.relativelayoutforfragment,mainFragment,"mainFragment")
                             .commit();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
-
             }
-
 
             super.onPostExecute(s);
         }
-
-
 
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -206,6 +196,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setItemIconTintList(null);
         Intent receive = getIntent();
+
         String utente = SaveSharedPreference.getUserName(this);
         artista = SaveSharedPreference.getIsArtist(this);
         u = utente; //estrapolo il nome utente al di fuori del metodo interno
@@ -216,10 +207,12 @@ public class MainActivity extends AppCompatActivity
         nome.setText(utente);
         TextView email = (TextView) header.findViewById(R.id.email);
         email.setText(postaelettronica);
-        if (!artista) {
+
+                if (!artista) {
             Menu nav_Menu = navigationView.getMenu();
             nav_Menu.findItem(R.id.nav_insert).setVisible(false);
         }
+
         mainFragmentFlag=true;
         JsonTask mainTask = new JsonTask();
         mainTask.execute("http://exrezzo.pythonanywhere.com/api/tappa/?format=json&citta="+provincia);
@@ -251,15 +244,21 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        FragmentManager fm = getSupportFragmentManager();
+        MainFragment mainFragment = (MainFragment) fm.findFragmentByTag("mainFragment");
+
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
+            if (mainFragment.isVisible()){
+                showAlert();}
+
         } else {
-            super.onBackPressed();
+            if (mainFragment.isVisible()){
+                showAlert();
+            } else {
+            super.onBackPressed();}
         }
-
-
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -305,13 +304,6 @@ public class MainActivity extends AppCompatActivity
             JsonTask mainTask = new JsonTask();
             mainTask.execute("http://exrezzo.pythonanywhere.com/api/tappa/?format=json&citta="+provincia);
 
-
-
-
-//            Intent i=new Intent(MainActivity.this,MainActivity.class);
-//            startActivity(i);
-
-
         } else if (id == R.id.nav_search) {
             setTitle("Choosik");
             searchActivityFlag = true;
@@ -326,9 +318,6 @@ public class MainActivity extends AppCompatActivity
             JsonTask concertiVotatiTask = new JsonTask();
             //inserire url per prendere i concerti con le canzoni che l'utente ha votato
             concertiVotatiTask.execute("http://exrezzo.pythonanywhere.com/api/mieiconcerti/?username="+SaveSharedPreference.getUserName(this));
-//            MyConcertsFragment myConcertsFragment = new MyConcertsFragment();
-//            FragmentManager manager = getSupportFragmentManager();
-//            manager.beginTransaction().replace(R.id.relativelayoutforfragment, myConcertsFragment, myConcertsFragment.getTag()).commit();
 
 
         } else if (id == R.id.nav_about) {
@@ -361,7 +350,9 @@ public class MainActivity extends AppCompatActivity
             setTitle("Inserisci nuova tappa");
             InsertFragment insertFragment = new InsertFragment();
             FragmentManager manager = getSupportFragmentManager();
-            manager.beginTransaction().replace(R.id.relativelayoutforfragment, insertFragment, insertFragment.getTag()).commit();
+            manager.beginTransaction().replace(R.id.relativelayoutforfragment, insertFragment, insertFragment.getTag())
+                    .addToBackStack(insertFragment.getTag())
+                    .commit();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -369,20 +360,9 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            exitByBackKey();
 
-            //moveTaskToBack(false);
 
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-
-    protected void exitByBackKey() {
-
+    public void showAlert (){
         AlertDialog alertbox = new AlertDialog.Builder(this)
                 .setMessage("Vuoi davvero uscire dall'applicazione?")
                 .setPositiveButton("Si", new DialogInterface.OnClickListener() {
@@ -403,6 +383,5 @@ public class MainActivity extends AppCompatActivity
                     }
                 })
                 .show();
-
     }
 }
