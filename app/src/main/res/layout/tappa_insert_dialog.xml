@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Inserisci Tappa"/>
+
+    <EditText
+        android:id="@+id/input_tappa_citta_text"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:text=""
+        android:textAlignment="center"
+        android:hint="Citta'"
+        />
+
+
+    <EditText
+        android:id="@+id/input_tappa_data_text"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:text=""
+        android:textAlignment="center"
+        android:hint="Data"/>
+
+    <Button
+        android:id="@+id/input_tappa_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Inserisci"/>
+
+
+</LinearLayout>
