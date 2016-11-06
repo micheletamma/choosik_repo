@@ -136,7 +136,7 @@ public class MyConcertsFragment extends Fragment {
                     DetailCanzoniConcerto detailCanzoniConcerto = new DetailCanzoniConcerto();
                     detailCanzoniConcerto.setArguments(titoli);
                     manager.beginTransaction().replace(R.id.relativelayoutforfragment,detailCanzoniConcerto)
-                            .addToBackStack(detailCanzoniConcerto.getTag())
+                            .addToBackStack("detailCanzoniConcerto")
                             .commit();
                 }
 
@@ -233,4 +233,7 @@ public class MyConcertsFragment extends Fragment {
 
         return rootView;
     }
+
+
+
 }
