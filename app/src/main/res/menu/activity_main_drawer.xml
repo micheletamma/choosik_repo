@@ -36,8 +36,13 @@
     <group>
         <item
             android:id="@+id/nav_insert"
-            android:title="Inserisci Tappa"
+            android:title="Inserisci Tour"
             android:icon="@drawable/dj_48px"
+            />
+        <item
+            android:id="@+id/nav_canzoni"
+            android:title="Le mie canzoni"
+            android:icon="@drawable/music_record_48px"
             />
     </group>
 

@@ -213,6 +213,7 @@ public class MainActivity extends AppCompatActivity
         if (!artista) {
             Menu nav_Menu = navigationView.getMenu();
             nav_Menu.findItem(R.id.nav_insert).setVisible(false);
+            nav_Menu.findItem(R.id.nav_canzoni).setVisible(false);
         }
 
         mainFragmentFlag=true;
@@ -355,7 +356,17 @@ public class MainActivity extends AppCompatActivity
             manager.beginTransaction().replace(R.id.relativelayoutforfragment, insertFragment, insertFragment.getTag())
                     .addToBackStack(insertFragment.getTag())
                     .commit();
+        } else if (id==R.id.nav_canzoni){
+            setTitle("Choosik");
+            MySongsFragment mySongsFragment = new MySongsFragment();
+            FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction().replace(R.id.relativelayoutforfragment,mySongsFragment,mySongsFragment.getTag())
+                    .addToBackStack(mySongsFragment.getTag())
+                    .commit();
         }
+
+
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
