@@ -207,8 +207,10 @@ public class MainActivity extends AppCompatActivity
         nome.setText(utente);
         TextView email = (TextView) header.findViewById(R.id.email);
         email.setText(postaelettronica);
-
-                if (!artista) {
+        /**
+         * Se l'utente loggato e' un artista rendo visibile l'interfaccia utente per artisti
+         */
+        if (!artista) {
             Menu nav_Menu = navigationView.getMenu();
             nav_Menu.findItem(R.id.nav_insert).setVisible(false);
         }

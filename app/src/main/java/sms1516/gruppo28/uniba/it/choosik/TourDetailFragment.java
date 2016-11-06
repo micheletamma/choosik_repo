@@ -3,15 +3,12 @@ package sms1516.gruppo28.uniba.it.choosik;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -31,7 +28,6 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.List;
 import java.util.Locale;
 
 import cz.msebera.android.httpclient.Header;
@@ -80,9 +76,9 @@ public class TourDetailFragment extends Fragment {
 
                 Button insertBtn = (Button) insertTappaDialog.findViewById(R.id.input_tappa_button);
                 final EditText inputTappaCittaEditText = (EditText) insertTappaDialog.findViewById(R.id.input_tappa_citta_text);
-                final EditText inputTappaDataEditText = (EditText) insertTappaDialog.findViewById(R.id.input_tappa_data_text);
+                final TextView inputTappaDataViewText= (TextView) insertTappaDialog.findViewById(R.id.data_tappa_input_view);
 
-                /**
+                    /**
                  *  Calendario nel DIALOG
                  */
                 final Calendar myCalendar = Calendar.getInstance();
@@ -95,19 +91,24 @@ public class TourDetailFragment extends Fragment {
                         myCalendar.set(Calendar.YEAR, year);
                         myCalendar.set(Calendar.MONTH, monthOfYear);
                         myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                        updateLabel(inputTappaDataEditText, myCalendar);
+                        updateLabel(inputTappaDataViewText, myCalendar);
                     }
 
                 };
 
-                inputTappaDataEditText.setOnClickListener(new View.OnClickListener() {
+
+
+                inputTappaDataViewText.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View view) {
+                    public void onClick(View v) {
                         new DatePickerDialog(getContext(), date, myCalendar
                                 .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
                                 myCalendar.get(Calendar.DAY_OF_MONTH)).show();
                     }
                 });
+
+
+
 
                 /**
                  * Click nel dialog per INSERIRE tappa
@@ -118,7 +119,7 @@ public class TourDetailFragment extends Fragment {
                     @Override
                     public void onClick(View view) {
                         String inputTappaCittaString = inputTappaCittaEditText.getText().toString();
-                        String inputTappaDataString = inputTappaDataEditText.getText().toString();
+                        String inputTappaDataString = inputTappaDataViewText.getText().toString();
 
                         AsyncHttpClient client = new AsyncHttpClient();
                         JSONObject tappa2postJson = new JSONObject();
@@ -216,11 +217,11 @@ public class TourDetailFragment extends Fragment {
 
 
     }
-    private void updateLabel (EditText edittext, Calendar myCalendar) {
+    private void updateLabel (TextView textView, Calendar myCalendar) {
 
         String myFormat = "yyyy-MM-dd"; //In which you need put here
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
 
-        edittext.setText(sdf.format(myCalendar.getTime()));
+        textView.setText(sdf.format(myCalendar.getTime()));
     }
 }
