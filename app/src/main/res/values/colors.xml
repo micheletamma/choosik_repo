@@ -3,6 +3,13 @@
     <color name="colorPrimary">#5e6b71</color>
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#d5ff4040</color>
-    <color name="light_grey">#cccccc</color>
+    <color name="light_grey">#eeb956</color>
     <color name="myBackground">#C0C1C0</color>
+    <color name="yellow">#d3c386</color>
+    <color name="yellow_light">#d3c386</color>
+    <color name="rosa">#dca7aa</color>
+    <color name="verde">#aee6b9</color>
+    <color name="rosso">#ff005e</color>
+    <color name="blu">#fff4d6</color>
+    <color name="grigio_sfondo">#232323</color>
 </resources>

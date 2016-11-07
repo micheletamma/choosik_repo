@@ -10,6 +10,7 @@
 
 
 
+
     </style>
 
 
@@ -24,7 +25,8 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
     <style name="AppTheme.Button" parent="Widget.AppCompat.Button.Colored">
-        <item name="colorButtonNormal">#C0C1C0</item>
+        <item name="colorButtonNormal">#ffffff</item>
+
     </style>
 
 </resources>
