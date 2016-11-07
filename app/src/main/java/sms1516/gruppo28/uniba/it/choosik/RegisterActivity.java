@@ -67,7 +67,9 @@ public class RegisterActivity extends AppCompatActivity {
                 String prov = provField.getText().toString();
 
                 Map registrazione = new HashMap();
-
+                if (usr.contains(" ")){
+                    usr=usr.replace(" ","");
+                }
                 registrazione.put("username", usr);
                 registrazione.put("password", psw);
                 registrazione.put("email", mail);

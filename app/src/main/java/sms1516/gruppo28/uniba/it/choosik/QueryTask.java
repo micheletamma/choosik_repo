@@ -65,7 +65,7 @@ public class QueryTask extends AsyncTask<String, Void, String> {
             if (risultato.size() == 0) {
                 risultato = null;
             }
-//            risultato.remove(risultato.size()-1);
+
             return sb.toString();
         } catch (Exception e) {
             return new String("Exception: " + e.getMessage());

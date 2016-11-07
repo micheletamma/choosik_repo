@@ -284,10 +284,6 @@ public class ConcertListFragment extends Fragment {
             e.printStackTrace();
         }
 
-
-
-
-
         //la view con tutti i dati
         return rootView;
     }
@@ -306,13 +302,12 @@ public class ConcertListFragment extends Fragment {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
 
                 if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
-//                    Fragment fragment = getFragmentManager().findFragmentByTag("concertListFragment");
+
                     //vuol dire che ho premuto il pulsante back
                     Intent i = new Intent(getContext(),SearchActivity.class);
                     startActivity(i);
                     SaveSharedPreference.setContatore(getContext(),SaveSharedPreference.getContatore(getContext())-1);
                     // handle back button
-//                    getFragmentManager().beginTransaction().remove(fragment).commit();
 
                     return true;
 
