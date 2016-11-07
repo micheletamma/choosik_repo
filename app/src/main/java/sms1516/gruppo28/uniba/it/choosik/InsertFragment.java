@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Entity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
@@ -16,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -27,6 +29,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import cz.msebera.android.httpclient.Header;
@@ -51,7 +54,7 @@ public class InsertFragment extends Fragment {
         final View rootView = inflater.inflate(R.layout.fragment_insert,container,false);
         final ListView listView =(ListView) rootView.findViewById(R.id.lista_tour_artista);
 
-        populateTourList(listView);
+        populateTourList(listView, inflater);
 
         ImageButton imgBtn = (ImageButton) rootView.findViewById(R.id.imageButton);
         imgBtn.setOnClickListener(new View.OnClickListener() {
@@ -89,7 +92,7 @@ public class InsertFragment extends Fragment {
                             @Override
                             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                                 Log.e("POST del tour ok", statusCode+"");
-                                populateTourList(listView);
+                                populateTourList(listView, inflater);
                             }
 
                             @Override
@@ -110,8 +113,10 @@ public class InsertFragment extends Fragment {
         // Inflate the layout for this fragment
         return rootView;
     }
+    ArrayList<String> nomiTourList;
+    ArrayList<Integer> idsTourList;
 
-    private void populateTourList(final ListView listView){
+    private void populateTourList(final ListView listView,final LayoutInflater inflater){
         AsyncHttpClient client = new AsyncHttpClient();
         client.get("http://exrezzo.pythonanywhere.com/api/tour/?artista__username="+
                 SaveSharedPreference.getUserName(getContext()), new JsonHttpResponseHandler() {
@@ -126,36 +131,74 @@ public class InsertFragment extends Fragment {
                 progress.dismiss();
                 try {
                     JSONArray tourArrayJson = response.getJSONArray("objects");
-                    final String[] nomiTourArray = new String[tourArrayJson.length()];
-                    final int[] idsTourArray =new  int[tourArrayJson.length()];
+                    nomiTourList = new ArrayList();
+                    idsTourList = new ArrayList();
                     for (int i=0; i < tourArrayJson.length(); i++){
-                        nomiTourArray[i] = tourArrayJson.getJSONObject(i).getString("nomeTour");
-                        idsTourArray[i] = tourArrayJson.getJSONObject(i).getInt("id");
+                        nomiTourList.add(tourArrayJson.getJSONObject(i).getString("nomeTour"));
+                        idsTourList.add(tourArrayJson.getJSONObject(i).getInt("id"));
                     }
 
-                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, nomiTourArray);
-                    listView.setAdapter(adapter);
-                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, nomiTourList){
+                        @NonNull
                         @Override
-                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                            Bundle bundleTappe = new Bundle();
-                            bundleTappe.putInt("idTour",idsTourArray[i]);
-                            bundleTappe.putString("nomeTour", nomiTourArray[i]);
-                            FragmentManager fm = getFragmentManager();
-                            TourDetailFragment tourDetail = new TourDetailFragment();
+                        public View getView(final int position, View convertView, ViewGroup parent) {
+                            if (convertView==null){
+                                convertView = inflater.inflate(R.layout.list_item_delete, parent, false);
+                            }
+                            ImageButton imgBtn = (ImageButton) convertView.findViewById(R.id.delete_img);
+                            TextView textItem = (TextView) convertView.findViewById(R.id.text_item);
+                            textItem.setText(nomiTourList.get(position));
 
-                            tourDetail.setArguments(bundleTappe);
-                            fm.beginTransaction()
-                            .replace(R.id.relativelayoutforfragment,tourDetail)
-                            .addToBackStack("tourDetail")
-                            .commit();
+                            imgBtn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    AsyncHttpClient client = new AsyncHttpClient();
+                                    Log.e("URL 2delete", "http://exrezzo.pythonanywhere.com/api/tour/" + idsTourList.get(position)+"/");
+                                    client.delete(getContext(), "http://exrezzo.pythonanywhere.com/api/tour/" + idsTourList.get(position)+"/",
+                                            new AsyncHttpResponseHandler() {
+                                                @Override
+                                                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                                                    Log.e("Delete tour ok id:",nomiTourList.get(position));
+                                                    remove(getItem(position));
+                                                    notifyDataSetChanged();
+                                                    idsTourList.remove(position);
+                                                }
 
+                                                @Override
+                                                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                                                    Log.e("Delete tour NO id",nomiTourList.get(position));
+                                                }
+                                            });
+                                }
+                            });
+                            textItem.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Bundle bundleTappe = new Bundle();
+                                    bundleTappe.putInt("idTour",idsTourList.get(position));
+                                    bundleTappe.putString("nomeTour", nomiTourList.get(position));
+                                    FragmentManager fm = getFragmentManager();
+                                    TourDetailFragment tourDetail = new TourDetailFragment();
+
+                                    tourDetail.setArguments(bundleTappe);
+                                    fm.beginTransaction()
+                                            .replace(R.id.relativelayoutforfragment,tourDetail)
+                                            .addToBackStack("tourDetail")
+                                            .commit();
+                                }
+                            });
+
+                            return convertView;
                         }
-                    });
+                    };
+                    listView.setAdapter(adapter);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Log.e("errore json", e.getMessage());
+                } catch (Exception e){
+                    e.printStackTrace();
+                    Log.e("errore", e.getMessage());
                 }
             }
 

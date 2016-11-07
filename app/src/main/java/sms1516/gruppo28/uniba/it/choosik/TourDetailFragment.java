@@ -4,11 +4,14 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -27,6 +30,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -50,7 +54,7 @@ public class TourDetailFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         ((MainActivity) getActivity()).getSupportActionBar().setTitle("Dettagli Tour");
@@ -63,7 +67,14 @@ public class TourDetailFragment extends Fragment {
         TextView nomeTourTextView = (TextView) rootView.findViewById(R.id.nome_tour);
         nomeTourTextView.setText(nomeTour);
 
-        populateTappeList(listView, idTour);
+        populateTappeList(listView,inflater, idTour);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+            }
+        });
 
         ImageButton imgBtn = (ImageButton) rootView.findViewById(R.id.imageButton);
         imgBtn.setOnClickListener(new View.OnClickListener() {
@@ -140,7 +151,7 @@ public class TourDetailFragment extends Fragment {
                             @Override
                             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                                 Log.e("POST della tappa ok", statusCode+"");
-                                populateTappeList(listView,idTour);
+                                populateTappeList(listView,inflater,idTour);
                             }
 
                             @Override
@@ -159,8 +170,9 @@ public class TourDetailFragment extends Fragment {
         return rootView;
     }
 
-
-    private void populateTappeList(final ListView listView, int idTour) {
+    ArrayList<String> infoTappaList;
+    ArrayList<Integer> idTappaList;
+    private void populateTappeList(final ListView listView, final LayoutInflater inflater, int idTour) {
         AsyncHttpClient client = new AsyncHttpClient();
         client.get("http://exrezzo.pythonanywhere.com/api/tappa/?tour__id=" +
                 idTour, new JsonHttpResponseHandler() {
@@ -176,29 +188,70 @@ public class TourDetailFragment extends Fragment {
                 progress.dismiss();
                 try {
                     JSONArray tappaArrayJson = response.getJSONArray("objects");
-                    String[] infoTappaArray = new String[tappaArrayJson.length()];
+                    infoTappaList = new ArrayList();
+                    idTappaList = new ArrayList();
                     for (int i = 0; i < tappaArrayJson.length(); i++) {
-                        infoTappaArray[i] = "a " + tappaArrayJson.getJSONObject(i).getString("citta") +
-                                " il " + tappaArrayJson.getJSONObject(i).getString("data");
+                        infoTappaList.add("a " + tappaArrayJson.getJSONObject(i).getString("citta") +
+                                " il " + tappaArrayJson.getJSONObject(i).getString("data"));
+                        idTappaList.add(tappaArrayJson.getJSONObject(i).getInt("id"));
                     }
 
-                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, infoTappaArray);
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, infoTappaList){
+                        @NonNull
+                        @Override
+                        public View getView(final int position, View convertView, ViewGroup parent) {
+                            if (convertView==null){
+                                convertView = inflater.inflate(R.layout.list_item_delete,parent,false);
+                            }
+
+                            ImageButton imgBtn = (ImageButton) convertView.findViewById(R.id.delete_img);
+                            TextView textItem = (TextView) convertView.findViewById(R.id.text_item);
+                            textItem.setText(infoTappaList.get(position));
+
+                            imgBtn.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    AsyncHttpClient client = new AsyncHttpClient();
+                                    Log.e("URL 2delete", "http://exrezzo.pythonanywhere.com/api/tappa/" + idTappaList.get(position)+"/");
+                                    client.delete(getContext(), "http://exrezzo.pythonanywhere.com/api/tappa/" + idTappaList.get(position)+"/",
+                                            new AsyncHttpResponseHandler() {
+                                                @Override
+                                                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                                                    Log.e("Delete tappa ok id:",infoTappaList.get(position));
+                                                    remove(getItem(position));
+                                                    notifyDataSetChanged();
+                                                    idTappaList.remove(position);
+                                                }
+
+                                                @Override
+                                                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                                                    Log.e("Delete tappa NO id",infoTappaList.get(position));
+                                                }
+                                            });
+                                }
+                            });
+                            textItem.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Bundle bundleTappe = new Bundle();
+                                    bundleTappe.putInt("idTappa",idTappaList.get(position));
+                                    bundleTappe.putString("infoTappa", infoTappaList.get(position));
+                                    FragmentManager fm = getFragmentManager();
+
+                                    TappaDetailFragment tappaDetail = new TappaDetailFragment();
+
+                                    tappaDetail.setArguments(bundleTappe);
+                                    fm.beginTransaction()
+                                            .replace(R.id.relativelayoutforfragment,tappaDetail)
+                                            .addToBackStack("tappaDetail")
+                                            .commit();
+                                }
+                            });
+
+                            return convertView;
+                        }
+                    };
                     listView.setAdapter(adapter);
-//                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                        @Override
-//                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                            Bundle bundleTappe = new Bundle();
-//                            bundleTappe.putInt("idTour",idsTourArray[i]);
-//
-//                            TourDetailFragment tourDetail = new TourDetailFragment();
-//                            getFragmentManager()
-//                                    .beginTransaction()
-//                                    .replace(R.id.relativelayoutforfragment,tourDetail, tourDetail.getTag())
-//                                    .addToBackStack(tourDetail.getTag())
-//                                    .commit();
-//
-//                        }
-//                    });
 
                 } catch (JSONException e) {
                     e.printStackTrace();
