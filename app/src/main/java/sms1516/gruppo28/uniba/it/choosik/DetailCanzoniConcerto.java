@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -41,6 +42,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
+
+import static sms1516.gruppo28.uniba.it.choosik.R.id.mainFragment;
 
 /**
  * Created by marcouva on 20/10/16.
@@ -52,6 +56,7 @@ public class DetailCanzoniConcerto extends Fragment {
     boolean toUpdate;
     int positionToUpdate;
     int votoUpdate;
+
 
     Map params = new HashMap();
 
@@ -121,17 +126,6 @@ public class DetailCanzoniConcerto extends Fragment {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-//            if (result.equals("ok")) {
-//                Toast.makeText(getApplicationContext(), "Registrazione completata, effettua il login!", Toast.LENGTH_SHORT).show();
-//                getApplicationContext()
-//                        .startActivity(new Intent(getApplicationContext(), LoginActivity.class)
-//                                .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
-//
-//
-//            } else {
-//                Toast.makeText(getApplicationContext(), "Username gia' esistente!", Toast.LENGTH_SHORT).show();
-//
-//            }
 
         }
     }
@@ -212,7 +206,7 @@ public class DetailCanzoniConcerto extends Fragment {
     @Nullable
     @Override
     public View onCreateView(final LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable final Bundle savedInstanceState) {
-//        return super.onCreateView(inflater, container, savedInstanceState);
+
         bundle = this.getArguments();
         final String[] arrayCanzoniPassate = bundle.getStringArray("titoloCanzone");
         String nomeTappa = bundle.getString("nomeTappa");
@@ -225,7 +219,6 @@ public class DetailCanzoniConcerto extends Fragment {
         tappa.setText(nomeTappa);
         idTappa = bundle.getInt("idTappa");
         final String[] canzoniVotate = bundle.getStringArray("canzoniVotate");
-//        RatingBar ratingBar = (RatingBar) rootView.findViewById(R.id.rating_bar);
         //definizione dell'adapter con una nostra lista di item che contiene anche il rating
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.list_item_rating, R.id.text_item, arrayCanzoniPassate) {
             //override del metodo getview per fare in modo che se le canzoni della tappa sono state
@@ -327,6 +320,14 @@ public class DetailCanzoniConcerto extends Fragment {
     }
 
     );
+
+
+        String nomeActivity = getActivity().getClass().getSimpleName();
+        if (nomeActivity.equals("MainActivity")) {
+            ((MainActivity) getActivity()).getSupportActionBar().setTitle("Dettagli canzone");
+        } else if (nomeActivity.equals("SearchActivity")) {
+            ((SearchActivity) getActivity()).getSupportActionBar().setTitle("Dettagli canzone");
+        }
 
     return rootView;
 

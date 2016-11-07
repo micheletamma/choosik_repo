@@ -155,11 +155,11 @@ public class MyConcertsFragment extends Fragment {
     }
 
 
-
-
     @Nullable
     @Override
     public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle("I miei concerti");
         Bundle bundle = this.getArguments();
         String jsonArrayString = bundle.getString("jsonArrayTappe");
 
@@ -208,6 +208,7 @@ public class MyConcertsFragment extends Fragment {
                     //posso cercare le canzoni della tappa selezionata
                     String idToSearch = Integer.toString(idTappe[position]);
                     nomeTappa=nomeTappeArray[position];
+
                     //ricerco le canzoni della tappa con l'id uguale a idToSearch
                     MyConcertsFragment.JsonTask detailCanzoni = new MyConcertsFragment.JsonTask();
                     flagListaCanzoniTask=true;
@@ -233,7 +234,5 @@ public class MyConcertsFragment extends Fragment {
 
         return rootView;
     }
-
-
 
 }

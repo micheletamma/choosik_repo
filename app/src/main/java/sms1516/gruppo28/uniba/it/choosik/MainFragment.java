@@ -152,14 +152,13 @@ public class MainFragment extends Fragment {
             super.onPostExecute(s);
         }
 
-
-
     }
-
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle("Choosik");
         View rootView = inflater.inflate(R.layout.main_fragment, container, false);
         Bundle bundle = this.getArguments();
         String provincia = SaveSharedPreference.getProvincia(this.getContext());
@@ -197,6 +196,5 @@ public class MainFragment extends Fragment {
 
         return rootView;
     }
-
 
 }

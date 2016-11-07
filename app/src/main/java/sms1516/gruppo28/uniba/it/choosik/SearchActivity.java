@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -50,6 +51,7 @@ public class SearchActivity extends AppCompatActivity
     Boolean isBtnDatePressed;
 
     private class JsonTask extends AsyncTask<String,Void,String> {
+
 
 
 
@@ -158,6 +160,17 @@ public class SearchActivity extends AppCompatActivity
         );
         AutoCompleteTextView luogoTxtView = (AutoCompleteTextView) findViewById(R.id.txtViewLuogo);
         luogoTxtView.setAdapter(provincia);
+        TextView data = (TextView) findViewById(R.id.dateDisplay);
+
+        data.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isBtnDatePressed=true;
+                showDialog(0);
+            }
+        });
+
+
 
         AutoCompleteTextView autocomplete = (AutoCompleteTextView) findViewById(R.id.txtViewArtista);
         if (getIntent().getExtras()!=null){
@@ -186,14 +199,6 @@ public class SearchActivity extends AppCompatActivity
         String utente=SaveSharedPreference.getUserName(getApplicationContext());
         String mail=SaveSharedPreference.getEmail(getApplicationContext());
         mDateDisplay = (TextView) findViewById(R.id.dateDisplay);
-        mPickDate = (Button) findViewById(R.id.pickDate);
-        mPickDate.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                isBtnDatePressed=true;
-                showDialog(0);
-            }
-        });
-
         final Calendar c = Calendar.getInstance();
         mYear = c.get(Calendar.YEAR);
         mMonth = c.get(Calendar.MONTH);
@@ -226,6 +231,7 @@ public class SearchActivity extends AppCompatActivity
                 mYear, mMonth, mDay);
     }
 
+
     /**
      *Il metodo e' interrogato alla pressione del button Ricerca
      */
@@ -236,14 +242,14 @@ public class SearchActivity extends AppCompatActivity
         String artista = artistaAutoComplete.getText().toString();
         AutoCompleteTextView luogoAutoComplete = (AutoCompleteTextView) findViewById(R.id.txtViewLuogo);
         String luogo = luogoAutoComplete.getText().toString();
-        TextView dateDisplay = (TextView) findViewById(R.id.dateDisplay);
-        String data = dateDisplay.getText().toString();
+        TextView data =(TextView) findViewById(R.id.dateDisplay);
+
 //        artista = artista.replace(" ", "");
 
         req = "http://exrezzo.pythonanywhere.com/api/tappa/?format=json";
         if (isBtnDatePressed){
             //devo includere la data nella ricerca
-            req += "&data=" + data;
+            req += "&data=" + data.getText().toString();
             if (!luogo.equals("")){
                 req+= "&citta=" + luogo;
             }
@@ -289,7 +295,7 @@ public class SearchActivity extends AppCompatActivity
                         SaveSharedPreference.setContatore(getApplicationContext(),SaveSharedPreference.getContatore(getApplicationContext())-1);
                     }
                     // handle back button
-//                    getFragmentManager().beginTransaction().remove(fragment).commit();
+
 
                     return true;
 
@@ -299,5 +305,18 @@ public class SearchActivity extends AppCompatActivity
             }
         });
     }
+
+
+    @Nullable
+    @Override
+    public android.support.v7.app.ActionBar getSupportActionBar() {
+        return super.getSupportActionBar();
+    }
+
+    public void setActionBarTitle(String title) {
+        getSupportActionBar().setTitle(title);
+    }
+
+
 }
 

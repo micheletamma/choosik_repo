@@ -58,6 +58,7 @@ public class LoginActivity extends AppCompatActivity {
      */
     public void login(View view) {
         String username = usernameField.getText().toString();
+        username = username.replace(" ","");
         String password = passwordField.getText().toString();
         new JsonLoginTask().execute("http://exrezzo.pythonanywhere.com/api/utente/?username=" +
                 username +
@@ -167,8 +168,6 @@ public class LoginActivity extends AppCompatActivity {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             exitByBackKey();
 
-            //moveTaskToBack(false);
-
             return true;
         }
         return super.onKeyDown(keyCode, event);
@@ -183,8 +182,6 @@ public class LoginActivity extends AppCompatActivity {
                     // do something when the button is clicked
                     public void onClick(DialogInterface arg0, int arg1) {
                         moveTaskToBack(true);
-//                        finish();
-                        //close();
 
 
                     }

@@ -8,9 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,7 +30,8 @@ import java.util.Map;
 public class RegisterActivity extends AppCompatActivity {
     String user, email, password;
     Map params = new HashMap();
-    private EditText usernameField, passwordField, emailField, provField;
+    private EditText usernameField, passwordField, emailField;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,14 +39,15 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         Dizionario dizionario = new Dizionario();
         HashMap x = dizionario.dizionarioProvicia();
-
+        final Spinner sp = (Spinner) findViewById(R.id.spinnerProvince);
         ArrayAdapter<String> provincia = new ArrayAdapter<String>(
                 this,
                 android.R.layout.simple_dropdown_item_1line,
                 dizionario.getNomi()
         );
-        AutoCompleteTextView luogoTxtView = (AutoCompleteTextView) findViewById(R.id.txtProvincia);
-        luogoTxtView.setAdapter(provincia);
+
+
+        sp.setAdapter(provincia);
         TextView avvisoField = (TextView) findViewById(R.id.txtAvviso);
         avvisoField.setText("");
         Button button = (Button) findViewById(R.id.btnRegister);
@@ -55,7 +57,7 @@ public class RegisterActivity extends AppCompatActivity {
                 usernameField = (EditText) findViewById(R.id.txtUsername);
                 passwordField = (EditText) findViewById(R.id.txtPassword);
                 emailField = (EditText) findViewById(R.id.txtEmail);
-                provField = (EditText) findViewById(R.id.txtProvincia);
+
                 TextView avvisoField = (TextView) findViewById(R.id.txtAvviso);
                 avvisoField.setText("");
                 String usr = usernameField.getText().toString();
@@ -64,10 +66,12 @@ public class RegisterActivity extends AppCompatActivity {
                 password = psw;
                 String mail = emailField.getText().toString();
                 email = mail;
-                String prov = provField.getText().toString();
+                String prov = sp.getSelectedItem().toString();
 
                 Map registrazione = new HashMap();
-
+                if (usr.contains(" ")){
+                    usr=usr.replace(" ","");
+                }
                 registrazione.put("username", usr);
                 registrazione.put("password", psw);
                 registrazione.put("email", mail);
@@ -75,14 +79,19 @@ public class RegisterActivity extends AppCompatActivity {
 
                 params = registrazione;
                 if (mail.contains("@") & mail.contains(".")) {
-                    try {
-                        SimpleTask task = new SimpleTask();
-                        task.execute("http://exrezzo.pythonanywhere.com/api/utente/");
+                    if (!password.equals("") & !user.equals("")){
+                        try {
+                            SimpleTask task = new SimpleTask();
+                            task.execute("http://exrezzo.pythonanywhere.com/api/utente/");
 
 
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        avvisoField.setText("Imposta un username e una password validi");
                     }
+
 
                 } else {
                     avvisoField.setText("La tua mail non è valida");
@@ -107,9 +116,6 @@ public class RegisterActivity extends AppCompatActivity {
         public SimpleTask() {
         }
 
-        public JSONObject getRisultato() {
-            return risultato;
-        }
 
         @Override
         protected String doInBackground(String... strings) {

@@ -189,14 +189,14 @@ public class ConcertListFragment extends Fragment {
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
+        ((SearchActivity) getActivity()).getSupportActionBar().setTitle("Lista concerti");
 
         View rootView = inflater.inflate(R.layout.fragment_concert, container, false);
         ListView listview = (ListView) rootView.findViewById(R.id.lista_concerti_view);
         upperInflater = inflater;
         upperContainer=container;
-        TextView txtTitolo = (TextView) rootView.findViewById(R.id.txtTitoloConcertFragment);
-        txtTitolo.setText("Lista concerti");
+        //TextView txtTitolo = (TextView) rootView.findViewById(R.id.txtTitoloConcertFragment);
+        //txtTitolo.setText("Lista concerti");
 
 
         //bundle passato da MainActivity per avere i dati json dal database
@@ -284,10 +284,6 @@ public class ConcertListFragment extends Fragment {
             e.printStackTrace();
         }
 
-
-
-
-
         //la view con tutti i dati
         return rootView;
     }
@@ -306,13 +302,12 @@ public class ConcertListFragment extends Fragment {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
 
                 if (event.getAction() == KeyEvent.ACTION_UP && keyCode == KeyEvent.KEYCODE_BACK){
-//                    Fragment fragment = getFragmentManager().findFragmentByTag("concertListFragment");
+
                     //vuol dire che ho premuto il pulsante back
                     Intent i = new Intent(getContext(),SearchActivity.class);
                     startActivity(i);
                     SaveSharedPreference.setContatore(getContext(),SaveSharedPreference.getContatore(getContext())-1);
                     // handle back button
-//                    getFragmentManager().beginTransaction().remove(fragment).commit();
 
                     return true;
 
