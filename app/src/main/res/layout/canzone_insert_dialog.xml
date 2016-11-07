@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Inserisci Canzone"
+        android:id="@+id/textView6"
+        android:textSize="20sp"
+        android:textColor="@color/colorAccent"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:id="@+id/input_canzone_text"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textAlignment="center"
+        android:hint="Titolo'"
+        android:textIsSelectable="false"
+        android:textSize="17sp"
+        android:drawableEnd="@drawable/place"
+        android:drawableRight="@drawable/place"
+        android:layout_below="@+id/textView6"
+        android:layout_centerHorizontal="true" />
+
+
+
+
+    <Button
+        android:id="@+id/input_canzone_button"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Inserisci"
+        android:layout_alignWithParentIfMissing="false"
+        android:layout_alignLeft="@+id/input_canzone_text"
+        android:layout_alignStart="@+id/input_canzone_text"
+        />
+
+
+</RelativeLayout>
