@@ -1,6 +1,5 @@
 package sms1516.gruppo28.uniba.it.choosik;
 
-import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -161,6 +160,17 @@ public class SearchActivity extends AppCompatActivity
         );
         AutoCompleteTextView luogoTxtView = (AutoCompleteTextView) findViewById(R.id.txtViewLuogo);
         luogoTxtView.setAdapter(provincia);
+        TextView data = (TextView) findViewById(R.id.dateDisplay);
+
+        data.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isBtnDatePressed=true;
+                showDialog(0);
+            }
+        });
+
+
 
         AutoCompleteTextView autocomplete = (AutoCompleteTextView) findViewById(R.id.txtViewArtista);
         if (getIntent().getExtras()!=null){
@@ -189,14 +199,6 @@ public class SearchActivity extends AppCompatActivity
         String utente=SaveSharedPreference.getUserName(getApplicationContext());
         String mail=SaveSharedPreference.getEmail(getApplicationContext());
         mDateDisplay = (TextView) findViewById(R.id.dateDisplay);
-        mPickDate = (Button) findViewById(R.id.pickDate);
-        mPickDate.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                isBtnDatePressed=true;
-                showDialog(0);
-            }
-        });
-
         final Calendar c = Calendar.getInstance();
         mYear = c.get(Calendar.YEAR);
         mMonth = c.get(Calendar.MONTH);
@@ -240,14 +242,14 @@ public class SearchActivity extends AppCompatActivity
         String artista = artistaAutoComplete.getText().toString();
         AutoCompleteTextView luogoAutoComplete = (AutoCompleteTextView) findViewById(R.id.txtViewLuogo);
         String luogo = luogoAutoComplete.getText().toString();
-        TextView dateDisplay = (TextView) findViewById(R.id.dateDisplay);
-        String data = dateDisplay.getText().toString();
+        TextView data =(TextView) findViewById(R.id.dateDisplay);
+
 //        artista = artista.replace(" ", "");
 
         req = "http://exrezzo.pythonanywhere.com/api/tappa/?format=json";
         if (isBtnDatePressed){
             //devo includere la data nella ricerca
-            req += "&data=" + data;
+            req += "&data=" + data.getText().toString();
             if (!luogo.equals("")){
                 req+= "&citta=" + luogo;
             }
