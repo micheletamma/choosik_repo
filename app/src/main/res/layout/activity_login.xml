@@ -67,16 +67,6 @@
         android:layout_centerHorizontal="true"
         android:src="@drawable/originale" />
 
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/loginbtn"
-        android:layout_marginTop="75dp"
-        android:src="@drawable/music_orizzont" />
-
     <Button
         android:id="@+id/registerbtn"
         android:layout_width="wrap_content"
