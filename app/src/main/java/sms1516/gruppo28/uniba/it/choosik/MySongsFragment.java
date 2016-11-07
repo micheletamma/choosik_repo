@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,7 +26,6 @@ import org.json.JSONObject;
 
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -44,8 +45,15 @@ public class MySongsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_mysongs,container,false);
         final ListView listView = (ListView) rootView.findViewById(R.id.list_songs);
         populateSongsList(listView, inflater);
-
-
+        FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+        fab.setVisibility(View.VISIBLE);
         return rootView;
     }
 
@@ -68,8 +76,6 @@ public class MySongsFragment extends Fragment {
                         titoliCanzoniList.add(canzoniArrayJson.getJSONObject(i).getString("titolo"));
                         idCanzoniList.add(canzoniArrayJson.getJSONObject(i).getInt("id"));
                     }
-                    //ArrayList<String> titoliCanzoniList = (ArrayList<String>) Arrays.asList(titoliCanzoniArray);
-                    // idCanzoniList = (ArrayList<Integer>) Arrays.asList(idCanzoniArray);
                     final ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, titoliCanzoniList){
 
                         @NonNull
