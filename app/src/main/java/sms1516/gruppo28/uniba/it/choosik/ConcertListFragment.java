@@ -195,8 +195,8 @@ public class ConcertListFragment extends Fragment {
         ListView listview = (ListView) rootView.findViewById(R.id.lista_concerti_view);
         upperInflater = inflater;
         upperContainer=container;
-        TextView txtTitolo = (TextView) rootView.findViewById(R.id.txtTitoloConcertFragment);
-        txtTitolo.setText("Lista concerti");
+        //TextView txtTitolo = (TextView) rootView.findViewById(R.id.txtTitoloConcertFragment);
+        //txtTitolo.setText("Lista concerti");
 
 
         //bundle passato da MainActivity per avere i dati json dal database
