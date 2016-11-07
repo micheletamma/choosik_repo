@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -41,6 +42,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
+
+import static sms1516.gruppo28.uniba.it.choosik.R.id.mainFragment;
 
 /**
  * Created by marcouva on 20/10/16.
@@ -52,6 +56,7 @@ public class DetailCanzoniConcerto extends Fragment {
     boolean toUpdate;
     int positionToUpdate;
     int votoUpdate;
+
 
     Map params = new HashMap();
 
@@ -315,6 +320,14 @@ public class DetailCanzoniConcerto extends Fragment {
     }
 
     );
+
+
+        String nomeActivity = getActivity().getClass().getSimpleName();
+        if (nomeActivity.equals("MainActivity")) {
+            ((MainActivity) getActivity()).getSupportActionBar().setTitle("Dettagli canzone");
+        } else if (nomeActivity.equals("SearchActivity")) {
+            ((SearchActivity) getActivity()).getSupportActionBar().setTitle("Dettagli canzone");
+        }
 
     return rootView;
 

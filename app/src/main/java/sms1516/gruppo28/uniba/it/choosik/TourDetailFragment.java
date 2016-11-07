@@ -53,6 +53,7 @@ public class TourDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle("Dettagli Tour");
         Bundle bundleIdTour = getArguments();
         final int idTour = bundleIdTour.getInt("idTour");
         String nomeTour = bundleIdTour.getString("nomeTour");

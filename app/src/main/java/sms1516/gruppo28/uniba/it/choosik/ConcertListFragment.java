@@ -189,7 +189,7 @@ public class ConcertListFragment extends Fragment {
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
+        ((SearchActivity) getActivity()).getSupportActionBar().setTitle("Lista concerti");
 
         View rootView = inflater.inflate(R.layout.fragment_concert, container, false);
         ListView listview = (ListView) rootView.findViewById(R.id.lista_concerti_view);

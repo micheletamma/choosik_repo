@@ -46,6 +46,7 @@ public class InsertFragment extends Fragment {
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle("Inserisci Tour");
 
         final View rootView = inflater.inflate(R.layout.fragment_insert,container,false);
         final ListView listView =(ListView) rootView.findViewById(R.id.lista_tour_artista);

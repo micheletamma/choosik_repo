@@ -33,6 +33,7 @@ public class MySongsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle("Le mie canzoni");
 
         View rootView = inflater.inflate(R.layout.fragment_mysongs,container,false);
         final ListView listView = (ListView) rootView.findViewById(R.id.list_songs);

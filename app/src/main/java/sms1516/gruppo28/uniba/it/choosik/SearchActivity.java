@@ -1,5 +1,6 @@
 package sms1516.gruppo28.uniba.it.choosik;
 
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -7,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -50,6 +52,7 @@ public class SearchActivity extends AppCompatActivity
     Boolean isBtnDatePressed;
 
     private class JsonTask extends AsyncTask<String,Void,String> {
+
 
 
 
@@ -226,6 +229,7 @@ public class SearchActivity extends AppCompatActivity
                 mYear, mMonth, mDay);
     }
 
+
     /**
      *Il metodo e' interrogato alla pressione del button Ricerca
      */
@@ -299,5 +303,18 @@ public class SearchActivity extends AppCompatActivity
             }
         });
     }
+
+
+    @Nullable
+    @Override
+    public android.support.v7.app.ActionBar getSupportActionBar() {
+        return super.getSupportActionBar();
+    }
+
+    public void setActionBarTitle(String title) {
+        getSupportActionBar().setTitle(title);
+    }
+
+
 }
 

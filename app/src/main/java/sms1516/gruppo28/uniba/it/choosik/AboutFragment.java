@@ -24,7 +24,7 @@ public class AboutFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle("About us");
         return inflater.inflate(R.layout.fragment_about, container, false);
     }
 

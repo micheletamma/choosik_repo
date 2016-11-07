@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -39,15 +40,12 @@ public class MainActivity extends AppCompatActivity
     boolean searchActivityFlag = false;
     boolean myConcertsFragmentFlag = false;
     boolean mainFragmentFlag = false;
-
     String provincia;
-
-
     String u = "";
     JSONObject artistResult;
-
     static boolean artista = false;
     SaveSharedPreference preferenza = new SaveSharedPreference();
+
 
     private class JsonTask extends AsyncTask<String,Void,String> {
 
@@ -397,4 +395,17 @@ public class MainActivity extends AppCompatActivity
                 })
                 .show();
     }
+
+
+    @Nullable
+    @Override
+    public android.support.v7.app.ActionBar getSupportActionBar() {
+        return super.getSupportActionBar();
+    }
+
+    public void setActionBarTitle(String title) {
+        getSupportActionBar().setTitle(title);
+    }
+
+
 }
