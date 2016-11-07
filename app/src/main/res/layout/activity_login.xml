@@ -4,26 +4,82 @@
     android:id="@+id/activity_login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#C0C1C0"
+    android:orientation="vertical"
+    android:background="@drawable/prova"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="sms1516.gruppo28.uniba.it.choosik.LoginActivity">
-
-
-    <EditText
-        android:id="@+id/txtUser"
+    tools:context="sms1516.gruppo28.uniba.it.choosik.LoginActivity"
+    >
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/imageView2"
-        android:hint="@string/usr"
-        android:maxLines="1"
-        android:singleLine="true"
-        android:text=""
-        android:textAlignment="center" />
+        android:layout_height="match_parent">
+
+
+        <EditText
+            android:id="@+id/txtUser"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="false"
+            android:layout_below="@+id/imageView2"
+            android:hint="@string/usr"
+            android:maxLines="1"
+            android:textColorHint="@android:color/white"
+            android:singleLine="true"
+            android:textAlignment="center"
+            android:layout_gravity="center_horizontal|top"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="false"
+            android:layout_marginTop="100dp"
+            android:fontFamily="@string/font_family_thin" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/solo_scritta"
+            android:layout_gravity="center_horizontal|top"
+            android:layout_marginTop="10dp" />
+
+        <Button
+            android:id="@+id/registerbtn"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/loginbtn"
+            android:onClick="register"
+            android:text="S I G N  U P"
+            android:textColor="@android:color/tab_indicator_text"
+            android:textStyle="bold"
+            android:theme="@style/AppTheme.Button"
+            android:layout_gravity="center_horizontal|bottom"
+            android:layout_marginBottom="15dp"
+            android:background="@android:color/transparent"/>
+
+        <Button
+            android:id="@+id/loginbtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/txtPassword"
+            android:onClick="login"
+            android:text="L o g i n"
+            android:textColor="@android:color/tab_indicator_text"
+            android:textStyle="bold"
+            android:theme="@style/AppTheme.Button"
+            android:layout_gravity="center_horizontal|bottom"
+            android:layout_marginBottom="70dp"
+            android:layout_marginTop="0dp"
+            android:background="@android:color/transparent" />
+    </FrameLayout>
+
 
     <EditText
         android:id="@+id/txtPassword"
@@ -31,56 +87,19 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/txtUser"
+        android:fontFamily="@string/font_family_thin"
         android:ems="10"
+        android:includeFontPadding="true"
         android:hint="@string/psw"
         android:inputType="textPassword"
         android:text=""
-        android:textAlignment="center" />
-
-    <Button
-        android:id="@+id/loginbtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/txtPassword"
-        android:onClick="login"
-        android:text="Login"
-        android:textColor="@android:color/tab_indicator_text"
-        android:textStyle="bold"
-        android:theme="@style/AppTheme.Button" />
-
-    <ImageView
-        android:id="@+id/imageView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView3"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/solo_scritta" />
-
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:src="@drawable/originale" />
-
-    <Button
-        android:id="@+id/registerbtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/loginbtn"
-        android:onClick="register"
-        android:text="Sei un nuovo utente? Registrati"
-        android:textColor="@android:color/tab_indicator_text"
-        android:textStyle="bold"
-        android:theme="@style/AppTheme.Button" />
+        android:textColorHint="@android:color/white"
+        android:textAlignment="center"
+        android:layout_gravity="right|center_vertical"
+        android:layout_marginTop="140dp"
+        android:textColorHighlight="@android:color/white"
+        android:textColor="@android:color/white"
+        android:textColorLink="@android:color/white" />
 
 
 </RelativeLayout>
