@@ -42,12 +42,13 @@ public class RegisterActivity extends AppCompatActivity {
         final Spinner sp = (Spinner) findViewById(R.id.spinnerProvince);
         ArrayAdapter<String> provincia = new ArrayAdapter<String>(
                 this,
-                android.R.layout.simple_dropdown_item_1line,
+                R.layout.spinner_item,
+                R.id.text1,
                 dizionario.getNomi()
         );
 
-
         sp.setAdapter(provincia);
+
         TextView avvisoField = (TextView) findViewById(R.id.txtAvviso);
         avvisoField.setText("");
         Button button = (Button) findViewById(R.id.btnRegister);

@@ -1,17 +1,18 @@
 package sms1516.gruppo28.uniba.it.choosik;
 
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -162,10 +163,11 @@ public class MainFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.main_fragment, container, false);
         Bundle bundle = this.getArguments();
         String provincia = SaveSharedPreference.getProvincia(this.getContext());
-        ImageView emptyImg = (ImageView) rootView.findViewById(R.id.imgEmpty);
+
         TextView emptyTxt = (TextView) rootView.findViewById(R.id.txtEmpty);
         TextView titolo = (TextView) rootView.findViewById(R.id.txtTitoloMainFragment);
-        titolo.setText("Ecco i concerti nella provincia di \n" + provincia);
+
+        titolo.setText("Concerti a " + provincia);
         //prendiamo atraverso il bundle i dati passati dalla MainActivity
         final String [] arrayConcertiVicini = bundle.getStringArray("nomeConcerto");
         final int[] arrayIdTappe = bundle.getIntArray("arrayIdTappe");
@@ -190,7 +192,9 @@ public class MainFragment extends Fragment {
         });
 
         if (concertiVicini.isEmpty()){
-            emptyImg.setVisibility(View.VISIBLE);
+
+            Drawable sfondo = ResourcesCompat.getDrawable(getResources(), R.drawable.no_concerts, null);
+            rootView.setBackground(sfondo);
             emptyTxt.setVisibility(View.VISIBLE);
         }
 

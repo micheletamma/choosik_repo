@@ -7,7 +7,7 @@
         <item name="colorPrimaryDark">#FF000000</item>
         <item name="colorAccent">#D5FF4040</item>
         <item name="homeAsUpIndicator">@drawable/home_48px</item>
-
+        <item name="spinnerDropDownItemStyle">@style/SpinnerItem.DropDownItem</item>
 
 
 
@@ -17,6 +17,7 @@
 
 
     <style name="AppTheme.NoActionBar">
+
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
@@ -28,7 +29,8 @@
         <item name="colorButtonNormal">#ffffff</item>
 
     </style>
-    <style name ="myTextView">
+
+    <style name ="txtSuNero">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_alignParentLeft">true</item>
@@ -37,6 +39,26 @@
         <item name="android:textColorHint">@android:color/white</item>
         <item name="android:textColor">@android:color/white</item>
         <item name = "android:textColorHighlight">@android:color/white</item>
+        <item name="android:textColorLink">@android:color/white</item>
+    </style>
+    <style name ="txtSuBianco">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentLeft">true</item>
+        <item name="android:layout_alignParentStart">true</item>
+        <item name="android:fontFamily">@string/font_family_thin</item>
+        <item name="android:textColorHint">@android:color/black</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name = "android:textColorHighlight">@android:color/black</item>
+        <item name="android:textColorLink">@android:color/black</item>
     </style>
 
+
+    <style name="SpinnerItem">
+        <item name="android:textColor">#00FF00</item>
+    </style>
+
+    <style name="SpinnerItem.DropDownItem">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
 </resources>

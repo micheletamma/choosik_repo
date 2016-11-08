@@ -9,6 +9,8 @@
         android:layout_height="fill_parent"
         android:textSize="16sp"
         android:id="@+id/text_item"
+        android:textStyle="bold"
+        android:theme="@style/txtSuBianco"
         android:layout_toRightOf="@+id/delete_img"/>
 
     <ImageButton

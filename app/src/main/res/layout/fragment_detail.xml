@@ -11,6 +11,7 @@
         android:gravity="center|top"
         android:text="Canzoni del concerto"
         android:textStyle="bold"
+        android:theme="@style/txtSuBianco"
         android:textAlignment="center"
         android:textSize="20dp" />
 
@@ -18,8 +19,8 @@
         android:id="@+id/lista_canzoni_view"
         android:layout_width="match_parent"
         android:layout_height="408dp"
-        android:divider="@android:drawable/screen_background_dark_transparent"
-        android:dividerHeight="5dp"
+        android:divider="@color/colorAccent"
+        android:dividerHeight="2dp"
         android:paddingTop="10dp"
         android:layout_gravity="left|center_vertical">
 

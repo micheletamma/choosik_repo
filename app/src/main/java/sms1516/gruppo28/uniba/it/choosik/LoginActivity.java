@@ -3,8 +3,10 @@ package sms1516.gruppo28.uniba.it.choosik;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -60,10 +62,18 @@ public class LoginActivity extends AppCompatActivity {
         String username = usernameField.getText().toString();
         username = username.replace(" ","");
         String password = passwordField.getText().toString();
-        new JsonLoginTask().execute("http://exrezzo.pythonanywhere.com/api/utente/?username=" +
-                username +
-                "&password=" +
-                password);
+        if (username.equals("") | password.equals("")) {//toast su utente
+            Snackbar.make(findViewById(android.R.id.content), "Inserisci dati validi", Snackbar.LENGTH_LONG)
+                    .setActionTextColor(Color.WHITE)
+                    .show();
+        }
+        else
+            {
+            new JsonLoginTask().execute("http://exrezzo.pythonanywhere.com/api/utente/?username=" +
+            username +
+            "&password=" +
+            password);
+            }
 
     }
 
