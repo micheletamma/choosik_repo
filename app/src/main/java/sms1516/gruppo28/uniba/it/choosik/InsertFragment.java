@@ -2,16 +2,15 @@ package sms1516.gruppo28.uniba.it.choosik;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.Entity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,14 +22,12 @@ import android.widget.Toast;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
-import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.entity.StringEntity;
@@ -56,7 +53,7 @@ public class InsertFragment extends Fragment {
 
         populateTourList(listView, inflater);
 
-        ImageButton imgBtn = (ImageButton) rootView.findViewById(R.id.imageButton);
+        FloatingActionButton imgBtn = (FloatingActionButton) rootView.findViewById(R.id.imageButton);
         imgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

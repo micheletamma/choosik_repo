@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
@@ -76,7 +77,7 @@ public class TourDetailFragment extends Fragment {
             }
         });
 
-        ImageButton imgBtn = (ImageButton) rootView.findViewById(R.id.imageButton);
+        FloatingActionButton imgBtn = (FloatingActionButton) rootView.findViewById(R.id.imageButton);
         imgBtn.setOnClickListener(new View.OnClickListener() {
 
             @Override

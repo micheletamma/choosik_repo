@@ -1,21 +1,17 @@
 package sms1516.gruppo28.uniba.it.choosik;
 
-import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -31,7 +27,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.entity.StringEntity;
@@ -69,7 +64,7 @@ public class TappaDetailFragment extends Fragment {
 
         populateCanzoniList(listView,inflater,idTappa);
 
-        ImageButton imgBtn = (ImageButton) rootView.findViewById(R.id.imageButton);
+        FloatingActionButton imgBtn = (FloatingActionButton) rootView.findViewById(R.id.imageButton);
         imgBtn.setOnClickListener(new View.OnClickListener() {
 
             @Override
