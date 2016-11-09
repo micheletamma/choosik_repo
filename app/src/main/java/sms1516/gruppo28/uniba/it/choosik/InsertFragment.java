@@ -90,12 +90,14 @@ public class InsertFragment extends Fragment {
                             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                                 Log.e("POST del tour ok", statusCode+"");
                                 populateTourList(listView, inflater);
+                                insertTourDialog.cancel();
                             }
 
                             @Override
                             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
                                 Log.e("POST del tour NOOOO", statusCode+" "+responseBody.toString()+ "" +
                                         error.getMessage());
+                                insertTourDialog.cancel();
                                 Toast.makeText(getContext(), "Tour non inserito: si e' verificato un problema!", Toast.LENGTH_SHORT).show();
                             }
                         });

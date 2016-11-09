@@ -21,6 +21,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -236,6 +237,7 @@ public class TappaDetailFragment extends Fragment {
 
                             ImageButton imgBtn = (ImageButton) convertView.findViewById(R.id.delete_img);
                             TextView textItem = (TextView) convertView.findViewById(R.id.text_item);
+                            final ProgressBar progBar = (ProgressBar) convertView.findViewById(R.id.progressBar7);
                             textItem.setText(nomeCanzoniList.get(position));
 
                             imgBtn.setOnClickListener(new View.OnClickListener() {
@@ -248,12 +250,13 @@ public class TappaDetailFragment extends Fragment {
 
                                                 @Override
                                                 public void onStart() {
-                                                    // mettere pallino che carica durante eliminazione
+                                                    progBar.setVisibility(View.VISIBLE);
                                                 }
 
                                                 @Override
                                                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                                                     Log.e("Delete canzone ok id:",nomeCanzoniList.get(position));
+                                                    progBar.setVisibility(View.GONE);
                                                     remove(getItem(position));
                                                     notifyDataSetChanged();
                                                     idCanzoniList.remove(position);
