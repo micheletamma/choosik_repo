@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:text=""
         android:textAlignment="center"
-        android:hint="Titolo'"
+        android:hint="Titolo"
         android:textIsSelectable="false"
         android:textSize="17sp"
         android:drawableEnd="@drawable/place"

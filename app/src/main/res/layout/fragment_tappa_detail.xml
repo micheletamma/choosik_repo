@@ -4,22 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="sms1516.gruppo28.uniba.it.choosik.TappaDetailFragment">
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/imageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@android:drawable/ic_input_add"
-        android:tint="@android:color/white"
-        app:backgroundTint="@android:color/holo_green_dark"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        app:fabSize="normal"
-        android:layout_margin="@dimen/fab_margin"
-        android:layout_gravity="bottom|end"
-
-        />
-
     <ListView
         android:id="@+id/lista_canzoni_view"
         android:layout_width="match_parent"
@@ -42,5 +26,19 @@
         android:id="@+id/info_tappa"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/imageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_input_add"
+        android:tint="@android:color/white"
+        app:backgroundTint="@android:color/holo_green_dark"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        app:fabSize="normal"
+        android:layout_margin="@dimen/fab_margin"
+        android:layout_gravity="bottom|end"
+
+        />
 
 </RelativeLayout>

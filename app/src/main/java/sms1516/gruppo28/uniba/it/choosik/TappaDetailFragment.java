@@ -1,17 +1,23 @@
 package sms1516.gruppo28.uniba.it.choosik;
 
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -27,6 +33,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.entity.StringEntity;
@@ -41,7 +48,9 @@ public class TappaDetailFragment extends Fragment {
         // Required empty public constructor
     }
 
-
+    ArrayList<String> nomiCanzoni2add = new ArrayList<>();
+    ArrayList<Integer> idCanzoni2add = new ArrayList<>();
+    ListView canzoniArtista2addListView;
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -64,7 +73,8 @@ public class TappaDetailFragment extends Fragment {
 
         populateCanzoniList(listView,inflater,idTappa);
 
-        FloatingActionButton imgBtn = (FloatingActionButton) rootView.findViewById(R.id.imageButton);
+        ImageButton imgBtn = (ImageButton) rootView.findViewById(R.id.imageButton);
+
         imgBtn.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -72,55 +82,108 @@ public class TappaDetailFragment extends Fragment {
                 final Dialog insertCanzoneDialog = new Dialog(getContext());
                 insertCanzoneDialog.setContentView(R.layout.canzone_insert_dialog);
                 insertCanzoneDialog.setCancelable(true);
+                insertCanzoneDialog.setTitle("Inserisci canzone");
                 insertCanzoneDialog.show();
 
-                Button insertBtn = (Button) insertCanzoneDialog.findViewById(R.id.input_canzone_button);
+                Button findBtn = (Button) insertCanzoneDialog.findViewById(R.id.input_canzone_button);
                 final EditText inputCanzoneEditText = (EditText) insertCanzoneDialog.findViewById(R.id.input_canzone_text);
-
-
-
-
-
-
-
                 /**
-                 * Click nel dialog per INSERIRE tappa
+                 * Click nel dialog per INSERIRE canzoni in tappa
                  */
 
-                insertBtn.setOnClickListener(new View.OnClickListener() {
+                findBtn.setOnClickListener(new View.OnClickListener() {
 
                     @Override
                     public void onClick(View view) {
+
                         String inputCanzoneString = inputCanzoneEditText.getText().toString();
+                        canzoniArtista2addListView = (ListView)insertCanzoneDialog.findViewById(R.id.lista_canzoni_artista);
+                        final AsyncHttpClient client = new AsyncHttpClient();
+                        Log.d("get canz2add", "http://exrezzo.pythonanywhere.com/api/canzone/?titoloContains="+
+                                inputCanzoneString+"&autore__username="+
+                                SaveSharedPreference.getUserName(getContext()));
+                        client.get("http://exrezzo.pythonanywhere.com/api/canzone/?titoloContains="+
+                                inputCanzoneString+"&autore__username="+
+                                SaveSharedPreference.getUserName(getContext()), new JsonHttpResponseHandler(){
+                                    @Override
+                                    public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                                        try {
+                                            JSONObject canzoneMeta = response.getJSONObject("meta");
+                                            if (canzoneMeta.getInt("total_count") == 0){
+                                                Toast.makeText(getContext(), "Nessun risultato!", Toast.LENGTH_SHORT).show();
+                                                return;
+                                            }
+                                            JSONArray canzoneArrayJson = response.getJSONArray("objects");
 
-                        AsyncHttpClient client = new AsyncHttpClient();
-                        JSONObject canzone2postJson = new JSONObject();
+                                            if (!nomiCanzoni2add.isEmpty() && !idCanzoni2add.isEmpty()){
+                                                nomiCanzoni2add.clear();
+                                                idCanzoni2add.clear();
+                                            }
+                                            final ArrayList<Integer> idCanzoniAggiunteGia = new ArrayList<Integer>();
+                                            for (int i = 0; i < canzoneArrayJson.length(); i++) {
+                                                String titolo = canzoneArrayJson.getJSONObject(i).getString("titolo");
+                                                int id = canzoneArrayJson.getJSONObject(i).getInt("id");
+                                                if (idCanzoniOriginaliList.contains(id)){
+                                                    Log.d("ahahahhahaa",titolo+" sta in tappa");
+                                                    idCanzoniAggiunteGia.add(id);
+                                                }
+                                                nomiCanzoni2add.add(canzoneArrayJson.getJSONObject(i).getString("titolo"));
+                                                idCanzoni2add.add(canzoneArrayJson.getJSONObject(i).getInt("id"));
 
-                        JSONObject tappaJson = new JSONObject();
-                        StringEntity canzone2postEntity = null;
-                        try {
-                            canzone2postJson.put("tappa", tappaJson.put("id", idTappa));
-                            canzone2postJson.put("titolo", inputCanzoneString);
-                            canzone2postEntity= new StringEntity(canzone2postJson.toString());
+                                            }
+                                            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, nomiCanzoni2add);
+                                            canzoniArtista2addListView.setAdapter(adapter);
+                                            canzoniArtista2addListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                                @Override
+                                                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                                    if (idCanzoniOriginaliList.contains(idCanzoni2add.get(i))){
+                                                        Toast.makeText(getContext(), "Canzone già inserita nella tappa!", Toast.LENGTH_SHORT).show();
+                                                        return;
+                                                    }
+                                                    JSONObject canzoneInTappa2post = new JSONObject();
+                                                    StringEntity canzoneInTappa2postEntity = null;
+                                                    try {
+                                                        canzoneInTappa2post.put("canzone",new JSONObject().put("resource_uri", "/api/canzone/"+idCanzoni2add.get(i)+"/"));
+                                                        canzoneInTappa2post.put("tappa", new JSONObject().put("resource_uri", "/api/tappa/"+idTappa+"/"));
+                                                        canzoneInTappa2postEntity = new StringEntity(canzoneInTappa2post.toString().replace("\\",""));
+                                                    } catch (JSONException e) {
+                                                        e.printStackTrace();
+                                                    } catch (Exception e){
+                                                        e.printStackTrace();
+                                                    }
+                                                    Log.d("entity canzoneintappa", canzoneInTappa2postEntity.toString());
+                                                    client.post(getContext(),"http://exrezzo.pythonanywhere.com/api/canzoneintappa/",
+                                                            canzoneInTappa2postEntity,"application/json",
+                                                            new AsyncHttpResponseHandler() {
+                                                                @Override
+                                                                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                                                                    Log.e("POST canzoneintappa ok", statusCode + "");
+                                                                    populateCanzoniList(listView, inflater, idTappa);
+                                                                    insertCanzoneDialog.cancel();
+                                                                    Toast.makeText(getContext(), "Canzone inserita!", Toast.LENGTH_SHORT).show();
+                                                                }
 
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        client.post(getContext(),"http://exrezzo.pythonanywhere.com/api/canzoneintappa/",canzone2postEntity,"application/json", new AsyncHttpResponseHandler() {
-                            @Override
-                            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                                Log.e("POST della canzone ok", statusCode+"");
-                                populateCanzoniList(listView,inflater,idTappa);
-                            }
+                                                                @Override
+                                                                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                                                                    Log.e("POST canzoneintappa no", statusCode + " " + responseBody.toString() + "" +
+                                                                            error.getMessage());
+                                                                    Toast.makeText(getContext(), "Canzone non inserita: si e' verificato un problema!", Toast.LENGTH_SHORT).show();
+                                                                }
+                                                            });
+                                                }
+                                            });
 
-                            @Override
-                            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                                Log.e("POST canzone NOOOO", statusCode+" "+responseBody.toString()+ "" +
-                                        error.getMessage());
-                                Toast.makeText(getContext(), "Canzone non inserita: si e' verificato un problema!", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                        insertCanzoneDialog.cancel();
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                                        Log.e("Err listcanz2add", statusCode+"");
+                                    }
+                                }
+                        );
                     }
                 });
             }
@@ -137,6 +200,7 @@ public class TappaDetailFragment extends Fragment {
 
     ArrayList<String> nomeCanzoniList;
     ArrayList<Integer> idCanzoniList;
+    ArrayList<Integer> idCanzoniOriginaliList;
     private void populateCanzoniList(final ListView listView, final LayoutInflater inflater, int idTappa) {
         AsyncHttpClient client = new AsyncHttpClient();
         client.get("http://exrezzo.pythonanywhere.com/api/canzoneintappa/?tappa__id=" +
@@ -153,11 +217,13 @@ public class TappaDetailFragment extends Fragment {
                 progress.dismiss();
                 try {
                     JSONArray canzoneArrayJson = response.getJSONArray("objects");
-                    nomeCanzoniList = new ArrayList();
-                    idCanzoniList = new ArrayList();
+                    nomeCanzoniList = new ArrayList<>();
+                    idCanzoniList = new ArrayList<>();
+                    idCanzoniOriginaliList= new ArrayList<>();
                     for (int i = 0; i < canzoneArrayJson.length(); i++) {
                         nomeCanzoniList.add(canzoneArrayJson.getJSONObject(i).getJSONObject("canzone").getString("titolo"));
                         idCanzoniList.add(canzoneArrayJson.getJSONObject(i).getInt("id"));
+                        idCanzoniOriginaliList.add(canzoneArrayJson.getJSONObject(i).getJSONObject("canzone").getInt("id"));
                     }
 
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, nomeCanzoniList){
@@ -179,12 +245,20 @@ public class TappaDetailFragment extends Fragment {
                                     Log.e("URL 2delete", "http://exrezzo.pythonanywhere.com/api/canzoneintappa/" + idCanzoniList.get(position)+"/");
                                     client.delete(getContext(), "http://exrezzo.pythonanywhere.com/api/canzoneintappa/" + idCanzoniList.get(position)+"/",
                                             new AsyncHttpResponseHandler() {
+
+                                                @Override
+                                                public void onStart() {
+                                                    // mettere pallino che carica durante eliminazione
+                                                }
+
                                                 @Override
                                                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                                                     Log.e("Delete canzone ok id:",nomeCanzoniList.get(position));
                                                     remove(getItem(position));
                                                     notifyDataSetChanged();
                                                     idCanzoniList.remove(position);
+                                                    //nomeCanzoniList.remove(position);
+                                                    idCanzoniOriginaliList.remove(position);
                                                 }
 
                                                 @Override
@@ -194,24 +268,6 @@ public class TappaDetailFragment extends Fragment {
                                             });
                                 }
                             });
-//                            textItem.setOnClickListener(new View.OnClickListener() {
-//                                @Override
-//                                public void onClick(View view) {
-//                                    Bundle bundleTappe = new Bundle();
-//                                    bundleTappe.putInt("idCanzone",idCanzoniList.get(position));
-//                                    bundleTappe.putString("nomeCanzone", nomeCanzoniList.get(position));
-//                                    FragmentManager fm = getFragmentManager();
-//
-//                                    TappaDetailFragment tappaDetail = new TappaDetailFragment();
-//
-//                                    tappaDetail.setArguments(bundleTappe);
-//                                    fm.beginTransaction()
-//                                            .replace(R.id.relativelayoutforfragment,tappaDetail)
-//                                            .addToBackStack("tappaDetail")
-//                                            .commit();
-//                                }
-//                            });
-
                             return convertView;
                         }
                     };
