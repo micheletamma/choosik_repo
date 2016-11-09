@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
@@ -29,6 +30,8 @@ import java.net.URL;
 public class LoginActivity extends AppCompatActivity {
 
     private EditText usernameField, passwordField;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +93,14 @@ public class LoginActivity extends AppCompatActivity {
         String prov;
         boolean artista;
 
-
+        @Override
+        protected void onPreExecute() {
+            if (isOnline()){
+                super.onPreExecute();}
+            else {
+                checkConnections();
+            }
+        }
         @Override
         protected String doInBackground(String... strings) {
             HttpURLConnection connection = null;
@@ -205,5 +215,47 @@ public class LoginActivity extends AppCompatActivity {
                 .show();
 
     }
+    public void checkConnections (){
+        if (isOnline()) {
+            //devo mostrare alert e uscire dall'app
+            Log.d("Uscita","internet ok");
+        } else {
+            Log.d("Uscita","no internet");
+            showExitAlert();
+        }
 
+    }
+    public void showExitAlert(){
+        AlertDialog alertbox = new AlertDialog.Builder(this)
+                .setCancelable(false)
+                .setMessage("Ooops! Non sei connesso a Internet!")
+                .setPositiveButton("Esci", new DialogInterface.OnClickListener() {
+
+                    // do something when the button is clicked
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        moveTaskToBack(true);
+//                        finish();
+                        //close();
+
+
+                    }
+                })
+                .setNegativeButton("Ricarica", new DialogInterface.OnClickListener() {
+
+                    // do something when the button is clicked
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        checkConnections();
+                    }
+                })
+                .show();
+
+    }
+
+    public boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        return cm.getActiveNetworkInfo() != null &&
+                cm.getActiveNetworkInfo().isConnectedOrConnecting();
+    }
 }

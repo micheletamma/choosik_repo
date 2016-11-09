@@ -1,9 +1,12 @@
 package sms1516.gruppo28.uniba.it.choosik;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -77,14 +80,15 @@ public class RegisterActivity extends AppCompatActivity {
                 registrazione.put("password", psw);
                 registrazione.put("email", mail);
                 registrazione.put("provincia", prov);
-
+                checkConnections();
                 params = registrazione;
                 if (mail.contains("@") & mail.contains(".")) {
                     if (!password.equals("") & !user.equals("")){
                         try {
-                            SimpleTask task = new SimpleTask();
-                            task.execute("http://exrezzo.pythonanywhere.com/api/utente/");
-
+                            if (isOnline()) {
+                                SimpleTask task = new SimpleTask();
+                                task.execute("http://exrezzo.pythonanywhere.com/api/utente/");
+                            }
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -116,6 +120,8 @@ public class RegisterActivity extends AppCompatActivity {
 
         public SimpleTask() {
         }
+
+
 
 
         @Override
@@ -156,6 +162,9 @@ public class RegisterActivity extends AppCompatActivity {
                 Log.e("errore", e.getMessage());
 
 
+            } catch (NullPointerException e){
+                e.printStackTrace();
+                Log.e("errore",e.getMessage());
             }
 
             return message;
@@ -179,6 +188,48 @@ public class RegisterActivity extends AppCompatActivity {
 
         }
     }
+    public void checkConnections (){
+        if (isOnline()) {
+            //devo mostrare alert e uscire dall'app
+            Log.d("Uscita","internet ok");
+        } else {
+            Log.d("Uscita","no internet");
+            showExitAlert();
+        }
 
+    }
+    public void showExitAlert(){
+        AlertDialog alertbox = new AlertDialog.Builder(this)
+                .setCancelable(false)
+                .setMessage("Ooops! Non sei connesso a Internet!")
+                .setPositiveButton("Esci", new DialogInterface.OnClickListener() {
+
+                    // do something when the button is clicked
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        moveTaskToBack(true);
+//                        finish();
+                        //close();
+
+
+                    }
+                })
+                .setNegativeButton("Ricarica", new DialogInterface.OnClickListener() {
+
+                    // do something when the button is clicked
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        checkConnections();
+                    }
+                })
+                .show();
+
+    }
+
+    public boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        return cm.getActiveNetworkInfo() != null &&
+                cm.getActiveNetworkInfo().isConnectedOrConnecting();
+    }
 
 }
