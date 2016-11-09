@@ -6,7 +6,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Inserisci Canzone"
+        android:text="Cerca Canzone"
         android:id="@+id/textView6"
         android:textSize="20sp"
         android:textColor="@color/colorAccent"
@@ -26,19 +26,29 @@
         android:drawableRight="@drawable/place"
         android:layout_below="@+id/textView6"
         android:layout_centerHorizontal="true" />
-
-
-
+    <ListView
+        android:id="@+id/lista_canzoni_artista"
+        android:layout_width="match_parent"
+        android:layout_height="408dp"
+        android:divider="@android:drawable/screen_background_dark_transparent"
+        android:dividerHeight="5dp"
+        android:paddingTop="10dp"
+        android:layout_gravity="left|center_vertical"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@id/input_canzone_text"
+        />
 
     <Button
         android:id="@+id/input_canzone_button"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Inserisci"
+        android:text="Cerca"
         android:layout_alignWithParentIfMissing="false"
-        android:layout_alignLeft="@+id/input_canzone_text"
-        android:layout_alignStart="@+id/input_canzone_text"
-        />
+
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 
 
 </RelativeLayout>
