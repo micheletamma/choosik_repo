@@ -26,7 +26,10 @@
         android:layout_height="wrap_content"
         android:id="@+id/nome_tour"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:theme="@style/txtSuBianco"
+        android:textSize="18sp"
+        android:textStyle="bold"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/imageButton"
