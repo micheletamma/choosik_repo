@@ -343,9 +343,10 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_about) {
             if (!t.equals("About us")){
                 AboutFragment aboutFragment = new AboutFragment();
-                manager.beginTransaction().replace(R.id.relativelayoutforfragment, aboutFragment, aboutFragment.getTag())
+                inserisciFragment(aboutFragment);
+                /*manager.beginTransaction().replace(R.id.relativelayoutforfragment, aboutFragment, aboutFragment.getTag())
                         .addToBackStack(aboutFragment.getTag())
-                        .commit();
+                        .commit();*/
 
             }
             fragmentAttivo="About";
@@ -356,9 +357,10 @@ public class MainActivity extends AppCompatActivity
             if (isOnline()){
             if (!t.equals("Contattaci")) {
                 SendFragment sendFragment = new SendFragment();
-                manager.beginTransaction().replace(R.id.relativelayoutforfragment, sendFragment, sendFragment.getTag())
+                inserisciFragment(sendFragment);
+             /*   manager.beginTransaction().replace(R.id.relativelayoutforfragment, sendFragment, sendFragment.getTag())
                         .addToBackStack(sendFragment.getTag())
-                        .commit();
+                        .commit();*/
             }} else {checkConnections();}
 
 
@@ -377,9 +379,10 @@ public class MainActivity extends AppCompatActivity
             if (!t.equals("Inserisci Tour")){
                 checkConnections();
                 InsertFragment insertFragment = new InsertFragment();
-                manager.beginTransaction().replace(R.id.relativelayoutforfragment, insertFragment, insertFragment.getTag())
+                inserisciFragment(insertFragment);
+               /* manager.beginTransaction().replace(R.id.relativelayoutforfragment, insertFragment, insertFragment.getTag())
                         .addToBackStack(insertFragment.getTag())
-                        .commit();}
+                        .commit();*/}
            }
             else {
                 checkConnections();
@@ -389,9 +392,10 @@ public class MainActivity extends AppCompatActivity
             if (isOnline()){
             if (!t.equals("Le mie canzoni")){
                 MySongsFragment mySongsFragment = new MySongsFragment();
-                manager.beginTransaction().replace(R.id.relativelayoutforfragment,mySongsFragment,mySongsFragment.getTag())
+                inserisciFragment(mySongsFragment);
+                /*manager.beginTransaction().replace(R.id.relativelayoutforfragment,mySongsFragment,mySongsFragment.getTag())
                         .addToBackStack(mySongsFragment.getTag())
-                        .commit();}
+                        .commit();*/}
 
         } else {
                 checkConnections();
@@ -482,11 +486,12 @@ public class MainActivity extends AppCompatActivity
 
                     // do something when the button is clicked
                     public void onClick(DialogInterface arg0, int arg1) {
-                        checkConnections();
+
                         if (isOnline()){
                             //cariconuovofragment
                             caricaFragment();
                         }
+                        checkConnections();
                     }
                 })
                 .show();
@@ -513,27 +518,31 @@ public class MainActivity extends AppCompatActivity
             fragmentAttivo="iMieiConcerti";
         } else if (fragmentAttivo.equals("About")){
             AboutFragment aboutFragment = new AboutFragment();
-            manager.beginTransaction().replace(R.id.relativelayoutforfragment, aboutFragment, aboutFragment.getTag())
+            inserisciFragment(aboutFragment);
+            /*manager.beginTransaction().replace(R.id.relativelayoutforfragment, aboutFragment, aboutFragment.getTag())
                     .addToBackStack(aboutFragment.getTag())
-                    .commit();
+                    .commit();*/
             fragmentAttivo="About";
         } else if (fragmentAttivo.equals("Contattaci")) {
             SendFragment sendFragment = new SendFragment();
-            manager.beginTransaction().replace(R.id.relativelayoutforfragment, sendFragment, sendFragment.getTag())
+            inserisciFragment(sendFragment);
+          /*  manager.beginTransaction().replace(R.id.relativelayoutforfragment, sendFragment, sendFragment.getTag())
                     .addToBackStack(sendFragment.getTag())
-                    .commit();
+                    .commit();*/
             fragmentAttivo="Contattaci";
         } else if (fragmentAttivo.equals("inserisciTour")){
             InsertFragment insertFragment = new InsertFragment();
-            manager.beginTransaction().replace(R.id.relativelayoutforfragment, insertFragment, insertFragment.getTag())
+            inserisciFragment(insertFragment);
+            /*manager.beginTransaction().replace(R.id.relativelayoutforfragment, insertFragment, insertFragment.getTag())
                     .addToBackStack(insertFragment.getTag())
-                    .commit();
+                    .commit();*/
             fragmentAttivo="inserisciTour";
         } else if (fragmentAttivo.equals("leMieCanzoni")){
             MySongsFragment mySongsFragment = new MySongsFragment();
-            manager.beginTransaction().replace(R.id.relativelayoutforfragment,mySongsFragment,mySongsFragment.getTag())
+            inserisciFragment(mySongsFragment);
+            /*manager.beginTransaction().replace(R.id.relativelayoutforfragment,mySongsFragment,mySongsFragment.getTag())
                     .addToBackStack(mySongsFragment.getTag())
-                    .commit();
+                    .commit();*/
             fragmentAttivo="leMieCanzoni";
         } else if (fragmentAttivo.equals("mainFragment")) {
             mainFragmentFlag=true;
@@ -543,9 +552,14 @@ public class MainActivity extends AppCompatActivity
 
 
 
-
-
-
-
     }
+
+    public void inserisciFragment(Fragment frag){
+        FragmentManager manager = getSupportFragmentManager();
+        manager.beginTransaction().replace(R.id.relativelayoutforfragment,frag,frag.getTag())
+                .addToBackStack(frag.getTag())
+                .commit();
+    }
+
+
 }
