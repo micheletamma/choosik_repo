@@ -279,15 +279,17 @@ public class SearchActivity extends AppCompatActivity
             }
         }
         //posso eseguire il task di ricerca
+        if (isOnline()){
         JsonTask searchTask = new JsonTask();
-        searchTask.execute(req);
+        searchTask.execute(req);}
+        else {checkConnections();}
 
     }
 
 
     @Override
     public void onResume() {
-
+        checkConnections();
         super.onResume();
 
         findViewById(android.R.id.content).setFocusableInTouchMode(true);
