@@ -133,7 +133,11 @@ public class TourDetailFragment extends Fragment {
                     public void onClick(View view) {
                         String inputTappaCittaString = inputTappaCittaEditText.getText().toString();
                         String inputTappaDataString = inputTappaDataViewText.getText().toString();
-
+                        if (inputTappaCittaString.equals(" ") | inputTappaCittaString.equals("")
+                                | inputTappaDataString.equals("")) {
+                            Toast.makeText(getContext(), "Dati non validi", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
                         AsyncHttpClient client = new AsyncHttpClient();
                         JSONObject tappa2postJson = new JSONObject();
 
@@ -143,26 +147,32 @@ public class TourDetailFragment extends Fragment {
                             tappa2postJson.put("tour", tourJson.put("id", idTour));
                             tappa2postJson.put("citta", inputTappaCittaString);
                             tappa2postJson.put("data", inputTappaDataString);
-                            tappa2postEntity= new StringEntity(tappa2postJson.toString());
+                            tappa2postEntity = new StringEntity(tappa2postJson.toString());
 
                         } catch (Exception e) {
                             e.printStackTrace();
-                        }
-                        client.post(getContext(),"http://exrezzo.pythonanywhere.com/api/tappa/",tappa2postEntity,"application/json", new AsyncHttpResponseHandler() {
+                            }
+                        client.post(getContext(), "http://exrezzo.pythonanywhere.com/api/tappa/", tappa2postEntity, "application/json", new AsyncHttpResponseHandler() {
                             @Override
                             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                                Log.e("POST della tappa ok", statusCode+"");
-                                populateTappeList(listView,inflater,idTour);
+                                Log.e("POST della tappa ok", statusCode + "");
+                                populateTappeList(listView, inflater, idTour);
                             }
 
                             @Override
                             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                                Log.e("POST del tour NOOOO", statusCode+" "+responseBody.toString()+ "" +
+                                Log.e("POST del tour NOOOO", statusCode + " " + responseBody.toString() + "" +
                                         error.getMessage());
                                 Toast.makeText(getContext(), "Tappa non inserita: si e' verificato un problema!", Toast.LENGTH_SHORT).show();
                             }
+
                         });
                         insertTappaDialog.cancel();
+
+
+
+
+
                     }
                 });
             }
