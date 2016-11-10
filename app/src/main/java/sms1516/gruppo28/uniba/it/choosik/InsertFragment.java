@@ -189,7 +189,11 @@ public class InsertFragment extends Fragment {
                                     TourDetailFragment tourDetail = new TourDetailFragment();
 
                                     tourDetail.setArguments(bundleTappe);
-                                    utility.inserisciFragment(tourDetail,fm);
+                                    FragmentManager fm = getFragmentManager();
+                                    fm.beginTransaction()
+                                            .replace(R.id.relativelayoutforfragment,tourDetail)
+                                            .addToBackStack("tourDetail")
+                                            .commit();
                                 }
                             });
 

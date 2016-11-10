@@ -39,7 +39,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     Utility utility= new Utility();
-    FragmentManager fm = getSupportFragmentManager();
+
 
     //flag che servono per doInBackground e onPost execute
     boolean searchActivityFlag = false;
@@ -149,6 +149,7 @@ public class MainActivity extends AppCompatActivity
                     MyConcertsFragment myConcertsFragment = new MyConcertsFragment();
 
                     myConcertsFragment.setArguments(jsonArrayTappe);
+                    FragmentManager fm = getSupportFragmentManager();
                    utility.inserisciFragment(myConcertsFragment,fm);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -344,6 +345,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_about) {
             if (!t.equals("About us")){
                 AboutFragment aboutFragment = new AboutFragment();
+                FragmentManager fm= getSupportFragmentManager();
                 utility.inserisciFragment(aboutFragment,fm);
 
             }
@@ -355,7 +357,7 @@ public class MainActivity extends AppCompatActivity
             if (isOnline()){
             if (!t.equals("Contattaci")) {
                 SendFragment sendFragment = new SendFragment();
-
+                FragmentManager fm= getSupportFragmentManager();
                 utility.inserisciFragment(sendFragment,fm);
             }} else {checkConnections();}
 
@@ -374,6 +376,7 @@ public class MainActivity extends AppCompatActivity
             if (isOnline()){
             if (!t.equals("Inserisci Tour")){
                 checkConnections();
+                FragmentManager fm= getSupportFragmentManager();
                 InsertFragment insertFragment = new InsertFragment();
                 utility.inserisciFragment(insertFragment,fm);}
            }
@@ -385,6 +388,7 @@ public class MainActivity extends AppCompatActivity
             if (isOnline()){
             if (!t.equals("Le mie canzoni")){
                 MySongsFragment mySongsFragment = new MySongsFragment();
+                FragmentManager fm= getSupportFragmentManager();
                 utility.inserisciFragment(mySongsFragment,fm);
                 }
 
@@ -508,19 +512,24 @@ public class MainActivity extends AppCompatActivity
             fragmentAttivo="iMieiConcerti";
         } else if (fragmentAttivo.equals("About")){
             AboutFragment aboutFragment = new AboutFragment();
+            FragmentManager fm= getSupportFragmentManager();
             utility.inserisciFragment(aboutFragment,fm);
 
             fragmentAttivo="About";
         } else if (fragmentAttivo.equals("Contattaci")) {
             SendFragment sendFragment = new SendFragment();
+            FragmentManager fm= getSupportFragmentManager();
             utility.inserisciFragment(sendFragment,fm);
+
             fragmentAttivo="Contattaci";
         } else if (fragmentAttivo.equals("inserisciTour")){
             InsertFragment insertFragment = new InsertFragment();
+            FragmentManager fm= getSupportFragmentManager();
             utility.inserisciFragment(insertFragment,fm);
             fragmentAttivo="inserisciTour";
         } else if (fragmentAttivo.equals("leMieCanzoni")){
             MySongsFragment mySongsFragment = new MySongsFragment();
+            FragmentManager fm= getSupportFragmentManager();
             utility.inserisciFragment(mySongsFragment,fm);
             fragmentAttivo="leMieCanzoni";
         } else if (fragmentAttivo.equals("mainFragment")) {

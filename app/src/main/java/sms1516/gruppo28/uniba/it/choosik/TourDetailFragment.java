@@ -40,7 +40,7 @@ import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.entity.StringEntity;
 
 public class TourDetailFragment extends Fragment {
-    FragmentManager fm = getFragmentManager();
+
     Utility utility=new Utility();
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -251,6 +251,7 @@ public class TourDetailFragment extends Fragment {
                                     TappaDetailFragment tappaDetail = new TappaDetailFragment();
 
                                     tappaDetail.setArguments(bundleTappe);
+                                    FragmentManager fm = getFragmentManager();
                                     utility.inserisciFragment(tappaDetail,fm);
                                 }
                             });
