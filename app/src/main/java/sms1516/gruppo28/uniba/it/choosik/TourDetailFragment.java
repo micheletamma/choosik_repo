@@ -16,9 +16,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.Spinner;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,7 +34,6 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.Locale;
 
 import cz.msebera.android.httpclient.Header;
@@ -88,18 +88,8 @@ public class TourDetailFragment extends Fragment {
                 insertTappaDialog.setCancelable(true);
                 insertTappaDialog.show();
 
-                Dizionario dizionario = new Dizionario();
-                HashMap x = dizionario.dizionarioProvicia();
-                final Spinner sp = (Spinner) insertTappaDialog.findViewById(R.id.spinnerProvince);
-                ArrayAdapter<String> provincia = new ArrayAdapter<String>(
-                        getContext(),
-                        android.R.layout.simple_spinner_dropdown_item,
-                        dizionario.getNomi()
-                );
-
-                sp.setAdapter(provincia);
-
                 Button insertBtn = (Button) insertTappaDialog.findViewById(R.id.input_tappa_button);
+                final EditText inputTappaCittaEditText = (EditText) insertTappaDialog.findViewById(R.id.input_tappa_citta_text);
                 final TextView inputTappaDataViewText= (TextView) insertTappaDialog.findViewById(R.id.data_tappa_input_view);
 
                     /**
@@ -142,13 +132,9 @@ public class TourDetailFragment extends Fragment {
 
                     @Override
                     public void onClick(View view) {
-                        String inputTappaCittaString = sp.getSelectedItem().toString();
+                        String inputTappaCittaString = inputTappaCittaEditText.getText().toString();
                         String inputTappaDataString = inputTappaDataViewText.getText().toString();
-                        if (inputTappaCittaString.equals(" ") | inputTappaCittaString.equals("")
-                                | inputTappaDataString.equals("")) {
-                            Toast.makeText(getContext(), "Dati non validi", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
+
                         AsyncHttpClient client = new AsyncHttpClient();
                         JSONObject tappa2postJson = new JSONObject();
 
@@ -158,32 +144,26 @@ public class TourDetailFragment extends Fragment {
                             tappa2postJson.put("tour", tourJson.put("id", idTour));
                             tappa2postJson.put("citta", inputTappaCittaString);
                             tappa2postJson.put("data", inputTappaDataString);
-                            tappa2postEntity = new StringEntity(tappa2postJson.toString());
+                            tappa2postEntity= new StringEntity(tappa2postJson.toString());
 
                         } catch (Exception e) {
                             e.printStackTrace();
-                            }
-                        client.post(getContext(), "http://exrezzo.pythonanywhere.com/api/tappa/", tappa2postEntity, "application/json", new AsyncHttpResponseHandler() {
+                        }
+                        client.post(getContext(),"http://exrezzo.pythonanywhere.com/api/tappa/",tappa2postEntity,"application/json", new AsyncHttpResponseHandler() {
                             @Override
                             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                                Log.e("POST della tappa ok", statusCode + "");
-                                populateTappeList(listView, inflater, idTour);
+                                Log.e("POST della tappa ok", statusCode+"");
+                                populateTappeList(listView,inflater,idTour);
                             }
 
                             @Override
                             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                                Log.e("POST del tour NOOOO", statusCode + " " + responseBody.toString() + "" +
+                                Log.e("POST del tour NOOOO", statusCode+" "+responseBody.toString()+ "" +
                                         error.getMessage());
                                 Toast.makeText(getContext(), "Tappa non inserita: si e' verificato un problema!", Toast.LENGTH_SHORT).show();
                             }
-
                         });
                         insertTappaDialog.cancel();
-
-
-
-
-
                     }
                 });
             }
@@ -229,6 +209,7 @@ public class TourDetailFragment extends Fragment {
                             ImageButton imgBtn = (ImageButton) convertView.findViewById(R.id.delete_img);
                             TextView textItem = (TextView) convertView.findViewById(R.id.text_item);
                             textItem.setText(infoTappaList.get(position));
+                            final ProgressBar progBar = (ProgressBar) convertView.findViewById(R.id.progressBar7);
 
                             imgBtn.setOnClickListener(new View.OnClickListener() {
                                 @Override
@@ -238,8 +219,14 @@ public class TourDetailFragment extends Fragment {
                                     client.delete(getContext(), "http://exrezzo.pythonanywhere.com/api/tappa/" + idTappaList.get(position)+"/",
                                             new AsyncHttpResponseHandler() {
                                                 @Override
+                                                public void onStart() {
+                                                    progBar.setVisibility(View.VISIBLE);
+                                                }
+
+                                                @Override
                                                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                                                     Log.e("Delete tappa ok id:",infoTappaList.get(position));
+                                                    progBar.setVisibility(View.GONE);
                                                     remove(getItem(position));
                                                     notifyDataSetChanged();
                                                     idTappaList.remove(position);

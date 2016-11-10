@@ -12,6 +12,7 @@
             android:divider="@color/colorAccent"
             android:dividerHeight="2dp"
             android:id="@+id/list_songs"
+            android:smoothScrollbar="false"
             />
 
     </LinearLayout>

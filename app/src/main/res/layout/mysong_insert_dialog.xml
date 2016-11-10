@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Inserisci Canzone"-->
+        <!--android:id="@+id/insert_song_title"-->
+        <!--android:textSize="20sp"-->
+        <!--android:textColor="@color/colorAccent"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:layout_centerHorizontal="true" />-->
+
+    <EditText
+        android:id="@+id/input_song_text"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textAlignment="center"
+        android:hint="Titolo canzone"
+        android:textIsSelectable="false"
+        android:textSize="17sp"
+        android:layout_below="@+id/insert_song_button"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:id="@+id/insert_song_button"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Inserisci"
+        android:layout_alignWithParentIfMissing="false"
+        android:layout_below="@+id/progressBar7"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <ProgressBar
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBar7"
+        android:visibility="gone"
+        android:indeterminate="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>
