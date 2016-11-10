@@ -65,11 +65,16 @@ public class InsertFragment extends Fragment {
 
                 Button insertBtn =(Button) insertTourDialog.findViewById(R.id.input_tour_button);
                 final EditText inputTourEditText = (EditText) insertTourDialog.findViewById(R.id.input_tour_edit_text);
+
                 insertBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
 
                         String inputTourString = inputTourEditText.getText().toString();
+                        if (inputTourString.isEmpty()) {
+                            Toast.makeText(getContext(), "Inserisci un nome valido!", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
 
                         AsyncHttpClient client = new AsyncHttpClient();
                         JSONObject tour2postJson = new JSONObject();

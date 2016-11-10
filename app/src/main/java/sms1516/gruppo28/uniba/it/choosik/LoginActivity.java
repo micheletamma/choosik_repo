@@ -30,6 +30,7 @@ import java.net.URL;
 public class LoginActivity extends AppCompatActivity {
 
     private EditText usernameField, passwordField;
+    Button lgnBtn;
 
 
 
@@ -56,6 +57,7 @@ public class LoginActivity extends AppCompatActivity {
         usernameField = (EditText) findViewById(R.id.txtUser);
         passwordField = (EditText) findViewById(R.id.txtPassword);
         final Button loginbtn = (Button) findViewById(R.id.loginbtn);
+        lgnBtn = loginbtn;
     }
 
     /**
@@ -100,6 +102,8 @@ public class LoginActivity extends AppCompatActivity {
             else {
                 checkConnections();
             }
+            lgnBtn.setEnabled(false);
+
         }
         @Override
         protected String doInBackground(String... strings) {
@@ -144,9 +148,11 @@ public class LoginActivity extends AppCompatActivity {
             return null;
         }
 
+
         @Override
 
         protected void onPostExecute(String s) {
+            lgnBtn.setEnabled(true);
             try {
                 // salva in loginresult gli oggetti in formato json ricevuti dalla url
                 loginresult = new JSONObject(s);
