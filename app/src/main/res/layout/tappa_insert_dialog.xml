@@ -13,19 +13,17 @@ android:layout_height="wrap_content">
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
-    <EditText
-        android:id="@+id/input_tappa_citta_text"
-        android:layout_width="fill_parent"
+    <Spinner
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text=""
-        android:textAlignment="center"
-        android:hint="Citta'"
-        android:textIsSelectable="false"
-        android:textSize="17sp"
-        android:drawableEnd="@drawable/place"
-        android:drawableRight="@drawable/place"
+        android:id="@+id/spinnerProvince"
         android:layout_below="@+id/textView6"
-        android:layout_centerHorizontal="true" />
+        android:textAlignment="center"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_centerInParent="true"
+
+        />
 
 
 
@@ -40,7 +38,7 @@ android:layout_height="wrap_content">
         android:drawableRight="@drawable/data"
         android:layout_alignLeft="@+id/textView6"
         android:layout_alignStart="@+id/textView6"
-        android:layout_below="@+id/input_tappa_citta_text" />
+        android:layout_below="@+id/spinnerProvince" />
 
     <Button
         android:id="@+id/input_tappa_button"
