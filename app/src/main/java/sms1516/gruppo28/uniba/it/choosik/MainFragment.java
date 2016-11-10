@@ -32,6 +32,8 @@ import java.net.URL;
  * Created by Michele on 02/11/2016.
  */
 public class MainFragment extends Fragment {
+    Utility utility=new Utility();
+    FragmentManager manager=getFragmentManager();
 
     JSONObject detailCanzoni;
     String nomeTappa;
@@ -135,12 +137,11 @@ public class MainFragment extends Fragment {
                     titoli.putIntArray("votoCanzone",votoCanzone);
 
                     titoli.putStringArray("canzoniVotate",canzoniVotate);
-                    FragmentManager manager = getFragmentManager();
+
                     DetailCanzoniConcerto detailCanzoniConcerto = new DetailCanzoniConcerto();
                     detailCanzoniConcerto.setArguments(titoli);
-                    manager.beginTransaction().replace(R.id.relativelayoutforfragment,detailCanzoniConcerto)
-                            .addToBackStack("detailCanzoniConcerto")
-                            .commit();
+                    utility.inserisciFragment(detailCanzoniConcerto,manager);
+
                 }
 
 

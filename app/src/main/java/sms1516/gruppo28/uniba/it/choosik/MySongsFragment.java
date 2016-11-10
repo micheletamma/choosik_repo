@@ -40,6 +40,9 @@ import cz.msebera.android.httpclient.entity.StringEntity;
  * Created by Michele on 06/11/2016.
  */
 public class MySongsFragment extends Fragment {
+    Utility utility= new Utility();
+
+
 
     public static class ViewHolder{
         ProgressBar progressBar;
@@ -93,6 +96,8 @@ public class MySongsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 String input = songInput.getText().toString();
+                String temp=utility.controlloInserimento(input);
+                input=temp;
                 if (input.isEmpty()){
                     Toast.makeText(getContext(), "Inserire un titolo!", Toast.LENGTH_SHORT).show();
                     return;

@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
+
     String user, email, password;
     Map params = new HashMap();
     private EditText usernameField, passwordField, emailField;

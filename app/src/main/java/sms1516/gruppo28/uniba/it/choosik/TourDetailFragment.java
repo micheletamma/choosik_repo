@@ -40,6 +40,8 @@ import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.entity.StringEntity;
 
 public class TourDetailFragment extends Fragment {
+    FragmentManager fm = getFragmentManager();
+    Utility utility=new Utility();
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -245,15 +247,11 @@ public class TourDetailFragment extends Fragment {
                                     Bundle bundleTappe = new Bundle();
                                     bundleTappe.putInt("idTappa",idTappaList.get(position));
                                     bundleTappe.putString("infoTappa", infoTappaList.get(position));
-                                    FragmentManager fm = getFragmentManager();
 
                                     TappaDetailFragment tappaDetail = new TappaDetailFragment();
 
                                     tappaDetail.setArguments(bundleTappe);
-                                    fm.beginTransaction()
-                                            .replace(R.id.relativelayoutforfragment,tappaDetail)
-                                            .addToBackStack("tappaDetail")
-                                            .commit();
+                                    utility.inserisciFragment(tappaDetail,fm);
                                 }
                             });
 

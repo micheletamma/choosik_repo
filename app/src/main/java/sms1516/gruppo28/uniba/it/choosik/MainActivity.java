@@ -38,6 +38,9 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    Utility utility= new Utility();
+    FragmentManager fm = getSupportFragmentManager();
+
     //flag che servono per doInBackground e onPost execute
     boolean searchActivityFlag = false;
     boolean myConcertsFragmentFlag = false;
@@ -144,11 +147,9 @@ public class MainActivity extends AppCompatActivity
                     Bundle jsonArrayTappe = new Bundle();
                     jsonArrayTappe.putString("jsonArrayTappe",arrayMieiConcerti.toString());
                     MyConcertsFragment myConcertsFragment = new MyConcertsFragment();
-                    FragmentManager manager = getSupportFragmentManager();
+
                     myConcertsFragment.setArguments(jsonArrayTappe);
-                    manager.beginTransaction().replace(R.id.relativelayoutforfragment, myConcertsFragment)
-                            .addToBackStack(myConcertsFragment.getTag())
-                            .commit();
+                   utility.inserisciFragment(myConcertsFragment,fm);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -343,10 +344,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_about) {
             if (!t.equals("About us")){
                 AboutFragment aboutFragment = new AboutFragment();
-                inserisciFragment(aboutFragment);
-                /*manager.beginTransaction().replace(R.id.relativelayoutforfragment, aboutFragment, aboutFragment.getTag())
-                        .addToBackStack(aboutFragment.getTag())
-                        .commit();*/
+                utility.inserisciFragment(aboutFragment,fm);
 
             }
             fragmentAttivo="About";
@@ -357,10 +355,8 @@ public class MainActivity extends AppCompatActivity
             if (isOnline()){
             if (!t.equals("Contattaci")) {
                 SendFragment sendFragment = new SendFragment();
-                inserisciFragment(sendFragment);
-             /*   manager.beginTransaction().replace(R.id.relativelayoutforfragment, sendFragment, sendFragment.getTag())
-                        .addToBackStack(sendFragment.getTag())
-                        .commit();*/
+
+                utility.inserisciFragment(sendFragment,fm);
             }} else {checkConnections();}
 
 
@@ -379,10 +375,7 @@ public class MainActivity extends AppCompatActivity
             if (!t.equals("Inserisci Tour")){
                 checkConnections();
                 InsertFragment insertFragment = new InsertFragment();
-                inserisciFragment(insertFragment);
-               /* manager.beginTransaction().replace(R.id.relativelayoutforfragment, insertFragment, insertFragment.getTag())
-                        .addToBackStack(insertFragment.getTag())
-                        .commit();*/}
+                utility.inserisciFragment(insertFragment,fm);}
            }
             else {
                 checkConnections();
@@ -392,10 +385,8 @@ public class MainActivity extends AppCompatActivity
             if (isOnline()){
             if (!t.equals("Le mie canzoni")){
                 MySongsFragment mySongsFragment = new MySongsFragment();
-                inserisciFragment(mySongsFragment);
-                /*manager.beginTransaction().replace(R.id.relativelayoutforfragment,mySongsFragment,mySongsFragment.getTag())
-                        .addToBackStack(mySongsFragment.getTag())
-                        .commit();*/}
+                utility.inserisciFragment(mySongsFragment,fm);
+                }
 
         } else {
                 checkConnections();
@@ -476,8 +467,7 @@ public class MainActivity extends AppCompatActivity
                     // do something when the button is clicked
                     public void onClick(DialogInterface arg0, int arg1) {
                         moveTaskToBack(true);
-//                        finish();
-                        //close();
+
 
 
                     }
@@ -518,31 +508,20 @@ public class MainActivity extends AppCompatActivity
             fragmentAttivo="iMieiConcerti";
         } else if (fragmentAttivo.equals("About")){
             AboutFragment aboutFragment = new AboutFragment();
-            inserisciFragment(aboutFragment);
-            /*manager.beginTransaction().replace(R.id.relativelayoutforfragment, aboutFragment, aboutFragment.getTag())
-                    .addToBackStack(aboutFragment.getTag())
-                    .commit();*/
+            utility.inserisciFragment(aboutFragment,fm);
+
             fragmentAttivo="About";
         } else if (fragmentAttivo.equals("Contattaci")) {
             SendFragment sendFragment = new SendFragment();
-            inserisciFragment(sendFragment);
-          /*  manager.beginTransaction().replace(R.id.relativelayoutforfragment, sendFragment, sendFragment.getTag())
-                    .addToBackStack(sendFragment.getTag())
-                    .commit();*/
+            utility.inserisciFragment(sendFragment,fm);
             fragmentAttivo="Contattaci";
         } else if (fragmentAttivo.equals("inserisciTour")){
             InsertFragment insertFragment = new InsertFragment();
-            inserisciFragment(insertFragment);
-            /*manager.beginTransaction().replace(R.id.relativelayoutforfragment, insertFragment, insertFragment.getTag())
-                    .addToBackStack(insertFragment.getTag())
-                    .commit();*/
+            utility.inserisciFragment(insertFragment,fm);
             fragmentAttivo="inserisciTour";
         } else if (fragmentAttivo.equals("leMieCanzoni")){
             MySongsFragment mySongsFragment = new MySongsFragment();
-            inserisciFragment(mySongsFragment);
-            /*manager.beginTransaction().replace(R.id.relativelayoutforfragment,mySongsFragment,mySongsFragment.getTag())
-                    .addToBackStack(mySongsFragment.getTag())
-                    .commit();*/
+            utility.inserisciFragment(mySongsFragment,fm);
             fragmentAttivo="leMieCanzoni";
         } else if (fragmentAttivo.equals("mainFragment")) {
             mainFragmentFlag=true;
@@ -554,12 +533,6 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    public void inserisciFragment(Fragment frag){
-        FragmentManager manager = getSupportFragmentManager();
-        manager.beginTransaction().replace(R.id.relativelayoutforfragment,frag,frag.getTag())
-                .addToBackStack(frag.getTag())
-                .commit();
-    }
 
 
 }

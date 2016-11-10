@@ -36,6 +36,8 @@ import cz.msebera.android.httpclient.entity.StringEntity;
  * Created by Michele on 24/10/2016.
  */
 public class InsertFragment extends Fragment {
+    FragmentManager fm = getFragmentManager();
+    Utility utility= new Utility();
     ProgressDialog progress;
 
 
@@ -71,6 +73,8 @@ public class InsertFragment extends Fragment {
                     public void onClick(View view) {
 
                         String inputTourString = inputTourEditText.getText().toString();
+                        String temp= utility.controlloInserimento(inputTourString);
+                        inputTourString=temp;
                         if (inputTourString.isEmpty()) {
                             Toast.makeText(getContext(), "Inserisci un nome valido!", Toast.LENGTH_SHORT).show();
                             return;
@@ -181,14 +185,11 @@ public class InsertFragment extends Fragment {
                                     Bundle bundleTappe = new Bundle();
                                     bundleTappe.putInt("idTour",idsTourList.get(position));
                                     bundleTappe.putString("nomeTour", nomiTourList.get(position));
-                                    FragmentManager fm = getFragmentManager();
+
                                     TourDetailFragment tourDetail = new TourDetailFragment();
 
                                     tourDetail.setArguments(bundleTappe);
-                                    fm.beginTransaction()
-                                            .replace(R.id.relativelayoutforfragment,tourDetail)
-                                            .addToBackStack("tourDetail")
-                                            .commit();
+                                    utility.inserisciFragment(tourDetail,fm);
                                 }
                             });
 

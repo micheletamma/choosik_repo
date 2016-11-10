@@ -34,6 +34,8 @@ import java.net.URL;
  * A simple {@link Fragment} subclass.
  */
 public class ConcertListFragment extends Fragment {
+    FragmentManager manager = getFragmentManager();
+    Utility utilis= new Utility();
     LayoutInflater upperInflater;
     ViewGroup upperContainer;
     JSONObject detailCanzoni;
@@ -154,11 +156,11 @@ public class ConcertListFragment extends Fragment {
                      *
                      */
                     titoli.putStringArray("canzoniVotate",canzoniVotate);
-                    FragmentManager manager = getFragmentManager();
+
                     SaveSharedPreference.setContatore(getContext(),SaveSharedPreference.getContatore(getContext())+1);
                     DetailCanzoniConcerto detailCanzoniConcerto = new DetailCanzoniConcerto();
                     detailCanzoniConcerto.setArguments(titoli);
-                    manager.beginTransaction().replace(R.id.search_container, detailCanzoniConcerto).addToBackStack("detailCanzoniConcerto").commit();
+                    utilis.inserisciFragment(detailCanzoniConcerto,manager);
 
 
                 }
