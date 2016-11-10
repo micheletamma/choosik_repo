@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,7 +37,7 @@ import cz.msebera.android.httpclient.entity.StringEntity;
  * Created by Michele on 24/10/2016.
  */
 public class InsertFragment extends Fragment {
-    FragmentManager fm = getFragmentManager();
+
     Utility utility= new Utility();
     ProgressDialog progress;
 
@@ -155,6 +156,7 @@ public class InsertFragment extends Fragment {
                             }
                             ImageButton imgBtn = (ImageButton) convertView.findViewById(R.id.delete_img);
                             TextView textItem = (TextView) convertView.findViewById(R.id.text_item);
+                            final ProgressBar progressBar = (ProgressBar) convertView.findViewById(R.id.progressBar7);
                             textItem.setText(nomiTourList.get(position));
 
                             imgBtn.setOnClickListener(new View.OnClickListener() {
@@ -165,8 +167,14 @@ public class InsertFragment extends Fragment {
                                     client.delete(getContext(), "http://exrezzo.pythonanywhere.com/api/tour/" + idsTourList.get(position)+"/",
                                             new AsyncHttpResponseHandler() {
                                                 @Override
+                                                public void onStart() {
+                                                    progressBar.setVisibility(View.VISIBLE);
+                                                }
+
+                                                @Override
                                                 public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                                                     Log.e("Delete tour ok id:",nomiTourList.get(position));
+                                                    progressBar.setVisibility(View.GONE);
                                                     remove(getItem(position));
                                                     notifyDataSetChanged();
                                                     idsTourList.remove(position);
@@ -174,6 +182,7 @@ public class InsertFragment extends Fragment {
 
                                                 @Override
                                                 public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                                                    progressBar.setVisibility(View.GONE);
                                                     Log.e("Delete tour NO id",nomiTourList.get(position));
                                                 }
                                             });
@@ -190,10 +199,7 @@ public class InsertFragment extends Fragment {
 
                                     tourDetail.setArguments(bundleTappe);
                                     FragmentManager fm = getFragmentManager();
-                                    fm.beginTransaction()
-                                            .replace(R.id.relativelayoutforfragment,tourDetail)
-                                            .addToBackStack("tourDetail")
-                                            .commit();
+                                    utility.inserisciFragment(tourDetail,fm);
                                 }
                             });
 
