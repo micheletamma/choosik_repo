@@ -34,8 +34,6 @@ import java.net.URL;
  * A simple {@link Fragment} subclass.
  */
 public class ConcertListFragment extends Fragment {
-    FragmentManager manager = getFragmentManager();
-    Utility utilis= new Utility();
     LayoutInflater upperInflater;
     ViewGroup upperContainer;
     JSONObject detailCanzoni;
@@ -69,7 +67,7 @@ public class ConcertListFragment extends Fragment {
 
                 while ((line = reader.readLine()) != null) {
                     buffer.append(line+"\n");
-                    Log.d("Response: ", "> " + line);   //here u ll get whole response...... :-)
+                    Log.d("Response: ", "> " + line);   //here u ll get whole response...... 🙂
 
                 }
                 detailCanzoni = new JSONObject(buffer.toString());
@@ -156,11 +154,11 @@ public class ConcertListFragment extends Fragment {
                      *
                      */
                     titoli.putStringArray("canzoniVotate",canzoniVotate);
-
+                    FragmentManager manager = getFragmentManager();
                     SaveSharedPreference.setContatore(getContext(),SaveSharedPreference.getContatore(getContext())+1);
                     DetailCanzoniConcerto detailCanzoniConcerto = new DetailCanzoniConcerto();
                     detailCanzoniConcerto.setArguments(titoli);
-                    utilis.inserisciFragment(detailCanzoniConcerto,manager);
+                    manager.beginTransaction().replace(R.id.search_container, detailCanzoniConcerto).addToBackStack("detailCanzoniConcerto").commit();
 
 
                 }
@@ -206,7 +204,7 @@ public class ConcertListFragment extends Fragment {
         String receive = bundle.getString("JsonTappaString");
         JSONArray listaTappe;
         try {
-             listaTappe = new JSONArray(receive);
+            listaTappe = new JSONArray(receive);
             //listaTappe e' un array di oggetti Json
             final String nomeTappe []  = new String [listaTappe.length()];
 
@@ -232,29 +230,29 @@ public class ConcertListFragment extends Fragment {
             }
 
 
-                //creazione arrayadapter per trasformare i dati dell'array sottoforma di lista
-                ArrayAdapter<String> adapter =new ArrayAdapter<String>(getActivity(), R.layout.list_concert_item,R.id.nomeTour, nomeTappe){
-                    //override del metodo getview per fare in modo che nella view nome, luogo e
-                    // data compaiano uno sotto l'altro
-                    @NonNull
-                    @Override
-                    public View getView(int position, View convertView, ViewGroup parent) {
-                        if (convertView == null) {
-                            convertView = inflater.inflate(R.layout.list_concert_item,parent,false);
-                        }
-
-                        TextView nomeTour = (TextView) convertView.findViewById(R.id.nomeTour);
-                        nomeTour.setText(nomeTappeArray[position]);
-                        TextView luogoTour = (TextView) convertView.findViewById(R.id.luogoTour);
-                        luogoTour.setText(luogoTappeArray[position]);
-                        TextView dataTour = (TextView) convertView.findViewById(R.id.dataTour);
-                        dataTour.setText(dataTappeArray[position]);
-
-                        return convertView;
+            //creazione arrayadapter per trasformare i dati dell'array sottoforma di lista
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), R.layout.list_concert_item, R.id.nomeTour, nomeTappe) {
+                //override del metodo getview per fare in modo che nella view nome, luogo e
+                // data compaiano uno sotto l'altro
+                @NonNull
+                @Override
+                public View getView(int position, View convertView, ViewGroup parent) {
+                    if (convertView == null) {
+                        convertView = inflater.inflate(R.layout.list_concert_item, parent, false);
                     }
-                };
-                //la listview riceve i dati sotto forma di lista
-                listview.setAdapter(adapter);
+
+                    TextView nomeTour = (TextView) convertView.findViewById(R.id.nomeTour);
+                    nomeTour.setText(nomeTappeArray[position]);
+                    TextView luogoTour = (TextView) convertView.findViewById(R.id.luogoTour);
+                    luogoTour.setText(luogoTappeArray[position]);
+                    TextView dataTour = (TextView) convertView.findViewById(R.id.dataTour);
+                    dataTour.setText(dataTappeArray[position]);
+
+                    return convertView;
+                }
+            };
+            //la listview riceve i dati sotto forma di lista
+            listview.setAdapter(adapter);
 
 
 
@@ -280,7 +278,7 @@ public class ConcertListFragment extends Fragment {
                     idTappa=Integer.parseInt(idToSearch);
                     flagListaCanzoniTask=true;
                     detailCanzoni.execute("http://exrezzo.pythonanywhere.com/api/canzoneintappa/?format=json&tappa__id="+idToSearch);
-                    }
+                }
             });
         } catch (JSONException e) {
             e.printStackTrace();

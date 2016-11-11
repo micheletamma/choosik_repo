@@ -82,7 +82,7 @@ public class SearchActivity extends AppCompatActivity
 
                 while ((line = reader.readLine()) != null) {
                     buffer.append(line+"\n");
-                    Log.d("Response: ", "> " + line);   //here u ll get whole response...... :-)
+                    Log.d("Response: ", "> " + line);   //here u ll get whole response...... 🙂
 
                 }
                 concertResult = new JSONObject(buffer.toString());
@@ -117,7 +117,7 @@ public class SearchActivity extends AppCompatActivity
                 if (arrayTappe.length()==0){
                     //vuol dire che non esistono concerti per questa ricerca
                     AlertDialog.Builder dialog = new AlertDialog.Builder(SearchActivity.this);
-                            dialog.setTitle("Ricerca errata")
+                    dialog.setTitle("Ricerca errata")
                             .setMessage("Non esiste alcun concerto con questi parametri di ricerca.\nProva ad usare i nostri suggerimenti!")
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -192,12 +192,12 @@ public class SearchActivity extends AppCompatActivity
             extras = getIntent().getExtras();
             String [] nomiArtisti=extras.getStringArray("nomiArtisti");
             SaveSharedPreference.setArtisti(getApplicationContext(), extras.getStringArray("nomiArtisti"));
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                this,
-                android.R.layout.simple_dropdown_item_1line,
-                nomiArtisti
-        );
-        autocomplete.setAdapter(adapter);
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                    this,
+                    android.R.layout.simple_dropdown_item_1line,
+                    nomiArtisti
+            );
+            autocomplete.setAdapter(adapter);
         } else {
             String [] nomiArtisti = SaveSharedPreference.getArtisti(getApplicationContext());
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(
@@ -226,7 +226,7 @@ public class SearchActivity extends AppCompatActivity
                         .append(mYear).append("-")
                         .append(mMonth + 1).append("-")
                         .append(mDay).append("")
-                        );
+        );
     }
     protected DatePickerDialog.OnDateSetListener mDateSetListener =
             new DatePickerDialog.OnDateSetListener() {
@@ -280,8 +280,9 @@ public class SearchActivity extends AppCompatActivity
         }
         //posso eseguire il task di ricerca
         if (isOnline()){
-        JsonTask searchTask = new JsonTask();
-        searchTask.execute(req);}
+            JsonTask searchTask = new JsonTask();
+            searchTask.execute(req);
+        }
         else {checkConnections();}
 
     }
@@ -302,9 +303,9 @@ public class SearchActivity extends AppCompatActivity
 //                    Fragment fragment = getFragmentManager().findFragmentByTag("concertListFragment");
                     //vuol dire che ho premuto il pulsante back
                     if (SaveSharedPreference.getContatore(getApplicationContext()) <= 0){
-                    Intent i = new Intent(getApplicationContext(),MainActivity.class);
+                        Intent i = new Intent(getApplicationContext(), MainActivity.class);
                         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    startActivity(i);
+                        startActivity(i);
 
                     } else {
 
@@ -377,4 +378,3 @@ public class SearchActivity extends AppCompatActivity
                 cm.getActiveNetworkInfo().isConnectedOrConnecting();
     }
 }
-

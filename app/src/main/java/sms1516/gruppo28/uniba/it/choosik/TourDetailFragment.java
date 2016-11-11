@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +35,7 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
 
 import cz.msebera.android.httpclient.Header;
@@ -89,9 +91,19 @@ public class TourDetailFragment extends Fragment {
                 insertTappaDialog.setContentView(R.layout.tappa_insert_dialog);
                 insertTappaDialog.setCancelable(true);
                 insertTappaDialog.show();
+                Dizionario dizionario = new Dizionario();
+                HashMap x = dizionario.dizionarioProvicia();
+                final Spinner sp = (Spinner) insertTappaDialog.findViewById(R.id.spinnerProvince);
+                ArrayAdapter<String> provincia = new ArrayAdapter<String>(
+                        getContext(),
+                        android.R.layout.simple_spinner_dropdown_item,
+                        dizionario.getNomi()
+                );
+
+                sp.setAdapter(provincia);
 
                 Button insertBtn = (Button) insertTappaDialog.findViewById(R.id.input_tappa_button);
-                final EditText inputTappaCittaEditText = (EditText) insertTappaDialog.findViewById(R.id.input_tappa_citta_text);
+
                 final TextView inputTappaDataViewText= (TextView) insertTappaDialog.findViewById(R.id.data_tappa_input_view);
 
                     /**
@@ -134,8 +146,14 @@ public class TourDetailFragment extends Fragment {
 
                     @Override
                     public void onClick(View view) {
-                        String inputTappaCittaString = inputTappaCittaEditText.getText().toString();
+                        String inputTappaCittaString = sp.getSelectedItem().toString();
                         String inputTappaDataString = inputTappaDataViewText.getText().toString();
+
+                        if (inputTappaCittaString.equals(" ") | inputTappaCittaString.equals("")
+                                | inputTappaDataString.equals("")) {
+                            Toast.makeText(getContext(), "Dati non validi", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
 
                         AsyncHttpClient client = new AsyncHttpClient();
                         JSONObject tappa2postJson = new JSONObject();
