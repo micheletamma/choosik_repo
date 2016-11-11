@@ -95,7 +95,7 @@ public class DetailCanzoniConcerto extends Fragment {
                 RatingBar canzoneRatingBar = (RatingBar) convertView.findViewById(R.id.rating_bar);
 
                 titoloCanzoneTextView.setText(titoliCanzoniList.get(position));
-                mediaCanzoneTextView.setText((Float.toString(mediaCanzoniList.get(position))));
+                mediaCanzoneTextView.setText("Voto medio: " +  (Float.toString(mediaCanzoniList.get(position))));
                 canzoneRatingBar.setRating(votiCanzoniList.get(position));
 
                 Log.d("Voto riga", position + "numvoto" + votiCanzoniList.get(position));

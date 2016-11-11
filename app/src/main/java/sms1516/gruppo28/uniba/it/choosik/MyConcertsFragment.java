@@ -100,6 +100,7 @@ public class MyConcertsFragment extends Fragment {
                         JSONObject temp = arrayCanzoni.getJSONObject(i);
                         titoloCanzone[i] = temp.getJSONObject("canzone").getString("titolo");
                         idCanzoni[i] = Integer.parseInt(temp.getString("id"));
+
                     }
                     //adesso l'array titoloCanzone e' popolato dai titoli della tappa cliccata
 
@@ -208,7 +209,8 @@ public class MyConcertsFragment extends Fragment {
 
                     //posso cercare le canzoni della tappa selezionata
                     String idToSearch = Integer.toString(idTappe[position]);
-                    nomeTappa=nomeTappeArray[position];
+                    nomeTappa=nomeTappeArray[position] + " a " + luogoTappeArray[position] + " il "
+                    + dataTappeArray[position];
 
                     //ricerco le canzoni della tappa con l'id uguale a idToSearch
                     MyConcertsFragment.JsonTask detailCanzoni = new MyConcertsFragment.JsonTask();
