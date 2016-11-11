@@ -103,6 +103,7 @@
         android:textColor="@android:color/white"
         android:textColorHint="@android:color/white"
         android:textCursorDrawable="@null"
+        android:singleLine="true"
 
 
         />

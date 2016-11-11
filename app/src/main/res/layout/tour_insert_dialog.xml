@@ -18,6 +18,7 @@
         android:layout_height="wrap_content"
         android:textSize="17sp"
         android:text=""
+        android:singleLine="true"
         android:hint="Scrivi il nome del tuo nuovo tour"
         android:textColorHint="@android:color/holo_green_dark"
         android:textAlignment="center"

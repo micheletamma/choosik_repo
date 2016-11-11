@@ -23,6 +23,7 @@
 
     <EditText
         android:id="@+id/txtUsername"
+
         android:textColor="@android:color/white"
         android:textColorHint="@android:color/white"
         android:theme="@style/txtSuNero"
@@ -40,6 +41,7 @@
 
     <EditText
         android:id="@+id/txtPassword"
+        android:singleLine="true"
         android:theme="@style/txtSuNero"
         android:textColor="@android:color/white"
         android:textColorHint="@android:color/white"
@@ -56,6 +58,7 @@
 
     <EditText
         android:id="@+id/txtEmail"
+
         android:textColor="@android:color/white"
         android:textColorHint="@android:color/white"
         android:theme="@style/txtSuNero"
